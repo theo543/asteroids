@@ -64,3 +64,7 @@
   - Explained how to static link SFML using BUILD_SHARED_LIBS=OFF
 - https://stackoverflow.com/a/27206982/15885837
   - Explained how to embed resources in executable using CMake
+
+### Grafică
+
+- [Public Pixel Font by GGBotNet](https://www.fontspace.com/public-pixel-font-f72305) (Public Domain)
