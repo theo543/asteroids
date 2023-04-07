@@ -101,6 +101,22 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 ###############################################################################
 
+file(GLOB_RECURSE RESOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/resources/*")
+
+add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/embedded_resources.cpp ${CMAKE_CURRENT_SOURCE_DIR}/embedded_fwd.h
+        COMMAND ${CMAKE_COMMAND}
+        -D"OUTPUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/embedded_resources.cpp"
+        -D"HEADER_FILE=${CMAKE_CURRENT_SOURCE_DIR}/embedded_fwd.h"
+        -P"${CMAKE_CURRENT_SOURCE_DIR}/CMakeEmbedResources.cmake"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/CMakeEmbedResources.cmake" "${RESOURCE_FILES}"
+)
+
+target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/embedded_resources.cpp ${CMAKE_CURRENT_SOURCE_DIR}/embedded_fwd.h)
+
+###############################################################################
+
 # target definitions
 
 if(GITHUB_ACTIONS)

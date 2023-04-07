@@ -4,6 +4,15 @@
 #include <ctime>
 #include <sstream>
 
+// To add new embedded resources, update RESOURCES variable in CMakeEmbedResources.cmake and re-run build to regenerate this header
+#include "embedded_fwd.h"
+
+const auto PublicPixelFont = []() {
+    sf::Font font;
+    font.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
+    return font;
+}();
+
 #ifdef __linux__
 #include <X11/Xlib.h>
 #endif
@@ -18,8 +27,11 @@ int main() {
     window.create(sf::VideoMode({800, 700}), "Current Time", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
-     sf::Font font;
-    font.loadFromFile("../resources/public-pixel-font/PublicPixel-z84yD.ttf");
+
+    auto desktop = sf::VideoMode::getDesktopMode();
+    // This is safe because screen size isn't nearly as big as 32-bit int. If it is, you have other problems.
+    // We also account for the window title bar
+    window.setPosition(sf::Vector2i((desktop.width - window.getSize().x) / 2, (desktop.height - window.getSize().y) / 2 - 50)); //NOLINT
     while(window.isOpen()) {
         sf::Event e;//NOLINT this gets initialized in the loop
         while(window.pollEvent(e)) {
@@ -40,7 +52,7 @@ int main() {
 
         window.clear(sf::Color(47,79,79, 255));
         sf::Text text;
-        text.setFont(font); // font is a sf::Font
+        text.setFont(PublicPixelFont);
         std::time_t t = std::time(nullptr);
         std::stringstream ss;
         ss << std::put_time(std::localtime(&t), "[%H : %M : %S]");
