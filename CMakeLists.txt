@@ -61,6 +61,10 @@ endfunction()
 # external dependencies with FetchContent
 include(FetchContent)
 
+set(BUILD_SHARED_LIBS FALSE)
+set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_STATIC TRUE)
+
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:122
 FetchContent_Declare(
   SFML
@@ -127,13 +131,14 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 
 # use SYSTEM so clang-tidy does not report warnings from these directories
 #target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/extlibs/headers)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
-target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES} ${SFML_DEPEDENCIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
 
 if(APPLE)
 elseif(UNIX)
-    target_link_libraries(${PROJECT_NAME} X11)
+    target_link_libraries(${PROJECT_NAME} PRIVATE X11)
 endif()
 
 ###############################################################################
