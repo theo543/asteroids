@@ -54,5 +54,13 @@
 
 ## Resurse
 
+### Librarii
+
 - [SFML](https://github.com/SFML/SFML/tree/aa82ea132b9296a31922772027ad5d14c1fa381b) (Zlib)
-- adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
+
+### Informații
+
+- https://github.com/SFML/cmake-sfml-project
+  - Explained how to static link SFML using BUILD_SHARED_LIBS=OFF
+- https://stackoverflow.com/a/27206982/15885837
+  - Explained how to embed resources in executable using CMake
