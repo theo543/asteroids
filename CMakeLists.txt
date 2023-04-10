@@ -211,6 +211,15 @@ endif()
 
 ###############################################################################
 
+if(WIN32)
+    # This sets the PE header subsystem property to GUI, hiding the terminal.
+    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
+    # On MSVC we have to tell the compiler we're still using main instead of WinMain.
+    target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/ENTRY:mainCRTStartup>)
+endif()
+
+###############################################################################
+
 # copy binaries to "bin" folder; these are uploaded as artifacts on each release
 # update name in .github/workflows/cmake.yml:29 when changing "bin" name here
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
