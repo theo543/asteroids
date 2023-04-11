@@ -141,7 +141,7 @@ endif()
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp Game.h Game.cpp Scene.h TestScene.h TestScene.cpp)
 
 ###############################################################################
 
@@ -211,7 +211,7 @@ endif()
 
 ###############################################################################
 
-if(WIN32)
+if(WIN32 AND GITHUB_ACTIONS) # if we're on Windows and building a release
     # This sets the PE header subsystem property to GUI, hiding the terminal.
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
     # On MSVC we have to tell the compiler we're still using main instead of WinMain.
