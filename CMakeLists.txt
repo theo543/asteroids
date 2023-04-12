@@ -132,6 +132,18 @@ set_custom_stdlib_and_sanitizers(sfml-graphics false)
 
 ###############################################################################
 
+FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG        a33701196adfad74917046096bf5a2aa0ab0bb50 # 9.1.0
+)
+
+FetchContent_MakeAvailable(fmt)
+
+set_custom_stdlib_and_sanitizers(fmt false)
+
+###############################################################################
+
 # external dependencies with find_package
 
 find_package(Threads REQUIRED)
@@ -203,8 +215,10 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 #target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/extlibs/headers)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${fmt_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES} ${SFML_DEPEDENCIES})
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
 if(APPLE)
 elseif(UNIX)
