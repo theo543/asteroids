@@ -35,6 +35,7 @@ bool TestScene::handleEvent(sf::Event &event) {
             return true;
         } else {
             areYouSure = true;
+            std::lock_guard<std::mutex> lock(exitTimerMutex);
             exitTimer.restart();
             return false;
         }
@@ -67,6 +68,7 @@ void TestScene::updateStats() {
 const sf::Time TestScene::exitDelay = sf::seconds(3);
 void TestScene::updateTime() {
     if(areYouSure) {
+        std::lock_guard<std::mutex> lock(exitTimerMutex);
         if(exitTimer.getElapsedTime() >= exitDelay) {
             areYouSure = false;
         } else {

@@ -14,9 +14,22 @@ protected:
     unsigned int maxTicksPerFrame = 5;
     sf::Color backgroundColor = sf::Color::Black;
 public:
+    /**
+     * <b>Will be called from rendering thread.</b>
+     * It should draw everything to the window.
+     */
     virtual void draw(sf::RenderWindow &window) = 0;
+    /**
+     * <b>Will be called from event polling thread.</b>
+     * @returns If it returns false, default event handling will be skipped.
+     */
     virtual bool handleEvent(sf::Event &event) = 0;
     typedef std::optional<std::unique_ptr<Scene>> TickResult;
+    /**
+     * <b>Will be called from rendering thread.</b>
+     * It should update the physics simulation.
+     * @returns If it returns a non-empty optional, the scene will be replaced with the one in the optional or exited if the optional is nullptr.
+     */
     virtual TickResult tick() = 0;
     [[nodiscard]] inline sf::Time getTimePerTick() const { return timePerTick; }
     [[nodiscard]] inline unsigned int getMaxTicksPerFrame() const { return maxTicksPerFrame; }

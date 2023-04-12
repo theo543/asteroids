@@ -18,21 +18,13 @@ void Game::resetTime() {
     sceneTime = realTime.getElapsedTime();
 }
 
-void Game::mainLoop() {
-    resetTime(); // Don't want init overhead to count towards the first tick
+void Game::renderingThread() {
+    window.setActive(true);
+    resetTime(); // Don't count time spent getting to this point
     while(window.isOpen()) {
-        sf::Event event{};
-        while(window.pollEvent(event)) { //TODO: Event handling MUST be in another thread eventually to not freeze the game
-            if(!scene->handleEvent(event))
-                continue;
-            switch(event.type) {
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-                case sf::Event::Resized:
-                default:
-                    break;
-            }
+        if(shouldExit) {
+            window.close();
+            break;
         }
         window.clear(scene->getBackgroundColor());
         scene->draw(window);
@@ -55,4 +47,31 @@ void Game::mainLoop() {
                 scene = std::move(tr.value());
         }
     }
+}
+
+void Game::eventPollingThread() {
+    sf::Event event{};
+    while(window.isOpen()) {
+        bool success = window.waitEvent(event);
+        if(!success)
+            continue;
+        if (!scene->handleEvent(event))
+            continue;
+        switch (event.type) {
+            case sf::Event::Closed:
+                shouldExit = true;
+                return;
+            case sf::Event::Resized:
+            default:
+                break;
+        }
+    }
+}
+
+void Game::mainLoop() {
+    window.setActive(false);
+    sf::Thread renderThread(&Game::renderingThread, this);
+    renderThread.launch();
+    eventPollingThread();
+    renderThread.wait(); // Join
 }

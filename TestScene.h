@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Scene.h"
+#include <atomic>
+#include <mutex>
 
 class TestScene : public Scene {
     sf::Text timeText;
@@ -16,7 +18,8 @@ class TestScene : public Scene {
     unsigned int ticks = 0;
     unsigned int fps = 0;
     unsigned int tps = 0;
-    bool areYouSure = false;
+    std::mutex exitTimerMutex;
+    std::atomic_bool areYouSure = false;
     void updateStats();
     void updateTime();
 public:
