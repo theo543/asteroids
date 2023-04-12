@@ -22,6 +22,8 @@ void Game::renderingThread() {
     window.setActive(true);
     resetTime(); // Don't count time spent getting to this point
     while(window.isOpen()) {
+        if(scene->isLagSimulationDebugEnabled() && window.hasFocus() && sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+            sceneTime -= sf::seconds(60);
         if(shouldExit) {
             window.close();
             break;
@@ -34,8 +36,7 @@ void Game::renderingThread() {
             sceneTime += scene->getTimePerTick();
             ticksAllowed--;
             if(ticksAllowed == 0) {
-                sf::err() << "WARNING: Game time falling behind real time. Skipping ticks." << std::endl;
-                sceneTime = realTime.getElapsedTime();
+                sf::err() << "WARNING: Simulation is behind by " << (realTime.getElapsedTime() - sceneTime).asSeconds() << " seconds" << std::endl;
                 break;
             }
             Scene::TickResult tr = scene->tick();

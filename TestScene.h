@@ -13,6 +13,7 @@ class TestScene : public Scene {
     sf::Font font;
     sf::Clock sinceStatsReset;
     sf::Clock exitTimer;
+    sf::Time displayTime;
     const static sf::Time exitDelay;
     unsigned int frames = 0;
     unsigned int ticks = 0;

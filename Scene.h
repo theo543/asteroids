@@ -13,6 +13,7 @@ protected:
     sf::Time timePerTick = sf::seconds(1.f / 20.f);
     unsigned int maxTicksPerFrame = 5;
     sf::Color backgroundColor = sf::Color::Black;
+    bool enableLagSimulationDebug = false;
 public:
     /**
      * <b>Will be called from rendering thread.</b>
@@ -34,6 +35,7 @@ public:
     [[nodiscard]] inline sf::Time getTimePerTick() const { return timePerTick; }
     [[nodiscard]] inline unsigned int getMaxTicksPerFrame() const { return maxTicksPerFrame; }
     [[nodiscard]] inline sf::Color getBackgroundColor() const { return backgroundColor; }
+    [[nodiscard]] inline bool isLagSimulationDebugEnabled() const { return enableLagSimulationDebug; }
     virtual ~Scene() = default;
 };
 

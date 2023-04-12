@@ -1,11 +1,16 @@
 #include "TestScene.h"
 #include "embedded_fwd.h"
-#include <sstream>
-#include <ctime>
-#include <iomanip>
 #include <iostream>
+#include <fmt/core.h>
+#include <fmt/chrono.h>
+#include <chrono>
 
 TestScene::TestScene() {
+    // print current timse using fmt
+    std::cout<<"TestScene constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
+    enableLagSimulationDebug = true;
+    timePerTick = sf::seconds(static_cast<float>(1.0L / 120.0L));
+    maxTicksPerFrame = 16;
     sinceStatsReset.restart();
     font.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
     timeText.setFont(font);
@@ -45,8 +50,12 @@ bool TestScene::handleEvent(sf::Event &event) {
 
 Scene::TickResult TestScene::tick()  {
     ticks++;
+    displayTime += timePerTick;
     updateStats();
     updateTime();
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+        sf::sleep(sf::seconds(1.0f)); // Simulate lag
+    }
     return std::nullopt;
 }
 
@@ -78,8 +87,10 @@ void TestScene::updateTime() {
         }
     }
     timeText.setFillColor(sf::Color::White);
-    std::time_t t = std::time(nullptr);
-    std::stringstream ss;
-    ss << std::put_time(std::localtime(&t), "[%H : %M : %S]");
-    timeText.setString(ss.str());
+    auto time = static_cast<unsigned int>(displayTime.asSeconds());
+    auto hours = time / 3600;
+    auto minutes = (time % 3600) / 60;
+    auto seconds = time % 60;
+    // use fmt to print the time without decimal places
+    timeText.setString(fmt::format("{:02}:{:02}:{:02}", hours, minutes, seconds));
 }
