@@ -108,8 +108,6 @@ endfunction()
 include(FetchContent)
 
 set(BUILD_SHARED_LIBS FALSE)
-set(SFML_STATIC_LIBRARIES TRUE)
-set(SFML_STATIC TRUE)
 
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:122
 FetchContent_Declare(
@@ -155,7 +153,7 @@ endif()
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp Game.h Game.cpp Scene.h TestScene.h TestScene.cpp)
+add_executable(${PROJECT_NAME} main.cpp Game.h Game.cpp Scene.h TestScene.h TestScene.cpp Defer.h)
 
 ###############################################################################
 
@@ -213,10 +211,8 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 
 # use SYSTEM so clang-tidy does not report warnings from these directories
 #target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/extlibs/headers)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${fmt_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES} ${SFML_DEPEDENCIES})
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 

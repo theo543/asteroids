@@ -6,7 +6,6 @@
 #include <chrono>
 
 TestScene::TestScene() {
-    // print current timse using fmt
     std::cout<<"TestScene constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     enableLagSimulationDebug = true;
     timePerTick = sf::seconds(static_cast<float>(1.0L / 120.0L));
@@ -34,21 +33,19 @@ void TestScene::draw(sf::RenderWindow &window) {
     frames++;
 }
 
-bool TestScene::handleEvent(sf::Event &event) {
+void TestScene::handleEvent(sf::Event &event) {
     if(event.type == sf::Event::Closed) {
         if(areYouSure) {
-            return true;
+            exitConfirmed = true;
         } else {
             areYouSure = true;
             std::lock_guard<std::mutex> lock(exitTimerMutex);
             exitTimer.restart();
-            return false;
         }
     }
-    return true;
 }
 
-Scene::TickResult TestScene::tick()  {
+Scene::TickResult TestScene::tick() {
     ticks++;
     displayTime += timePerTick;
     updateStats();
@@ -56,6 +53,7 @@ Scene::TickResult TestScene::tick()  {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
         sf::sleep(sf::seconds(1.0f)); // Simulate lag
     }
+    if (exitConfirmed) return {nullptr};
     return std::nullopt;
 }
 

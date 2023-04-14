@@ -21,12 +21,13 @@ class TestScene : public Scene {
     unsigned int tps = 0;
     std::mutex exitTimerMutex;
     std::atomic_bool areYouSure = false;
+    std::atomic_bool exitConfirmed = false;
     void updateStats();
     void updateTime();
 public:
     TestScene();
     void draw(sf::RenderWindow &window) override;
-    bool handleEvent(sf::Event &event) override;
+    void handleEvent(sf::Event &event) override;
     TickResult tick() override;
 };
 
