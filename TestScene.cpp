@@ -22,6 +22,10 @@ TestScene::TestScene() {
     statsText.setCharacterSize(24); // in pixels, not points!
     statsText.setFillColor(sf::Color::White);
     statsText.setPosition(0, 0);
+    buffer.loadFromMemory(TestSoundFLAC.data(), TestSoundFLAC.size());
+    testSound.setBuffer(buffer);
+    testSound.setLoop(true);
+    testSound.play();
 }
 
 void TestScene::draw(sf::RenderWindow &window) {
@@ -62,7 +66,8 @@ void TestScene::updateStats() {
             "FPS: " + std::to_string(fps) +
             "\nTPS: " + std::to_string(tps) +
             "\nF: " + std::to_string(frames) +
-            "\nT: " + std::to_string(ticks));
+            "\nT: " + std::to_string(ticks) +
+            "\nSound test: " + fmt::format("{:%H:%M:%S}", std::chrono::duration<float>(testSound.getPlayingOffset().asSeconds())));
     if(sinceStatsReset.getElapsedTime() >= sf::seconds(1)) {
         sinceStatsReset.restart();
         fps = frames;
@@ -91,4 +96,9 @@ void TestScene::updateTime() {
     auto seconds = time % 60;
     // use fmt to print the time without decimal places
     timeText.setString(fmt::format("{:02}:{:02}:{:02}", hours, minutes, seconds));
+}
+
+TestScene::~TestScene() {
+    std::cout<<"TestScene destructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
+    testSound.stop();
 }

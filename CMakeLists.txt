@@ -38,6 +38,7 @@ function(generate_resources)
 
     list(APPEND RESOURCES
         "${RESOURCE_FOLDER}/public-pixel-font/PublicPixel-z84yD.ttf PublicPixelTTF"
+        "${RESOURCE_FOLDER}/683841__josefpres__piano-loops-094-octave-long-loop-120-bpm.flac TestSoundFLAC"
     )
 
     file(WRITE ${OUTPUT_FILE} "#include <span>\n")
@@ -127,6 +128,7 @@ FetchContent_MakeAvailable(SFML)
 set_custom_stdlib_and_sanitizers(sfml-system false)
 set_custom_stdlib_and_sanitizers(sfml-window false)
 set_custom_stdlib_and_sanitizers(sfml-graphics false)
+set_custom_stdlib_and_sanitizers(sfml-audio false)
 
 ###############################################################################
 
@@ -213,7 +215,7 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 #target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${fmt_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
 if(APPLE)
