@@ -28,6 +28,10 @@ TestScene::TestScene() {
     testSound.play();
 }
 
+void TestScene::init(sf::RenderWindow &window) {
+    window.setTitle("SFML works!");
+}
+
 void TestScene::draw(sf::RenderWindow &window) {
     float x = window.getView().getSize().x / 2.0f - timeText.getGlobalBounds().width / 2.0f;
     float y = window.getView().getSize().y / 2.0f - timeText.getGlobalBounds().height / 2.0f - 2; // Compensate for weird font baseline

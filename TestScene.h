@@ -29,6 +29,7 @@ class TestScene : public Scene {
     void updateTime();
 public:
     TestScene();
+    void init(sf::RenderWindow &window) override;
     void draw(sf::RenderWindow &window) override;
     void handleEvent(sf::Event &event) override;
     TickResult tick() override;

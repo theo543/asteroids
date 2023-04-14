@@ -21,6 +21,12 @@ protected:
     bool enableLagSimulationDebug = false;
 public:
     /**
+     * Called by the main loop before starting the rendering thread.
+     * Allows things like changing the title of the window that can't be done from the constructor
+     * because a scene is constructed before being passed to the main loop.
+     */
+    virtual void init(sf::RenderWindow &window) = 0;
+    /**
      * <b>Will be called from rendering thread.</b>
      * It should draw everything to the window.
      */

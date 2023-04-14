@@ -5,7 +5,7 @@
 
 [[maybe_unused]] Game::Game(std::unique_ptr<Scene> firstScene) : window(), scene(std::move(firstScene)), realTime(), sceneTime(), returnToMainLoop(false), nextScene(nullptr) {
     // NOTE: sync with env variable APP_WINDOW from .GitHub/workflows/cmake.yml:30
-    window.create(sf::VideoMode({800, 700}), "Current Time", sf::Style::Default);
+    window.create(sf::VideoMode({800, 700}), "", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
     window.setActive(false);
     //window.setFramerateLimit(60);
@@ -73,7 +73,9 @@ void Game::resetThreadVariables() {
 void Game::mainLoop() {
     while(scene != nullptr) {
         resetThreadVariables();
-        window.setActive(false); // this should never be necessary, but just in case some SFML function automatically activates the context
+        window.setActive(false);
+        scene->init(window);
+        window.setActive(false); // just in case init() changed it
         std::thread renderThread(&Game::renderingThread, this); // start rendering thread - this is needed because polling events blocks when a title bar button is pressed or the window is dragged
         eventPollingThread(); // no need to start a new thread, just call the function (on some platforms you can't even poll events from secondary threads anyway)
         renderThread.join();
