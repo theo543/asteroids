@@ -14,11 +14,19 @@
  * There are also some properties that can be set to indicate timing, background color, and debug options, with inlined getters for performance.
  */
 class Scene : sf::NonCopyable {
+    /// Enables pressing 'T' to decrement game time by 60 seconds. Implemented in main loop, behind this flag.
+    const bool enableLagSimulationDebug;
 protected:
+    explicit Scene(bool enableLagSimulationDebug = false) : enableLagSimulationDebug(enableLagSimulationDebug) {}
+
+    // These must only be changed in the rendering thread:
+
+    /// The amount of in-game time that a tick represents. Independent of FPS, but maxTicksPerFrame must allow enough ticks per frame.
     sf::Time timePerTick = sf::seconds(1.f / 20.f);
+    /// The maximum number of ticks that can be processed in a single frame. Should be set according to lowest supported FPS.
     unsigned int maxTicksPerFrame = 5;
+    /// Color used for clearing the window before drawing.
     sf::Color backgroundColor = sf::Color::Black;
-    bool enableLagSimulationDebug = false;
 public:
     /**
      * Called by the main loop before starting the rendering thread.

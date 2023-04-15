@@ -5,9 +5,8 @@
 #include <fmt/chrono.h>
 #include <chrono>
 
-TestScene::TestScene() {
+TestScene::TestScene() : Scene(true) {
     std::cout<<"TestScene constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
-    enableLagSimulationDebug = true;
     timePerTick = sf::seconds(static_cast<float>(1.0L / 120.0L));
     maxTicksPerFrame = 16;
     sinceStatsReset.restart();
