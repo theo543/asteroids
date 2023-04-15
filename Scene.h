@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <optional>
+#include <memory>
 
 class Scene : sf::NonCopyable {
 protected:
