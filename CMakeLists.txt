@@ -225,7 +225,9 @@ endif()
 
 ###############################################################################
 
-if(WIN32 AND GITHUB_ACTIONS) # if we're on Windows and building a release
+# if we're on Windows and building a release
+if(WIN32 AND (GITHUB_ACTIONS OR CMAKE_BUILD_TYPE MATCHES "Release"))
+    message(STATUS "Setting PE subsystem property to GUI")
     # This sets the PE header subsystem property to GUI, hiding the terminal.
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
     # On MSVC we have to tell the compiler we're still using main instead of WinMain.
