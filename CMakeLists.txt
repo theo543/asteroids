@@ -8,6 +8,7 @@ IF(NOT DEFINED EMBED_SUBPROCESS)
     set(CMAKE_CXX_STANDARD 23)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden) # fixes macOS warnings about translation units having different visibility settings
 
     option(WARNINGS_AS_ERRORS "Treat warnings as errors" OFF)
 
