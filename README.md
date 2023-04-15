@@ -54,9 +54,20 @@
 
 ## Resurse
 
+Dependencies (and their dependencies) are under their respective licenses.
+
 ### Librarii
 
 - [SFML](https://github.com/SFML/SFML/tree/aa82ea132b9296a31922772027ad5d14c1fa381b) (Zlib)
+- [{fmt}](https://github.com/fmtlib/fmt/tree/a33701196adfad74917046096bf5a2aa0ab0bb50) (MIT with binary exception)
+
+### Grafică
+
+- [Public Pixel Font by GGBotNet](https://www.fontspace.com/public-pixel-font-f72305) (Public Domain CC0)
+
+### Audio
+
+- [Piano loops 094](https://freesound.org/people/josefpres/sounds/683841/) (Public Domain CC0)
 
 ### Informații
 
@@ -64,7 +75,3 @@
   - Explained how to static link SFML using BUILD_SHARED_LIBS=OFF
 - https://stackoverflow.com/a/27206982/15885837
   - Explained how to embed resources in executable using CMake
-
-### Grafică
-
-- [Public Pixel Font by GGBotNet](https://www.fontspace.com/public-pixel-font-f72305) (Public Domain)
