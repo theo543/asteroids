@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
-#include "Game.h"
-#include "Defer.h"
+#include "game/Game.h"
+#include "utility/Defer.h"
 
 [[maybe_unused]] Game::Game(std::unique_ptr<Scene> firstScene) : window(), scene(std::move(firstScene)), realTime(), sceneTime(), returnToMainLoop(false), nextScene(nullptr) {
     // NOTE: sync with env variable APP_WINDOW from .GitHub/workflows/cmake.yml:30

@@ -155,7 +155,15 @@ endif()
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp Game.h Game.cpp Scene.h TestScene.h TestScene.cpp Defer.h)
+add_executable(${PROJECT_NAME}
+        src/main.cpp
+        src/game/Game.h src/game/Game.cpp
+        src/scenes/Scene.h src/scenes/TestScene.h src/scenes/TestScene.cpp
+        src/utility/Defer.h
+)
+
+# header base path to prevent '..' in #include statements
+target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 ###############################################################################
 

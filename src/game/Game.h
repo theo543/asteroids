@@ -5,7 +5,7 @@
 #include <SFML/System.hpp>
 #include <memory>
 #include <atomic>
-#include "Scene.h"
+#include "scenes/Scene.h"
 
 class Game : sf::NonCopyable {
     const inline static sf::Time tickLagWarningThreshold = sf::seconds(1);

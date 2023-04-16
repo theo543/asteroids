@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
-#include "Scene.h"
+#include "scenes/Scene.h"
 #include <atomic>
 #include <mutex>
 

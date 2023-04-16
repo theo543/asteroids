@@ -1,5 +1,5 @@
-#include "Game.h"
-#include "TestScene.h"
+#include "game/Game.h"
+#include "scenes/TestScene.h"
 
 #ifdef __linux__
 #include <X11/Xlib.h>
