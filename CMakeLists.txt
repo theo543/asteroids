@@ -159,6 +159,7 @@ add_executable(${PROJECT_NAME}
         src/main/main.cpp src/main/MainLoop.h src/main/MainLoop.cpp src/main/WorldInterface.h
         src/main/TestScene.h src/main/TestScene.cpp
         src/utility/Defer.h
+        src/world/World.h src/world/World.cpp
 )
 
 # header base path to prevent '..' in #include statements
