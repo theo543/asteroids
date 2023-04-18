@@ -4,11 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
-#include "scenes/Scene.h"
+#include "main/WorldInterface.h"
 #include <atomic>
 #include <mutex>
 
-class TestScene : public Scene {
+class TestScene : public WorldInterface {
     sf::Text timeText;
     sf::Text statsText;
     sf::Font font;

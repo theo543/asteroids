@@ -1,11 +1,11 @@
-#include "scenes/TestScene.h"
+#include "main/TestScene.h"
 #include "../embedded_fwd.h"
 #include <iostream>
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <chrono>
 
-TestScene::TestScene() : Scene(true) {
+TestScene::TestScene() : WorldInterface(true) {
     std::cout<<"TestScene constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     timePerTick = sf::seconds(static_cast<float>(1.0L / 120.0L));
     maxTicksPerFrame = 16;
@@ -52,7 +52,7 @@ void TestScene::handleEvent(sf::Event &event) {
     }
 }
 
-Scene::TickResult TestScene::tick() {
+WorldInterface::TickResult TestScene::tick() {
     ticks++;
     displayTime += timePerTick;
     updateStats();

@@ -1,5 +1,5 @@
-#include "game/Game.h"
-#include "scenes/TestScene.h"
+#include "main/MainLoop.h"
+#include "main/TestScene.h"
 
 #ifdef __linux__
 #include <X11/Xlib.h>
@@ -10,8 +10,8 @@ int main() {
     XInitThreads();
     #endif
 
-    Game game(std::make_unique<TestScene>());
-    game.mainLoop();
+    MainLoop loop(std::make_unique<TestScene>());
+    loop.mainLoop();
 
     return 0;
 }
