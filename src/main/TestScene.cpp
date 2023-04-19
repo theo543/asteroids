@@ -7,8 +7,7 @@
 
 TestScene::TestScene() : WorldInterface(true) {
     std::cout<<"TestScene constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
-    timePerTick = sf::seconds(static_cast<float>(1.0L / 120.0L));
-    maxTicksPerFrame = 16;
+    setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 16);
     sinceStatsReset.restart();
     font.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
     timeText.setFont(font);
@@ -54,7 +53,7 @@ void TestScene::handleEvent(sf::Event &event) {
 
 WorldInterface::TickResult TestScene::tick() {
     ticks++;
-    displayTime += timePerTick;
+    displayTime += getTimePerTick();
     updateStats();
     updateTime();
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {

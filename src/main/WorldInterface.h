@@ -16,17 +16,17 @@
 class WorldInterface : sf::NonCopyable {
     /// Enables pressing 'T' to decrement game time by 60 seconds. Implemented in main loop, behind this flag.
     const bool enableLagSimulationDebug;
-protected:
-    explicit WorldInterface(bool enableLagSimulationDebug = false) : enableLagSimulationDebug(enableLagSimulationDebug) {}
-
-    // These must only be changed in the rendering thread:
-
     /// The amount of in-game time that a tick represents. Independent of FPS, but maxTicksPerFrame must allow enough ticks per frame.
     sf::Time timePerTick = sf::seconds(1.f / 20.f);
     /// The maximum number of ticks that can be processed in a single frame. Should be set according to lowest supported FPS.
     unsigned int maxTicksPerFrame = 5;
     /// Color used for clearing the window before drawing.
     sf::Color backgroundColor = sf::Color::Black;
+protected:
+    explicit WorldInterface(bool enableLagSimulationDebug = false) : enableLagSimulationDebug(enableLagSimulationDebug) {}
+    /// Because maxTicksPerFrame should be set based on timePerTick and the lowest expected FPS, they are both set in the same function.
+    inline void setTiming(sf::Time t_t, unsigned int max_t) { timePerTick = t_t; maxTicksPerFrame = max_t; }
+    inline void setBackgroundColor(sf::Color color) { this->backgroundColor = color; }
 public:
     /**
      * Called by the main loop before starting the rendering thread.
