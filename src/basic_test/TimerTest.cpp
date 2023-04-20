@@ -20,7 +20,7 @@ TimerTest::TimerTest() : WorldInterface(true) {
     statsText.setCharacterSize(24); // in pixels, not points!
     statsText.setFillColor(sf::Color::White);
     statsText.setPosition(0, 0);
-    buffer.loadFromMemory(TestSoundFLAC.data(), TestSoundFLAC.size());
+    buffer.loadFromMemory(TestSoundOGG.data(), TestSoundOGG.size());
     testSound.setBuffer(buffer);
     testSound.setLoop(true);
     testSound.play();

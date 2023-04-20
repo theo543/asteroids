@@ -38,7 +38,7 @@ function(generate_resources)
 
     list(APPEND RESOURCES
         "${RESOURCE_FOLDER}/public-pixel-font/PublicPixel-z84yD.ttf PublicPixelTTF"
-        "${RESOURCE_FOLDER}/683841__josefpres__piano-loops-094-octave-long-loop-120-bpm.flac TestSoundFLAC"
+        "${RESOURCE_FOLDER}/piano-loop/683841__josefpres__piano-loops-094-octave-long-loop-120-bpm.ogg TestSoundOGG"
     )
 
     file(WRITE ${OUTPUT_FILE} "#include <span>\n")
