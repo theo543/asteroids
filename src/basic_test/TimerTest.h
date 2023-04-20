@@ -1,5 +1,5 @@
-#ifndef OOP_TESTSCENE_H
-#define OOP_TESTSCENE_H
+#ifndef OOP_TIMERTEST_H
+#define OOP_TIMERTEST_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -8,7 +8,7 @@
 #include <atomic>
 #include <mutex>
 
-class TestScene : public WorldInterface {
+class TimerTest : public WorldInterface {
     sf::Text timeText;
     sf::Text statsText;
     sf::Font font;
@@ -28,12 +28,12 @@ class TestScene : public WorldInterface {
     void updateStats();
     void updateTime();
 public:
-    TestScene();
+    TimerTest();
     void init(sf::RenderWindow &window) override;
     void draw(sf::RenderWindow &window) override;
     void handleEvent(sf::Event &event) override;
     TickResult tick() override;
-    ~TestScene() override;
+    ~TimerTest() override;
 };
 
-#endif //OOP_TESTSCENE_H
+#endif //OOP_TIMERTEST_H

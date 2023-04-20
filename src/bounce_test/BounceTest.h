@@ -1,5 +1,5 @@
-#ifndef OOP_WORLD_H
-#define OOP_WORLD_H
+#ifndef OOP_BOUNCETEST_H
+#define OOP_BOUNCETEST_H
 
 #include "main/WorldInterface.h"
 #include <vector>
@@ -9,7 +9,7 @@
 #include <atomic>
 #include <random>
 
-class World : public WorldInterface {
+class BounceTest : public WorldInterface {
 private:
     struct GameObject {
         sf::Vector2f position, velocity;
@@ -24,7 +24,7 @@ private:
     float gen_nr(unsigned int max, bool absolute = true);
     sf::Vector2f gen_v(unsigned int max);
 public:
-    World();
+    BounceTest();
     void init(sf::RenderWindow &window) override;
     void draw(sf::RenderWindow &window) override;
     void handleEvent(sf::Event &event) override;
@@ -32,4 +32,4 @@ public:
 };
 
 
-#endif //OOP_WORLD_H
+#endif //OOP_BOUNCETEST_H

@@ -1,12 +1,12 @@
-#include "main/TestScene.h"
+#include "TimerTest.h"
 #include "../embedded_fwd.h"
 #include <iostream>
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <chrono>
 
-TestScene::TestScene() : WorldInterface(true) {
-    std::cout<<"TestScene constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
+TimerTest::TimerTest() : WorldInterface(true) {
+    std::cout<<"TimerTest constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 16);
     sinceStatsReset.restart();
     font.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
@@ -26,11 +26,11 @@ TestScene::TestScene() : WorldInterface(true) {
     testSound.play();
 }
 
-void TestScene::init(sf::RenderWindow &window) {
+void TimerTest::init(sf::RenderWindow &window) {
     window.setTitle("SFML works!");
 }
 
-void TestScene::draw(sf::RenderWindow &window) {
+void TimerTest::draw(sf::RenderWindow &window) {
     float x = window.getView().getSize().x / 2.0f - timeText.getGlobalBounds().width / 2.0f;
     float y = window.getView().getSize().y / 2.0f - timeText.getGlobalBounds().height / 2.0f - 2; // Compensate for weird font baseline
     timeText.setPosition(x, y);
@@ -39,7 +39,7 @@ void TestScene::draw(sf::RenderWindow &window) {
     frames++;
 }
 
-void TestScene::handleEvent(sf::Event &event) {
+void TimerTest::handleEvent(sf::Event &event) {
     if(event.type == sf::Event::Closed) {
         if(areYouSure) {
             exitConfirmed = true;
@@ -51,7 +51,7 @@ void TestScene::handleEvent(sf::Event &event) {
     }
 }
 
-WorldInterface::TickResult TestScene::tick() {
+WorldInterface::TickResult TimerTest::tick() {
     ticks++;
     displayTime += getTimePerTick();
     updateStats();
@@ -63,7 +63,7 @@ WorldInterface::TickResult TestScene::tick() {
     return std::nullopt;
 }
 
-void TestScene::updateStats() {
+void TimerTest::updateStats() {
     statsText.setString(
             "FPS: " + std::to_string(fps) +
             "\nTPS: " + std::to_string(tps) +
@@ -79,8 +79,8 @@ void TestScene::updateStats() {
     }
 }
 
-const sf::Time TestScene::exitDelay = sf::seconds(3);
-void TestScene::updateTime() {
+const sf::Time TimerTest::exitDelay = sf::seconds(3);
+void TimerTest::updateTime() {
     if(areYouSure) {
         std::lock_guard<std::mutex> lock(exitTimerMutex);
         if(exitTimer.getElapsedTime() >= exitDelay) {
@@ -100,7 +100,7 @@ void TestScene::updateTime() {
     timeText.setString(fmt::format("{:02}:{:02}:{:02}", hours, minutes, seconds));
 }
 
-TestScene::~TestScene() {
-    std::cout<<"TestScene destructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
+TimerTest::~TimerTest() {
+    std::cout<<"TimerTest destructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     testSound.stop();
 }

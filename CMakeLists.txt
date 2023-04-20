@@ -178,11 +178,12 @@ endif()
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
         src/main/main.cpp src/main/MainLoop.h src/main/MainLoop.cpp src/main/WorldInterface.h
-        src/main/TestScene.h src/main/TestScene.cpp
+        src/basic_test/TimerTest.h src/basic_test/TimerTest.cpp
         src/utility/Defer.h
-        src/world/World.h src/world/World.cpp
-)
-
+        src/bounce_test/BounceTest.h src/bounce_test/BounceTest.cpp
+        src/menu/UI.h src/menu/UI.cpp src/menu/UIItem.h src/menu/UIItem.cpp src/menu/UILabel.h src/menu/UILabel.cpp
+        src/world/WorldBase.cpp src/world/WorldBase.h
+        src/main/Menu.cpp src/main/Menu.h src/menu/UIOption.cpp src/menu/UIOption.h)
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 

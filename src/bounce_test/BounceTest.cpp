@@ -1,15 +1,16 @@
-#include "world/World.h"
+#include "bounce_test/BounceTest.h"
 #include <cassert>
 
-World::World() : WorldInterface(false), rng(std::random_device()()) {
+BounceTest::BounceTest() : WorldInterface(false), rng(std::random_device()()) {
     setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 24);
 }
 
-void World::init(sf::RenderWindow &window) {
+void BounceTest::init(sf::RenderWindow &window) {
+    window.setTitle("Bouncy");
     worldSize = {static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)};
 }
 
-void World::draw(sf::RenderWindow &window) {
+void BounceTest::draw(sf::RenderWindow &window) {
     for(auto &object : objects) {
         object.shape.setPosition(object.position);
         int posX, posY;
@@ -24,21 +25,21 @@ void World::draw(sf::RenderWindow &window) {
     }
 }
 
-void World::handleEvent(sf::Event &event) {
+void BounceTest::handleEvent(sf::Event &event) {
     if(event.type == sf::Event::Closed) {
         exit = true;
     }
 }
 
-float World::gen_nr(unsigned int max, bool absolute) {
+float BounceTest::gen_nr(unsigned int max, bool absolute) {
     return static_cast<float>(rng() % max) - (absolute ? 0 : static_cast<float>(max) / 2.0f);
 }
 
-sf::Vector2f World::gen_v(unsigned int max) {
+sf::Vector2f BounceTest::gen_v(unsigned int max) {
     return {gen_nr(max, false), gen_nr(max, false)};
 }
 
-World::TickResult World::tick() {
+BounceTest::TickResult BounceTest::tick() {
     if(newObject > sf::seconds(0.05f)) {
         objects.emplace_back(GameObject{sf::Vector2{400.0f, 350.0f}, gen_v(200) + gen_v(200), sf::CircleShape(1 + gen_nr(5))});
         assert(objects.back().shape.getRadius() > 0);

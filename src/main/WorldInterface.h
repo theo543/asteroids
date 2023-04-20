@@ -42,6 +42,8 @@ public:
      */
     virtual void handleEvent(sf::Event &event) = 0;
     typedef std::optional<std::unique_ptr<WorldInterface>> TickResult;
+    static inline TickResult CONTINUE() {return std::nullopt;}
+    static inline TickResult EXIT() {return nullptr;}
     /**
      * <b>Will be called from rendering thread.</b>
      * It should update the physics simulation.

@@ -1,5 +1,5 @@
 #include "main/MainLoop.h"
-#include "world/World.h"
+#include "main/Menu.h"
 
 #ifdef __linux__
 #include <X11/Xlib.h>
@@ -10,7 +10,7 @@ int main() {
     XInitThreads();
     #endif
 
-    MainLoop loop(std::make_unique<World>());
+    MainLoop loop(std::make_unique<Menu>());
     loop.mainLoop();
 
     return 0;
