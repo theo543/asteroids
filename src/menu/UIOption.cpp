@@ -1,9 +1,10 @@
 #include "UIOption.h"
+#include "world/SwitchFactory.h"
 
 #include <utility>
 
 UIOption::UIOption(const std::string &text, const sf::Font &font, UIOption::Fill_Outline unselected, UIOption::Fill_Outline selected,
-                   unsigned int characterSize, std::function<WorldInterface::TickResult()> callback)
+                   unsigned int characterSize, std::function<SwitchCommand()> callback)
  : unselectedColor(std::move(unselected)), selectedColor(std::move(selected)), callback(std::move(callback)), selectedState(false) {
     this->text.setFont(font);
     this->text.setString(text);
@@ -36,10 +37,10 @@ bool UIOption::isSelectable() const {
     return true;
 }
 
-WorldInterface::TickResult UIOption::handleEvent(sf::Event &event) {
+SwitchCommand UIOption::handleEvent(sf::Event &event) {
     if(selectedState && event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return
     && callback != nullptr) {
         return callback();
     }
-    return WorldInterface::CONTINUE();
+    return SwitchFactory::empty();
 }

@@ -6,12 +6,31 @@
 #include <optional>
 #include <memory>
 
+class WorldInterface;
+
+enum class SwitchAction {
+    CONTINUE, POP, PUSH, REPLACE
+};
+
+class SwitchCommand { // has to be in the same file as WorldInterface because unique_ptr needs to see the destructor
+private:
+    SwitchAction action;
+    std::unique_ptr<WorldInterface> nextWorld;
+    explicit SwitchCommand(std::unique_ptr<WorldInterface> nextWorld, SwitchAction action);
+public:
+    [[nodiscard]] SwitchAction getAction() const;
+    [[nodiscard]] bool isContinue() const;
+    std::unique_ptr<WorldInterface> takeNextWorld();
+    friend class SwitchFactory;
+};
+
+
 /**
  * A WorldInterface is an interface between MainLoop and the game logic.
  * The main loop calls functions for drawing to the window, handling events, and ticking the game world.
  * Handling events is called from another thread to avoid blocking the main loop, so there must not be data races
- * between it and the drawing and ticking thread. To exit, signal to the tick function to return a non-empty TickResult.
- * There are also some properties that can be set to indicate timing, background color, and debug options, with inlined getters for performance.
+ * between it and the drawing and ticking thread. To exit, signal to the tick function to return a non-empty SwitchCommand.
+ * There are also some properties that can be set to indicate timing, background color, and debug options.
  */
 class WorldInterface : sf::NonCopyable {
     /// Enables pressing 'T' to decrement game time by 60 seconds. Implemented in main loop, behind this flag.
@@ -23,10 +42,10 @@ class WorldInterface : sf::NonCopyable {
     /// Color used for clearing the window before drawing.
     sf::Color backgroundColor = sf::Color::Black;
 protected:
-    explicit WorldInterface(bool enableLagSimulationDebug = false) : enableLagSimulationDebug(enableLagSimulationDebug) {}
+    explicit WorldInterface(bool enableLagSimulationDebug = false);
     /// Because maxTicksPerFrame should be set based on timePerTick and the lowest expected FPS, they are both set in the same function.
-    inline void setTiming(sf::Time t_t, unsigned int max_t) { timePerTick = t_t; maxTicksPerFrame = max_t; }
-    inline void setBackgroundColor(sf::Color color) { this->backgroundColor = color; }
+    void setTiming(sf::Time t_t, unsigned int max_t);
+    void setBackgroundColor(sf::Color color);
 public:
     /**
      * Called by the main loop before starting the rendering thread.
@@ -42,28 +61,16 @@ public:
      * Instead, it has to tell the other thread to do it. SFML provides real-time input so only the UI and close/resize events will involve this function.
      */
     virtual void handleEvent(sf::Event &event) = 0;
-    struct TickResult {
-        std::unique_ptr<WorldInterface> nextWorld;
-        enum class Action {
-            CONTINUE, POP, PUSH, REPLACE
-        } action;
-    };
-    static inline TickResult CONTINUE() { return {nullptr, TickResult::Action::CONTINUE}; }
-    static inline TickResult EXIT() { return {nullptr, TickResult::Action::POP}; }
-    template <typename T>
-    static inline TickResult REPLACE() { return {std::make_unique<T>(), TickResult::Action::REPLACE}; }
-    template <typename T>
-    static inline TickResult PUSH() { return {std::make_unique<T>(), TickResult::Action::PUSH}; }
     /**
      * <b>Will be called from rendering thread.</b>
      * It should update the physics simulation.
      * @returns If it returns a non-empty optional, the world will be replaced with the one in the optional or exited if the optional is nullptr.
      */
-    virtual TickResult tick() = 0;
-    [[nodiscard]] inline sf::Time getTimePerTick() const { return timePerTick; }
-    [[nodiscard]] inline unsigned int getMaxTicksPerFrame() const { return maxTicksPerFrame; }
-    [[nodiscard]] inline sf::Color getBackgroundColor() const { return backgroundColor; }
-    [[nodiscard]] inline bool isLagSimulationDebugEnabled() const { return enableLagSimulationDebug; }
+    virtual SwitchCommand tick() = 0;
+    [[nodiscard]] sf::Time getTimePerTick() const;
+    [[nodiscard]] unsigned int getMaxTicksPerFrame() const;
+    [[nodiscard]] sf::Color getBackgroundColor() const;
+    [[nodiscard]] bool isLagSimulationDebugEnabled() const;
     virtual ~WorldInterface() = default;
 };
 

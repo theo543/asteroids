@@ -1,7 +1,7 @@
 #ifndef OOP_WORLDBASE_H
 #define OOP_WORLDBASE_H
 
-#include "main/WorldInterface.h"
+#include "world/WorldInterface.h"
 #include "menu/UI.h"
 #include <functional>
 
@@ -13,13 +13,13 @@ protected:
     UI ui;
     virtual void initWorld(sf::RenderWindow &window) = 0;
     virtual void drawWorld(sf::RenderWindow &window) = 0;
-    virtual TickResult tickWorld() = 0;
+    virtual SwitchCommand tickWorld() = 0;
 public:
-    WorldBase(bool enableDebugLagKey = false);
+    explicit WorldBase(bool enableDebugLagKey = false);
     void init(sf::RenderWindow &window) final;
     void draw(sf::RenderWindow &window) final;
     void handleEvent(sf::Event &event) final;
-    TickResult tick() final;
+    SwitchCommand tick() final;
 };
 
 

@@ -42,20 +42,20 @@ void MainLoop::renderingThread() {
         world->draw(window);
         window.display();
         for(unsigned int ticksAllowed = world->getMaxTicksPerFrame(); ticksNeeded() && ticksAllowed > 0; ticksAllowed--) {
-            WorldInterface::TickResult tr = world->tick();
+            SwitchCommand tr = world->tick();
             worldTime += world->getTimePerTick();
-            switch(tr.action) {
-                case WorldInterface::TickResult::Action::POP:
+            switch(tr.getAction()) {
+                case SwitchAction::POP:
                     nextScene = std::move(prev_stack.top());
                     return;
-                case WorldInterface::TickResult::Action::PUSH:
+                case SwitchAction::PUSH:
                     prev_stack.push(std::move(world));
-                    nextScene = std::move(tr.nextWorld);
+                    nextScene = tr.takeNextWorld();
                     return;
-                case WorldInterface::TickResult::Action::REPLACE:
-                    nextScene = std::move(tr.nextWorld);
+                case SwitchAction::REPLACE:
+                    nextScene = tr.takeNextWorld();
                     return;
-                case WorldInterface::TickResult::Action::CONTINUE:
+                case SwitchAction::CONTINUE:
                     break;
             }
         }

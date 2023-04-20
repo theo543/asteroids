@@ -19,11 +19,11 @@ TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>(
     testSound->play();
     ui.setExitHandler([this](){
         if(areYouSure) {
-            return WorldInterface::EXIT();
+            return SwitchFactory::pop();
         } else {
             areYouSure = true;
             exitTimer.restart();
-            return WorldInterface::CONTINUE();
+            return SwitchFactory::empty();
         }
     });
     ui.setHideBehavior(UI::HideBehavior::Exit);
@@ -37,14 +37,14 @@ void TimerTest::initWorld(sf::RenderWindow &window) {
 
 void TimerTest::drawWorld([[maybe_unused]] sf::RenderWindow &window) {}
 
-WorldInterface::TickResult TimerTest::tickWorld() {
+SwitchCommand TimerTest::tickWorld() {
     stats->tickOccurred();
     displayTime += getTimePerTick();
     updateTime();
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
         sf::sleep(sf::seconds(1.0f)); // Simulate lag
     }
-    return WorldInterface::CONTINUE();
+    return SwitchFactory::empty();
 }
 
 const sf::Time TimerTest::exitDelay = sf::seconds(3);

@@ -177,13 +177,21 @@ endif()
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
-        src/main/main.cpp src/main/MainLoop.h src/main/MainLoop.cpp src/main/WorldInterface.h
-        src/basic_test/TimerTest.h src/basic_test/TimerTest.cpp
+        src/main/main.cpp
+        src/main/MainLoop.h src/main/MainLoop.cpp
+        src/main/Menu.h src/main/Menu.cpp
+        src/menu/UI.h src/menu/UI.cpp
+        src/menu/UIItem.h src/menu/UIItem.cpp
+        src/menu/UILabel.h src/menu/UILabel.cpp
+        src/menu/UIOption.h src/menu/UIOption.cpp
         src/utility/Defer.h
+        src/world/SwitchFactory.h src/world/SwitchFactory.tpp
+        src/world/WorldInterface.h src/world/WorldInterface.cpp
+        src/world/WorldBase.h src/world/WorldBase.cpp
+        src/basic_test/TimerTest.h src/basic_test/TimerTest.cpp
         src/bounce_test/BounceTest.h src/bounce_test/BounceTest.cpp
-        src/menu/UI.h src/menu/UI.cpp src/menu/UIItem.h src/menu/UIItem.cpp src/menu/UILabel.h src/menu/UILabel.cpp
-        src/world/WorldBase.cpp src/world/WorldBase.h
-        src/main/Menu.cpp src/main/Menu.h src/menu/UIOption.cpp src/menu/UIOption.h src/basic_test/Stats.cpp src/basic_test/Stats.h)
+        src/basic_test/Stats.h src/basic_test/Stats.cpp
+)
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 

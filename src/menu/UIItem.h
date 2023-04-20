@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <optional>
 #include <set>
-#include "main/WorldInterface.h"
+#include "world/WorldInterface.h"
 
 class UIItem {
 protected:
@@ -19,7 +19,7 @@ public:
     [[nodiscard]] std::optional<sf::Vector2f> getFixedPosition() const;
     bool isMenuItem(); /// If it does not have a fixed position, it is a menu item.
     [[nodiscard]] const std::set<sf::Event::EventType> &getInterestingEvents() const;
-    virtual WorldInterface::TickResult handleEvent(sf::Event &event);
+    virtual SwitchCommand handleEvent(sf::Event &event);
     [[nodiscard]] virtual bool isAlwaysVisible() const;
     [[nodiscard]] virtual bool isSelectable() const;
     virtual void selected();

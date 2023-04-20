@@ -1,11 +1,12 @@
 #include "menu/UIItem.h"
+#include "world/SwitchFactory.h"
 
 const std::set<sf::Event::EventType> &UIItem::getInterestingEvents() const {
     return interestingEvents;
 }
 
-WorldInterface::TickResult UIItem::handleEvent([[maybe_unused]] sf::Event &event) {
-    return WorldInterface::CONTINUE();
+SwitchCommand UIItem::handleEvent([[maybe_unused]] sf::Event &event) {
+    return SwitchFactory::empty();
 }
 
 bool UIItem::isAlwaysVisible() const {

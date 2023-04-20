@@ -15,15 +15,15 @@ Menu::Menu() {
     auto selected_style = UIOption::Fill_Outline{Gray, sf::Color::Transparent};
     auto unselected_style = UIOption::Fill_Outline {Gray, sf::Color::Black};
     auto clockOpt = std::make_shared<UIOption>("Clock", f, selected_style, unselected_style, 24, []() {
-        return WorldInterface::PUSH<TimerTest>();
+        return SwitchFactory::push<TimerTest>();
     });
     auto bounceOpt = std::make_shared<UIOption>("Bouncy", f, selected_style, unselected_style, 24, []() {
-        return WorldInterface::PUSH<BounceTest>();
+        return SwitchFactory::push<BounceTest>();
     });
     selected_style = UIOption::Fill_Outline{sf::Color::Red, sf::Color::Transparent};
     unselected_style = UIOption::Fill_Outline {sf::Color::Red, sf::Color::Black};
     auto exitOpt = std::make_shared<UIOption>("Exit", f, selected_style, unselected_style, 24, []() {
-        return WorldInterface::EXIT();
+        return SwitchFactory::pop();
     });
     ui.addItem(clockOpt);
     ui.addItem(bounceOpt);
@@ -37,6 +37,6 @@ void Menu::initWorld(sf::RenderWindow &window) {
 
 void Menu::drawWorld([[maybe_unused]] sf::RenderWindow &window) {}
 
-WorldInterface::TickResult Menu::tickWorld() {
-    return WorldInterface::CONTINUE();
+SwitchCommand Menu::tickWorld() {
+    return SwitchFactory::empty();
 }

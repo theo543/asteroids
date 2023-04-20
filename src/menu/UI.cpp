@@ -1,17 +1,15 @@
 #include <numeric>
 #include "UI.h"
+#include "world/SwitchFactory.h"
 
-WorldInterface::TickResult UI::safeInvokeExitHandler() {
+SwitchCommand UI::safeInvokeExitHandler() {
     if(exitHandler) return exitHandler();
-    else return WorldInterface::EXIT();
+    else return SwitchFactory::pop();
 }
 
-void move_if_free(WorldInterface::TickResult &current, WorldInterface::TickResult &&next) {
-    if(current.action != WorldInterface::TickResult::Action::CONTINUE)
-        return;
-    if(next.action == WorldInterface::TickResult::Action::CONTINUE)
-        return;
-    current = std::move(next);
+void move_if_free(SwitchCommand &current, SwitchCommand &&next) {
+    if(current.isContinue() && !next.isContinue())
+        current = std::move(next);
 }
 
 bool UI::internalHandleEvent(const sf::Event &event) {
@@ -173,16 +171,16 @@ void UI::updateInterestingEvents() {
 }
 
 bool UI::hasTransition() const {
-    return nextTransition.action != WorldInterface::TickResult::Action::CONTINUE;
+    return !nextTransition.isContinue();
 }
 
-WorldInterface::TickResult UI::getNextTransition() {
+SwitchCommand UI::getNextTransition() {
     auto r = std::move(nextTransition);
-    nextTransition.action = WorldInterface::TickResult::Action::CONTINUE;
+    nextTransition = SwitchFactory::empty();
     return r;
 }
 
-void UI::setExitHandler(std::function<WorldInterface::TickResult()> exitHandler_) {
+void UI::setExitHandler(std::function<SwitchCommand()> exitHandler_) {
     exitHandler = std::move(exitHandler_);
 }
 

@@ -6,7 +6,7 @@
 #include <memory>
 #include <atomic>
 #include <stack>
-#include "main/WorldInterface.h"
+#include "world/WorldInterface.h"
 
 class MainLoop : sf::NonCopyable {
     const inline static sf::Time tickLagWarningThreshold = sf::seconds(1);

@@ -21,7 +21,7 @@ void WorldBase::handleEvent(sf::Event &event) {
     ui.pollingThreadHandleEvent(event);
 }
 
-WorldInterface::TickResult WorldBase::tick() {
+SwitchCommand WorldBase::tick() {
     if(ui.hasTransition())
         return ui.getNextTransition();
     return tickWorld();

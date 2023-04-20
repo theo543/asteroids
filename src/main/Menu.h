@@ -8,7 +8,7 @@ class Menu : public WorldBase {
 protected:
     void initWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;
-    TickResult tickWorld() override;
+    SwitchCommand tickWorld() override;
 public:
     Menu();
 };

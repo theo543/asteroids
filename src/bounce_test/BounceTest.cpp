@@ -39,7 +39,7 @@ sf::Vector2f BounceTest::gen_v(unsigned int max) {
     return {gen_nr(max, false), gen_nr(max, false)};
 }
 
-BounceTest::TickResult BounceTest::tickWorld() {
+SwitchCommand BounceTest::tickWorld() {
     stats->tickOccurred();
     if(newObject > sf::seconds(0.05f)) {
         objects.emplace_back(GameObject{sf::Vector2{400.0f, 350.0f}, gen_v(200) + gen_v(200), sf::CircleShape(1 + gen_nr(5))});
@@ -73,6 +73,6 @@ BounceTest::TickResult BounceTest::tickWorld() {
     }
     newObject += getTimePerTick();
     bump += getTimePerTick();
-    if(exit) return WorldInterface::EXIT();
-    return WorldInterface::CONTINUE();
+    if(exit) return SwitchFactory::pop();
+    return SwitchFactory::empty();
 }

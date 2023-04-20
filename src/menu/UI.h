@@ -11,7 +11,8 @@
 #include <set>
 #include <vector>
 #include "menu/UIItem.h"
-#include "main/WorldInterface.h"
+#include "world/WorldInterface.h"
+#include "world/SwitchFactory.h"
 
 /**
  * Very simple UI class.
@@ -30,16 +31,16 @@ private:
    const static inline std::set<sf::Event::EventType> interestingEventsDefault = {sf::Event::EventType::KeyPressed, sf::Event::EventType::Closed};
    libguarded::plain_guarded<std::set<sf::Event::EventType>> interestingEvents = interestingEventsDefault;
    std::optional<sf::Keyboard::Key> hideKey, forwardKey, backKey;
-   WorldInterface::TickResult nextTransition = WorldInterface::CONTINUE();
+   SwitchCommand nextTransition = SwitchFactory::empty();
    std::vector<std::shared_ptr<UIItem>> items;
    std::shared_ptr<UIItem> selectedItem = nullptr;
    bool open = true;
    void updateInterestingEvents();
    void updateSelected(const std::shared_ptr<UIItem> &newSelected);
    bool internalHandleEvent(const sf::Event &event);
-   std::function<WorldInterface::TickResult()> exitHandler;
+   std::function<SwitchCommand()> exitHandler;
    HideBehavior hide = HideBehavior::Ignore;
-   WorldInterface::TickResult safeInvokeExitHandler();
+   SwitchCommand safeInvokeExitHandler();
 public:
     /// Returns true if an exit event was handled.
     void update(sf::RenderWindow &window);
@@ -52,8 +53,8 @@ public:
     void addItem(const std::shared_ptr<UIItem>& item);
     [[maybe_unused]] void removeItem(const std::shared_ptr<UIItem>& item);
     [[nodiscard]] bool hasTransition() const;
-    WorldInterface::TickResult getNextTransition();
-    void setExitHandler(std::function<WorldInterface::TickResult()> exitHandler);
+    SwitchCommand getNextTransition();
+    void setExitHandler(std::function<SwitchCommand()> exitHandler);
     void setHideBehavior(HideBehavior hide);
 };
 
