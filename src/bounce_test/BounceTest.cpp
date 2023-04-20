@@ -8,6 +8,7 @@ BounceTest::BounceTest() : WorldBase(false), rng(std::random_device()()) {
     f.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
     stats = std::make_shared<Stats>(f);
     ui.addItem(stats);
+    ui.setHideBehavior(UI::HideBehavior::Exit);
 }
 
 void BounceTest::initWorld(sf::RenderWindow &window) {

@@ -37,7 +37,8 @@ bool UIOption::isSelectable() const {
 }
 
 WorldInterface::TickResult UIOption::handleEvent(sf::Event &event) {
-    if(selectedState && event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return) {
+    if(selectedState && event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return
+    && callback != nullptr) {
         return callback();
     }
     return WorldInterface::CONTINUE();

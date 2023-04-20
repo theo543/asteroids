@@ -9,6 +9,8 @@ protected:
     void initWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;
     TickResult tickWorld() override;
+public:
+    Menu();
 };
 
 

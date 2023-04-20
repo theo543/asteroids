@@ -6,12 +6,18 @@ WorldInterface::TickResult UI::safeInvokeExitHandler() {
     else return WorldInterface::EXIT();
 }
 
+void move_if_free(WorldInterface::TickResult &current, WorldInterface::TickResult &&next) {
+    if(current.action != WorldInterface::TickResult::Action::CONTINUE)
+        return;
+    if(next.action == WorldInterface::TickResult::Action::CONTINUE)
+        return;
+    current = std::move(next);
+}
+
 bool UI::internalHandleEvent(const sf::Event &event) {
     if(event.type == sf::Event::Closed) {
         auto r = safeInvokeExitHandler();
-        if(r.has_value() && !nextTransition.has_value()) {
-            nextTransition = std::move(r);
-        }
+        move_if_free(nextTransition, std::move(r));
         return true;
     }
     if(event.type != sf::Event::KeyPressed)
@@ -25,9 +31,7 @@ bool UI::internalHandleEvent(const sf::Event &event) {
                 break;
             case HideBehavior::Exit:
                 auto r = safeInvokeExitHandler();
-                if(r.has_value() && !nextTransition.has_value()) {
-                    nextTransition = std::move(r);
-                }
+                move_if_free(nextTransition, std::move(r));
                 break;
         }
         return true;
@@ -84,8 +88,7 @@ void UI::update(sf::RenderWindow &window) {
                 continue; // Don't let the UI handle events if we're transitioning
             for(auto &item : items) {
                 auto result = item->handleEvent(e);
-                if (!nextTransition.has_value() && result.has_value())
-                    nextTransition = std::move(result);
+                move_if_free(nextTransition, std::move(result));
             }
         }
     }
@@ -170,11 +173,13 @@ void UI::updateInterestingEvents() {
 }
 
 bool UI::hasTransition() const {
-    return nextTransition.has_value();
+    return nextTransition.action != WorldInterface::TickResult::Action::CONTINUE;
 }
 
 WorldInterface::TickResult UI::getNextTransition() {
-    return std::move(nextTransition);
+    auto r = std::move(nextTransition);
+    nextTransition.action = WorldInterface::TickResult::Action::CONTINUE;
+    return r;
 }
 
 void UI::setExitHandler(std::function<WorldInterface::TickResult()> exitHandler_) {

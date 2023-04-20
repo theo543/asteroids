@@ -5,7 +5,7 @@ const std::set<sf::Event::EventType> &UIItem::getInterestingEvents() const {
 }
 
 WorldInterface::TickResult UIItem::handleEvent([[maybe_unused]] sf::Event &event) {
-    return std::nullopt;
+    return WorldInterface::CONTINUE();
 }
 
 bool UIItem::isAlwaysVisible() const {

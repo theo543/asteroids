@@ -5,11 +5,13 @@
 #include <SFML/System.hpp>
 #include <memory>
 #include <atomic>
+#include <stack>
 #include "main/WorldInterface.h"
 
 class MainLoop : sf::NonCopyable {
     const inline static sf::Time tickLagWarningThreshold = sf::seconds(1);
     sf::RenderWindow window;
+    std::stack<std::unique_ptr<WorldInterface>> prev_stack;
     std::unique_ptr<WorldInterface> world;
     /// Real time. The time that the world has to keep up with.
     sf::Clock realTime;

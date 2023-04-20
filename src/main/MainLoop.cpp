@@ -14,6 +14,7 @@
     // This is safe because screen size isn't nearly as big as 32-bit int. If it is, you have other problems.
     // We also account for the window title bar
     window.setPosition(sf::Vector2i((desktop.width - window.getSize().x) / 2, (desktop.height - window.getSize().y) / 2 - 50)); //NOLINT
+    prev_stack.push(nullptr);
 }
 
 void MainLoop::resetTime() {
@@ -43,9 +44,19 @@ void MainLoop::renderingThread() {
         for(unsigned int ticksAllowed = world->getMaxTicksPerFrame(); ticksNeeded() && ticksAllowed > 0; ticksAllowed--) {
             WorldInterface::TickResult tr = world->tick();
             worldTime += world->getTimePerTick();
-            if(tr.has_value()) {
-                nextScene = std::move(tr.value());
-                return;
+            switch(tr.action) {
+                case WorldInterface::TickResult::Action::POP:
+                    nextScene = std::move(prev_stack.top());
+                    return;
+                case WorldInterface::TickResult::Action::PUSH:
+                    prev_stack.push(std::move(world));
+                    nextScene = std::move(tr.nextWorld);
+                    return;
+                case WorldInterface::TickResult::Action::REPLACE:
+                    nextScene = std::move(tr.nextWorld);
+                    return;
+                case WorldInterface::TickResult::Action::CONTINUE:
+                    break;
             }
         }
         if(ticksNeeded() && getTimeDifference() >= tickLagWarningThreshold)

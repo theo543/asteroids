@@ -26,6 +26,7 @@ TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>(
             return WorldInterface::CONTINUE();
         }
     });
+    ui.setHideBehavior(UI::HideBehavior::Exit);
     ui.addItem(stats);
     ui.addItem(timeText);
 }

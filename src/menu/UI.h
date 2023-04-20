@@ -30,7 +30,7 @@ private:
    const static inline std::set<sf::Event::EventType> interestingEventsDefault = {sf::Event::EventType::KeyPressed, sf::Event::EventType::Closed};
    libguarded::plain_guarded<std::set<sf::Event::EventType>> interestingEvents = interestingEventsDefault;
    std::optional<sf::Keyboard::Key> hideKey, forwardKey, backKey;
-   WorldInterface::TickResult nextTransition = std::nullopt;
+   WorldInterface::TickResult nextTransition = WorldInterface::CONTINUE();
    std::vector<std::shared_ptr<UIItem>> items;
    std::shared_ptr<UIItem> selectedItem = nullptr;
    bool open = true;

@@ -32,6 +32,7 @@ public:
      * Called by the main loop before starting the rendering thread.
      * Allows things like changing the title of the window that can't be done from the constructor
      * because a world is constructed before being passed to the main loop.
+     * If this world loads another using the PUSH action, init will be called again after the new world exits.
      */
     virtual void init(sf::RenderWindow &window) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
@@ -41,11 +42,18 @@ public:
      * Instead, it has to tell the other thread to do it. SFML provides real-time input so only the UI and close/resize events will involve this function.
      */
     virtual void handleEvent(sf::Event &event) = 0;
-    typedef std::optional<std::unique_ptr<WorldInterface>> TickResult;
-    static inline TickResult CONTINUE() {return std::nullopt;}
-    static inline TickResult EXIT() {return nullptr;}
+    struct TickResult {
+        std::unique_ptr<WorldInterface> nextWorld;
+        enum class Action {
+            CONTINUE, POP, PUSH, REPLACE
+        } action;
+    };
+    static inline TickResult CONTINUE() { return {nullptr, TickResult::Action::CONTINUE}; }
+    static inline TickResult EXIT() { return {nullptr, TickResult::Action::POP}; }
     template <typename T>
-    static inline TickResult REPLACE() {return std::make_unique<T>();}
+    static inline TickResult REPLACE() { return {std::make_unique<T>(), TickResult::Action::REPLACE}; }
+    template <typename T>
+    static inline TickResult PUSH() { return {std::make_unique<T>(), TickResult::Action::PUSH}; }
     /**
      * <b>Will be called from rendering thread.</b>
      * It should update the physics simulation.

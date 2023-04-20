@@ -5,8 +5,7 @@
 #include "basic_test/TimerTest.h"
 #include "bounce_test/BounceTest.h"
 
-void Menu::initWorld([[maybe_unused]] sf::RenderWindow  &window) {
-    window.setTitle("Demo");
+Menu::Menu() {
     setBackgroundColor(sf::Color::White);
     f.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
     auto label1 = std::make_shared<UILabel>("Tests:", f, 36, sf::Color::White, sf::Color::Black);
@@ -16,10 +15,10 @@ void Menu::initWorld([[maybe_unused]] sf::RenderWindow  &window) {
     auto selected_style = UIOption::Fill_Outline{Gray, sf::Color::Transparent};
     auto unselected_style = UIOption::Fill_Outline {Gray, sf::Color::Black};
     auto clockOpt = std::make_shared<UIOption>("Clock", f, selected_style, unselected_style, 24, []() {
-        return WorldInterface::REPLACE<TimerTest>();
+        return WorldInterface::PUSH<TimerTest>();
     });
     auto bounceOpt = std::make_shared<UIOption>("Bouncy", f, selected_style, unselected_style, 24, []() {
-        return WorldInterface::REPLACE<BounceTest>();
+        return WorldInterface::PUSH<BounceTest>();
     });
     selected_style = UIOption::Fill_Outline{sf::Color::Red, sf::Color::Transparent};
     unselected_style = UIOption::Fill_Outline {sf::Color::Red, sf::Color::Black};
@@ -30,6 +29,10 @@ void Menu::initWorld([[maybe_unused]] sf::RenderWindow  &window) {
     ui.addItem(bounceOpt);
     ui.addItem(exitOpt);
     ui.setHideBehavior(UI::HideBehavior::Exit);
+}
+
+void Menu::initWorld(sf::RenderWindow &window) {
+    window.setTitle("Demo");
 }
 
 void Menu::drawWorld([[maybe_unused]] sf::RenderWindow &window) {}
