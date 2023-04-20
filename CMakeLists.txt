@@ -144,6 +144,27 @@ set_custom_stdlib_and_sanitizers(fmt false)
 
 ###############################################################################
 
+# Header-only library
+FetchContent_Declare(
+        atomic_queue
+        GIT_REPOSITORY https://github.com/max0x7ba/atomic_queue.git
+        GIT_TAG        681544fd62c0b953a33d30bcfb1a15b9eb7da64b # 1.4
+)
+
+FetchContent_MakeAvailable(atomic_queue)
+
+###############################################################################
+
+FetchContent_Declare(
+        cs_libguarded
+        GIT_REPOSITORY https://github.com/copperspice/cs_libguarded.git
+        GIT_TAG        2b0fc6537011b9f3a4b296170bdecbd28a270aa2 # 1.4.0
+)
+
+FetchContent_Populate(cs_libguarded) # This lib's CMakeLists.txt is used for testing and not for building the library
+
+###############################################################################
+
 # external dependencies with find_package
 
 find_package(Threads REQUIRED)
@@ -223,6 +244,8 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 #target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${fmt_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${atomic_queue_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${cs_libguarded_SOURCE_DIR}/src)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
