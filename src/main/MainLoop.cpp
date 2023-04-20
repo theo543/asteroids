@@ -5,7 +5,7 @@
 
 [[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr) {
     // NOTE: sync with env variable APP_WINDOW from .GitHub/workflows/cmake.yml:30
-    window.create(sf::VideoMode({800, 700}), "", sf::Style::Default);
+    window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close);
     window.setVerticalSyncEnabled(true);
     window.setActive(false);
     //window.setFramerateLimit(60);
