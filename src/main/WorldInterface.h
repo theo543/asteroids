@@ -44,6 +44,8 @@ public:
     typedef std::optional<std::unique_ptr<WorldInterface>> TickResult;
     static inline TickResult CONTINUE() {return std::nullopt;}
     static inline TickResult EXIT() {return nullptr;}
+    template <typename T>
+    static inline TickResult REPLACE() {return std::make_unique<T>();}
     /**
      * <b>Will be called from rendering thread.</b>
      * It should update the physics simulation.

@@ -1,16 +1,21 @@
 #include "bounce_test/BounceTest.h"
+#include "basic_test/Stats.h"
+#include "../embedded_fwd.h"
 #include <cassert>
 
-BounceTest::BounceTest() : WorldInterface(false), rng(std::random_device()()) {
+BounceTest::BounceTest() : WorldBase(false), rng(std::random_device()()) {
     setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 24);
+    f.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
+    stats = std::make_shared<Stats>(f);
+    ui.addItem(stats);
 }
 
-void BounceTest::init(sf::RenderWindow &window) {
+void BounceTest::initWorld(sf::RenderWindow &window) {
     window.setTitle("Bouncy");
     worldSize = {static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)};
 }
 
-void BounceTest::draw(sf::RenderWindow &window) {
+void BounceTest::drawWorld(sf::RenderWindow &window) {
     for(auto &object : objects) {
         object.shape.setPosition(object.position);
         int posX, posY;
@@ -25,12 +30,6 @@ void BounceTest::draw(sf::RenderWindow &window) {
     }
 }
 
-void BounceTest::handleEvent(sf::Event &event) {
-    if(event.type == sf::Event::Closed) {
-        exit = true;
-    }
-}
-
 float BounceTest::gen_nr(unsigned int max, bool absolute) {
     return static_cast<float>(rng() % max) - (absolute ? 0 : static_cast<float>(max) / 2.0f);
 }
@@ -39,7 +38,8 @@ sf::Vector2f BounceTest::gen_v(unsigned int max) {
     return {gen_nr(max, false), gen_nr(max, false)};
 }
 
-BounceTest::TickResult BounceTest::tick() {
+BounceTest::TickResult BounceTest::tickWorld() {
+    stats->tickOccurred();
     if(newObject > sf::seconds(0.05f)) {
         objects.emplace_back(GameObject{sf::Vector2{400.0f, 350.0f}, gen_v(200) + gen_v(200), sf::CircleShape(1 + gen_nr(5))});
         assert(objects.back().shape.getRadius() > 0);
@@ -72,6 +72,6 @@ BounceTest::TickResult BounceTest::tick() {
     }
     newObject += getTimePerTick();
     bump += getTimePerTick();
-    if(exit) return {nullptr};
-    return std::nullopt;
+    if(exit) return WorldInterface::EXIT();
+    return WorldInterface::CONTINUE();
 }

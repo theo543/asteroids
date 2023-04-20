@@ -15,6 +15,7 @@ protected:
     virtual void drawWorld(sf::RenderWindow &window) = 0;
     virtual TickResult tickWorld() = 0;
 public:
+    WorldBase(bool enableDebugLagKey = false);
     void init(sf::RenderWindow &window) final;
     void draw(sf::RenderWindow &window) final;
     void handleEvent(sf::Event &event) final;

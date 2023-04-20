@@ -39,6 +39,7 @@ private:
    bool internalHandleEvent(const sf::Event &event);
    std::function<WorldInterface::TickResult()> exitHandler;
    HideBehavior hide = HideBehavior::Ignore;
+   WorldInterface::TickResult safeInvokeExitHandler();
 public:
     /// Returns true if an exit event was handled.
     void update(sf::RenderWindow &window);

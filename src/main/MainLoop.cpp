@@ -75,7 +75,7 @@ void MainLoop::mainLoop() {
         resetThreadVariables();
         window.setActive(false);
         world->init(window);
-        window.setActive(false); // just in case init() changed it
+        window.setActive(false); // just in case initWorld() changed it
         std::thread renderThread(&MainLoop::renderingThread, this); // start rendering thread - this is needed because polling events blocks when a title bar button is pressed or the window is dragged
         eventPollingThread(); // no need to start a new thread, just call the function (on some platforms you can't even poll events from secondary threads anyway)
         renderThread.join();

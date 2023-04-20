@@ -1,9 +1,14 @@
 #include <numeric>
 #include "UI.h"
 
+WorldInterface::TickResult UI::safeInvokeExitHandler() {
+    if(exitHandler) return exitHandler();
+    else return WorldInterface::EXIT();
+}
+
 bool UI::internalHandleEvent(const sf::Event &event) {
     if(event.type == sf::Event::Closed) {
-        auto r = exitHandler();
+        auto r = safeInvokeExitHandler();
         if(r.has_value() && !nextTransition.has_value()) {
             nextTransition = std::move(r);
         }
@@ -19,7 +24,7 @@ bool UI::internalHandleEvent(const sf::Event &event) {
             case HideBehavior::Ignore:
                 break;
             case HideBehavior::Exit:
-                auto r = exitHandler();
+                auto r = safeInvokeExitHandler();
                 if(r.has_value() && !nextTransition.has_value()) {
                     nextTransition = std::move(r);
                 }
@@ -173,7 +178,7 @@ WorldInterface::TickResult UI::getNextTransition() {
 }
 
 void UI::setExitHandler(std::function<WorldInterface::TickResult()> exitHandler_) {
-    exitHandler = std::move(std::move(exitHandler_));
+    exitHandler = std::move(exitHandler_);
 }
 
 void UI::setHideBehavior(UI::HideBehavior hide_) {

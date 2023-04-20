@@ -1,7 +1,8 @@
 #ifndef OOP_BOUNCETEST_H
 #define OOP_BOUNCETEST_H
 
-#include "main/WorldInterface.h"
+#include "basic_test/Stats.h"
+#include "world/WorldBase.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -9,7 +10,7 @@
 #include <atomic>
 #include <random>
 
-class BounceTest : public WorldInterface {
+class BounceTest : public WorldBase {
 private:
     struct GameObject {
         sf::Vector2f position, velocity;
@@ -23,12 +24,14 @@ private:
     std::mt19937 rng;
     float gen_nr(unsigned int max, bool absolute = true);
     sf::Vector2f gen_v(unsigned int max);
+    sf::Font f;
+    std::shared_ptr<Stats> stats;
+protected:
+    void initWorld(sf::RenderWindow &window) override;
+    void drawWorld(sf::RenderWindow &window) override;
+    TickResult tickWorld() override;
 public:
     BounceTest();
-    void init(sf::RenderWindow &window) override;
-    void draw(sf::RenderWindow &window) override;
-    void handleEvent(sf::Event &event) override;
-    TickResult tick() override;
 };
 
 

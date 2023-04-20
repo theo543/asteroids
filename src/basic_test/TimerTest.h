@@ -4,35 +4,28 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
-#include "main/WorldInterface.h"
+#include "world/WorldBase.h"
+#include "basic_test/Stats.h"
 #include <atomic>
 #include <mutex>
 
-class TimerTest : public WorldInterface {
-    sf::Text timeText;
-    sf::Text statsText;
+class TimerTest : public WorldBase {
     sf::Font font;
     sf::SoundBuffer buffer;
-    sf::Sound testSound;
-    sf::Clock sinceStatsReset;
+    std::shared_ptr<sf::Sound> testSound;
     sf::Clock exitTimer;
     sf::Time displayTime;
     const static sf::Time exitDelay;
-    unsigned int frames = 0;
-    unsigned int ticks = 0;
-    unsigned int fps = 0;
-    unsigned int tps = 0;
-    std::mutex exitTimerMutex;
-    std::atomic_bool areYouSure = false;
-    std::atomic_bool exitConfirmed = false;
-    void updateStats();
+    bool areYouSure = false;
+    std::shared_ptr<Stats> stats;
+    std::shared_ptr<UILabel> timeText;
     void updateTime();
+protected:
+    void initWorld(sf::RenderWindow &window) override;
+    void drawWorld(sf::RenderWindow &window) override;
+    TickResult tickWorld() override;
 public:
     TimerTest();
-    void init(sf::RenderWindow &window) override;
-    void draw(sf::RenderWindow &window) override;
-    void handleEvent(sf::Event &event) override;
-    TickResult tick() override;
     ~TimerTest() override;
 };
 

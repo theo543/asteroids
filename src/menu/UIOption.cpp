@@ -2,7 +2,7 @@
 
 #include <utility>
 
-UIOption::UIOption(const std::string &text, const sf::Font &font, UIOption::FillAndTextColor unselected, UIOption::FillAndTextColor selected,
+UIOption::UIOption(const std::string &text, const sf::Font &font, UIOption::Fill_Outline unselected, UIOption::Fill_Outline selected,
                    unsigned int characterSize, std::function<WorldInterface::TickResult()> callback)
  : unselectedColor(std::move(unselected)), selectedColor(std::move(selected)), callback(std::move(callback)), selectedState(false) {
     this->text.setFont(font);

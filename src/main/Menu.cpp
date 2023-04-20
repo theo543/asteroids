@@ -12,16 +12,23 @@ void Menu::initWorld([[maybe_unused]] sf::RenderWindow  &window) {
     auto label1 = std::make_shared<UILabel>("Tests:", f, 36, sf::Color::White, sf::Color::Black);
     label1->setMargin(0.f, 96.f);
     ui.addItem(label1);
-    auto selected_style = std::pair{sf::Color::White, sf::Color::Black};
-    auto unselected_style = std::pair{sf::Color::Black, sf::Color::White};
+    auto Gray = sf::Color(128, 128, 128);
+    auto selected_style = UIOption::Fill_Outline{Gray, sf::Color::Transparent};
+    auto unselected_style = UIOption::Fill_Outline {Gray, sf::Color::Black};
     auto clockOpt = std::make_shared<UIOption>("Clock", f, selected_style, unselected_style, 24, []() {
-        return std::make_unique<TimerTest>();
+        return WorldInterface::REPLACE<TimerTest>();
     });
     auto bounceOpt = std::make_shared<UIOption>("Bouncy", f, selected_style, unselected_style, 24, []() {
-        return std::make_unique<BounceTest>();
+        return WorldInterface::REPLACE<BounceTest>();
+    });
+    selected_style = UIOption::Fill_Outline{sf::Color::Red, sf::Color::Transparent};
+    unselected_style = UIOption::Fill_Outline {sf::Color::Red, sf::Color::Black};
+    auto exitOpt = std::make_shared<UIOption>("Exit", f, selected_style, unselected_style, 24, []() {
+        return WorldInterface::EXIT();
     });
     ui.addItem(clockOpt);
     ui.addItem(bounceOpt);
+    ui.addItem(exitOpt);
     ui.setHideBehavior(UI::HideBehavior::Exit);
 }
 

@@ -2,7 +2,13 @@
 
 #include <utility>
 
+UILabel::UILabel() = default;
+
 UILabel::UILabel(sf::Text text) : text(std::move(text)) {}
+
+UILabel::UILabel(const sf::Font &font) {
+    text.setFont(font);
+}
 
 UILabel::UILabel(const std::string &text, const sf::Font &font, unsigned int characterSize,
                  sf::Color textColor, sf::Color fillColor) {
@@ -22,6 +28,34 @@ void UILabel::draw(sf::RenderWindow &window, sf::Vector2f position) {
     window.draw(text);
 }
 
-[[maybe_unused]] void UILabel::setText(const sf::Text &text_) { // cppcheck-suppress unusedFunction
+void UILabel::setString(const std::string &string) {
+    setText(string);
+}
+
+[[maybe_unused]] void UILabel::setText(const sf::Text &text_) {
     this->text = text_;
+}
+
+void UILabel::setText(const std::string &text_) {
+    this->text.setString(text_);
+}
+
+void UILabel::setFillColor(sf::Color color) {
+    text.setFillColor(color);
+}
+
+void UILabel::setOutlineColor(sf::Color color) {
+    text.setOutlineColor(color);
+}
+
+void UILabel::setCharacterSize(unsigned int size) {
+    text.setCharacterSize(size);
+}
+
+void UILabel::setFont(const sf::Font &font) {
+    text.setFont(font);
+}
+
+void UILabel::setStyle(sf::Uint32 style) {
+    text.setStyle(style);
 }

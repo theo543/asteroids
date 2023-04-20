@@ -6,14 +6,14 @@
 
 class UIOption : public UIItem {
 public:
-    typedef std::pair<sf::Color, sf::Color> FillAndTextColor;
+    typedef std::pair<sf::Color, sf::Color> Fill_Outline;
 private:
-    FillAndTextColor unselectedColor, selectedColor;
+    Fill_Outline unselectedColor, selectedColor;
     sf::Text text;
     std::function<WorldInterface::TickResult()> callback;
     bool selectedState = false;
 public:
-    UIOption(const std::string &text, const sf::Font &font, FillAndTextColor unselected, FillAndTextColor selected,
+    UIOption(const std::string &text, const sf::Font &font, Fill_Outline unselected, Fill_Outline selected,
              unsigned int characterSize, std::function<WorldInterface::TickResult()> callback);
     sf::Vector2f getLayoutSize() override;
     void draw(sf::RenderWindow &window, sf::Vector2f position) override;

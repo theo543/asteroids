@@ -13,7 +13,7 @@ class MainLoop : sf::NonCopyable {
     std::unique_ptr<WorldInterface> world;
     /// Real time. The time that the world has to keep up with.
     sf::Clock realTime;
-    /// Total time passed in the world. Incremented by the tick length every time a tick happens.
+    /// Total time passed in the world. Incremented by the tick length every time a tickWorld happens.
     sf::Time worldTime;
     /**
      * This flag tells eventPollingThread to return to mainLoop.
