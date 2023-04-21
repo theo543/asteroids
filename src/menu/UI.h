@@ -56,6 +56,7 @@ public:
     SwitchCommand getNextTransition();
     void setExitHandler(std::function<SwitchCommand()> exitHandler);
     void setHideBehavior(HideBehavior hide);
+    void forAllSetPixelAlign(bool pixelAlign);
 };
 
 

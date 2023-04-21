@@ -1,4 +1,5 @@
 #include <numeric>
+#include <cmath>
 #include "UI.h"
 #include "world/SwitchFactory.h"
 
@@ -108,6 +109,10 @@ void UI::update(sf::RenderWindow &window) {
     for(auto &item : menuItems) {
         y += item->getMarginTop();
         float x = (static_cast<float>(window.getSize().x) - item->getLayoutSize().x) / 2.0f;
+        if(item->getPixelAlign()) {
+            x = std::round(x);
+            y = std::round(y);
+        }
         item->draw(window, {x, y});
         y += item->getLayoutSize().y;
         y += item->getMarginBottom();
@@ -186,4 +191,10 @@ void UI::setExitHandler(std::function<SwitchCommand()> exitHandler_) {
 
 void UI::setHideBehavior(UI::HideBehavior hide_) {
     hide = hide_;
+}
+
+void UI::forAllSetPixelAlign(bool pixelAlign) {
+    for(auto &item : items) {
+        item->setPixelAlign(pixelAlign);
+    }
 }

@@ -28,6 +28,7 @@ TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>(
     });
     ui.setHideBehavior(UI::HideBehavior::Exit);
     ui.addItem(stats);
+    timeText->setPixelAlign(true);
     ui.addItem(timeText);
 }
 

@@ -29,6 +29,7 @@ Menu::Menu() {
     ui.addItem(bounceOpt);
     ui.addItem(exitOpt);
     ui.setHideBehavior(UI::HideBehavior::Exit);
+    ui.forAllSetPixelAlign(true);
 }
 
 void Menu::initWorld(sf::RenderWindow &window) {

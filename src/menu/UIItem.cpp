@@ -45,3 +45,11 @@ std::optional<sf::Vector2f> UIItem::getFixedPosition() const {
 bool UIItem::isMenuItem() {
     return !fixed_position.has_value();
 }
+
+void UIItem::setPixelAlign(bool align) {
+    pixelAlign = align;
+}
+
+bool UIItem::getPixelAlign() const {
+    return pixelAlign;
+}

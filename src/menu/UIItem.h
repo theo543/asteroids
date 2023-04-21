@@ -11,6 +11,7 @@ protected:
     std::set<sf::Event::EventType> interestingEvents;
     float marginTop = 2.5f, marginBottom = 2.5f;
     std::optional<sf::Vector2f> fixed_position;
+    bool pixelAlign = false;
 public:
     void setMargin(float marginTop, float marginBottom);
     [[nodiscard]] float getMarginTop() const;
@@ -26,6 +27,8 @@ public:
     virtual void deselected();
     virtual sf::Vector2f getLayoutSize() = 0; /// Only called for inline items.
     virtual void draw(sf::RenderWindow &window, sf::Vector2f position) = 0;
+    void setPixelAlign(bool align);
+    [[nodiscard]] bool getPixelAlign() const;
     virtual ~UIItem() = default;
 };
 
