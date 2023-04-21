@@ -5,6 +5,7 @@
 #include <optional>
 
 class UILabel : public UIItem {
+protected:
     sf::Text text;
 public:
     UILabel();
