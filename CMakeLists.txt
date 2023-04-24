@@ -234,7 +234,7 @@ endif()
 ###############################################################################
 
 # if we're on Windows and building a release
-if(WIN32 AND (GITHUB_ACTIONS OR CMAKE_BUILD_TYPE MATCHES "Release"))
+if(WIN32 AND (CMAKE_BUILD_TYPE MATCHES ".*Rel.*"))
     message(STATUS "Setting PE subsystem property to GUI")
     # This sets the PE header subsystem property to GUI, hiding the terminal.
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)

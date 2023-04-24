@@ -277,12 +277,20 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.cxx }}-ninja-cache-${{ hashFiles('CMakeLists.txt') }}
           restore-keys: ${{ matrix.os }}-${{ matrix.cxx }}-ninja-cache-
 
-      - name: Configure CMake
+      - name: Configure CMake (Non-Release / Non-Tag)
         uses: ./.github/actions/configure-cmake
+        if: startsWith(github.ref, 'refs/tags/') == false
         with:
           cmake_generator: ${{ matrix.cmake_generator }}
           custom_flags: ${{ matrix.cmake_flags }}
           warnings_as_errors: 'ON'
+
+      - name: Configure CMake (Release / Tag)
+        uses: ./.github/actions/configure-cmake
+        if: startsWith(github.ref, 'refs/tags/') == true
+        with:
+          cmake_generator: ${{ matrix.cmake_generator }}
+          custom_flags: ${{ format('{0} -DCMAKE_BUILD_TYPE=Release', matrix.cmake_flags) }}
 
       - name: Build
         # Execute the build using N jobs (-jN)
