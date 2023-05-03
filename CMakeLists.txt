@@ -114,7 +114,8 @@ set(BUILD_SHARED_LIBS FALSE)
 FetchContent_Declare(
   SFML
   GIT_REPOSITORY https://github.com/SFML/SFML.git
-  GIT_TAG        863fef024619da7f59b6404087b454337a172ac1 # 2.6.x as of 2022-08-30
+  GIT_TAG        a21c3c101cd02e41b79ffc515f93c649e230e263 # 2.6.x as of 2023-05-03
+  # GIT_TAG        863fef024619da7f59b6404087b454337a172ac1 # 2.6.x as of 2022-08-30
   # GIT_TAG        72d88033e2f24be0fb1e9df614a56f3d5274154c # master as of 2022-08-30
   # GIT_TAG        f7c88ee7ef4e1c705531cd614efb7dcff1f873cb # last commit merged in master before API breakage (2022-04-21)
   # GIT_TAG        origin/master
