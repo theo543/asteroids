@@ -9,14 +9,12 @@
 #include <SFML/Audio.hpp>
 #include <atomic>
 #include <random>
+#include "physics/Physics.h"
 
 class BounceTest : public WorldBase {
 private:
-    struct GameObject {
-        sf::Vector2f position, velocity;
-        sf::CircleShape shape;
-    };
-    std::vector<GameObject> objects;
+    static const sf::Time tickLen;
+    Physics physics;
     sf::Vector2f worldSize;
     sf::Time newObject;
     sf::Time bump;

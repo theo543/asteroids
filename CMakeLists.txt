@@ -190,8 +190,11 @@ add_executable(${PROJECT_NAME}
         src/world/WorldBase.h src/world/WorldBase.cpp
         src/basic_test/TimerTest.h src/basic_test/TimerTest.cpp
         src/bounce_test/BounceTest.h src/bounce_test/BounceTest.cpp
+        src/bounce_test/Bouncy.cpp src/bounce_test/Bouncy.h
         src/basic_test/Stats.h src/basic_test/Stats.cpp
-)
+        src/physics/GameObject.cpp src/physics/GameObject.h
+        src/physics/Physics.cpp src/physics/Physics.h
+        )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
