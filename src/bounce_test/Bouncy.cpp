@@ -1,10 +1,5 @@
-#include "Bouncy.h"
-
-sf::Vector2f Bouncy::worldSize = {0, 0};
-
-void Bouncy::setWorldSize(sf::Vector2f size) {
-    worldSize = size;
-}
+#include "bounce_test/Bouncy.h"
+#include "physics/Physics.h"
 
 Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : GameObject() {
     boundingRadius = radius;
@@ -17,7 +12,7 @@ Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : Ga
 
 Bouncy::Bouncy(const Bouncy &other) = default;
 
-void Bouncy::draw(sf::RenderWindow &window) {
+void Bouncy::draw(sf::RenderWindow &window, const Physics &physics) {
     if(colliding) {
         const sf::Color colColor = sf::Color::Red;
         shape.setOutlineColor(colColor);
@@ -25,6 +20,7 @@ void Bouncy::draw(sf::RenderWindow &window) {
     } else {
         int posX, posY;
         auto position = transform.getPosition();
+        auto worldSize = physics.getWorldBorder();
         posX = static_cast<int>(position.x / worldSize.x * 255.0f);
         posY = static_cast<int>(position.y / worldSize.y * 255.0f);
         shape.setFillColor(sf::Color(posX, posY, 0));

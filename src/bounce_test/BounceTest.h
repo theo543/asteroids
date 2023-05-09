@@ -15,7 +15,6 @@ class BounceTest : public WorldBase {
 private:
     static const sf::Time tickLen;
     Physics physics;
-    sf::Vector2f worldSize;
     sf::Time newObject;
     sf::Time bump;
     std::atomic_bool exit = false;

@@ -17,8 +17,7 @@ BounceTest::BounceTest() : WorldBase(false), physics(tickLen), rng(std::random_d
 
 void BounceTest::initWorld(sf::RenderWindow &window) {
     window.setTitle("Bouncy");
-    worldSize = {static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)};
-    Bouncy::setWorldSize(worldSize);
+    physics.setWorldBorder({static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)});
 }
 
 void BounceTest::drawWorld(sf::RenderWindow &window) {
@@ -37,7 +36,7 @@ SwitchCommand BounceTest::tickWorld() {
     stats->tickOccurred();
     physics.tick();
     if(newObject > sf::seconds(0.05f)) {
-        auto bouncy = std::make_unique<Bouncy>(sf::Vector2f{400.0f, 350.0f}, gen_v(200) + gen_v(200), 1 + gen_nr(5));
+        auto bouncy = std::make_unique<Bouncy>(physics.getWorldBorder() / 2.f, gen_v(200) + gen_v(200), 1 + gen_nr(5));
         physics.addGameObject(std::move(bouncy));
         newObject = sf::Time::Zero;
     }
@@ -48,12 +47,13 @@ SwitchCommand BounceTest::tickWorld() {
         });
         bump = sf::Time::Zero;
     }
-    physics.forEachGameObject([&](GameObject &object, Physics&) {
+    physics.forEachGameObject([](GameObject &object, Physics& p) {
         auto *shape = dynamic_cast<Bouncy*>(&object);
         if(!shape) return;
         auto position = object.getPosition();
         auto velocity = object.getVelocity();
         const float boost = 1.10f;
+        auto worldSize = p.getWorldBorder();
         if(position.x < 0) {
             position.x = 0;
             velocity.x = -velocity.x * boost;

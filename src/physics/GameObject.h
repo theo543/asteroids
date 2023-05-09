@@ -17,7 +17,7 @@ protected:
     GameObject();
     GameObject(const GameObject &other);
 public:
-    virtual void draw(sf::RenderWindow &window) = 0;
+    virtual void draw(sf::RenderWindow &window, const Physics &physics) = 0;
     virtual void tick(Physics &physics) = 0;
     virtual std::unique_ptr<GameObject> clone() = 0;
     virtual void collide(GameObject &other, Physics &physics) = 0;

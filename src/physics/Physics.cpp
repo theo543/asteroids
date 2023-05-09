@@ -52,7 +52,7 @@ void Physics::tick() {
 
 void Physics::draw(sf::RenderWindow &window) {
     for (auto &gameObject : gameObjects) {
-        gameObject->draw(window);
+        gameObject->draw(window, *this);
     }
 }
 
@@ -66,4 +66,12 @@ bool Physics::forEachGameObject(const std::function<void(GameObject &, Physics &
 
 void Physics::setCollisionsEnabled(bool enable) {
     collisions = enable;
+}
+
+sf::Vector2f Physics::getWorldBorder() const {
+    return worldBorder;
+}
+
+void Physics::setWorldBorder(sf::Vector2f border) {
+    worldBorder = border;
 }
