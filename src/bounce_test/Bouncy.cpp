@@ -6,11 +6,11 @@ Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : Ga
     velocity = velocity_;
     transform.setPosition(position);
     shape.setRadius(radius);
-    shape.setOrigin(radius, radius);
+    transform.setOrigin(radius/2, radius/2);
     shape.setFillColor(sf::Color::Red);
 }
 
-Bouncy::Bouncy(const Bouncy &other) = default;
+Bouncy::Bouncy(const Bouncy &other) : GameObject(other), shape(other.shape) {}
 
 void Bouncy::draw(sf::RenderWindow &window, const Physics &physics) {
     if(colliding) {
@@ -33,6 +33,7 @@ void Bouncy::draw(sf::RenderWindow &window, const Physics &physics) {
 }
 
 void Bouncy::tick(Physics&) {
+    angularVelocity = 180;
     colliding = false;
 }
 

@@ -1,5 +1,6 @@
 #include "Physics.h"
 #include <cmath>
+#include <iostream>
 
 Physics::Physics(sf::Time tickLen) : tickLen(tickLen), collisions(false) {};
 
@@ -33,7 +34,7 @@ void Physics::tick() {
         }
         for (std::size_t x = 0, size = gameObjects.size(); x < size; x++) {
             if (colliding[x] != nullptr) {
-                colliding[x]->collide(*colliding[x], *this);
+                gameObjects[x]->collide(*colliding[x], *this);
             }
         }
     }
@@ -53,6 +54,12 @@ void Physics::tick() {
 void Physics::draw(sf::RenderWindow &window) {
     for (auto &gameObject : gameObjects) {
         gameObject->draw(window, *this);
+        sf::CircleShape border(gameObject->boundingRadius);
+        border.setFillColor(sf::Color(0, 0, 255, 100));
+        auto rd = gameObject->boundingRadius;
+        auto pos = gameObject->transform.getPosition();
+        auto bPos = gameObject->transform.getTransform().transformPoint({0, 0});
+        window.draw(border, gameObject->transform.getTransform());
     }
 }
 
@@ -74,4 +81,8 @@ sf::Vector2f Physics::getWorldBorder() const {
 
 void Physics::setWorldBorder(sf::Vector2f border) {
     worldBorder = border;
+}
+
+std::size_t Physics::getNrObjects() const {
+    return gameObjects.size();
 }

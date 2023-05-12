@@ -42,3 +42,7 @@ sf::Vector2f GameObject::getPosition() const {
 void GameObject::setPosition(sf::Vector2f position) {
     transform.setPosition(position);
 }
+
+float GameObject::getBoundingRadius() {
+    return boundingRadius;
+}

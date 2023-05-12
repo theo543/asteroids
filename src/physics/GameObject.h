@@ -23,6 +23,7 @@ public:
     virtual void collide(GameObject &other, Physics &physics) = 0;
     virtual ~GameObject() = default;
     void markForRemoval();
+    float getBoundingRadius();
     void setVelocity(sf::Vector2f velocity);
     void setAngularVelocity(float angularVelocity);
     sf::Vector2f getVelocity() const;

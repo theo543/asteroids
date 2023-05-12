@@ -2,7 +2,7 @@
 #include "basic_test/Stats.h"
 #include "../embedded_fwd.h"
 #include "Bouncy.h"
-#include <cassert>
+#include "Player.h"
 
 const sf::Time BounceTest::tickLen = sf::seconds(static_cast<float>(1.0L / 120.0L));
 
@@ -13,6 +13,7 @@ BounceTest::BounceTest() : WorldBase(false), physics(tickLen), rng(std::random_d
     ui.addItem(stats);
     ui.setHideBehavior(UI::HideBehavior::Exit);
     physics.setCollisionsEnabled(true);
+    physics.addGameObject(std::make_unique<Player>(sf::Vector2f {100.f, 100.f}, sf::Vector2f {50.f, 50.f}, 0.f));
 }
 
 void BounceTest::initWorld(sf::RenderWindow &window) {
@@ -41,15 +42,14 @@ SwitchCommand BounceTest::tickWorld() {
         newObject = sf::Time::Zero;
     }
     if(bump > sf::seconds(2.0f)) {
-        sf::Vector2f bump_vector = gen_v(500);
+        sf::Vector2f bump_vector = gen_v(50);
         physics.forEachGameObject([bump_vector](GameObject &object, Physics&) {
             object.setVelocity(object.getVelocity() * 0.65f + bump_vector);
         });
         bump = sf::Time::Zero;
     }
     physics.forEachGameObject([](GameObject &object, Physics& p) {
-        auto *shape = dynamic_cast<Bouncy*>(&object);
-        if(!shape) return;
+        auto radius = object.getBoundingRadius();
         auto position = object.getPosition();
         auto velocity = object.getVelocity();
         const float boost = 1.10f;
@@ -57,14 +57,14 @@ SwitchCommand BounceTest::tickWorld() {
         if(position.x < 0) {
             position.x = 0;
             velocity.x = -velocity.x * boost;
-        } else if(position.x + shape->getRadius() * 2 > worldSize.x) {
-            position.x = worldSize.x - shape->getRadius() * 2;
+        } else if(position.x + radius * 2 > worldSize.x) {
+            position.x = worldSize.x - radius * 2;
             velocity.x = -velocity.x * boost;
         } else if(position.y < 0) {
             position.y = 0;
             velocity.y = -velocity.y * boost;
-        } else if(position.y + shape->getRadius() * 2 > worldSize.y) {
-            position.y = worldSize.y - shape->getRadius() * 2;
+        } else if(position.y + radius * 2 > worldSize.y) {
+            position.y = worldSize.y - radius * 2;
             velocity.y = -velocity.y * boost;
         }
         object.setPosition(position);
