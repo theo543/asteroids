@@ -188,6 +188,11 @@ jobs:
             # other generator: "\"MinGW Makefiles\""
 
     steps:
+      - name: Set default build type for tags as Release
+        if: startsWith(github.ref, 'refs/tags/') == true && inputs.build_type == ''  # cred că așa verifici dacă nu e setat un input, nu sunt sigur
+        run: |
+          echo "BUILD_TYPE=Release" >> ${GITHUB_ENV}
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -287,11 +292,11 @@ jobs:
 
       - name: Build
         # Execute the build using N jobs (-jN)
-        run: cmake --build "${BUILD_DIR}" --config ${BUILD_TYPE} -j6
+        run: cmake --build "${BUILD_DIR}" --config ${{ env.BUILD_TYPE }} -j6
 
       - name: Install
         # Use CMake to "install" build artifacts (only interested in CMake registered targets) to our custom artifacts directory
-        run: cmake --install "${BUILD_DIR}" --config ${BUILD_TYPE} --prefix artifacts
+        run: cmake --install "${BUILD_DIR}" --config ${{ env.BUILD_TYPE }} --prefix artifacts
 
       - name: Move artifacts
         run: |
@@ -303,7 +308,7 @@ jobs:
       - name: Copy missing dlls
         if: runner.os == 'Windows' && matrix.cxx == 'cl'
         run: |
-          if [[ "${BUILD_TYPE}" =~ "Deb" ]]; then
+          if [[ "${{ env.BUILD_TYPE }}" =~ "Deb" ]]; then
             # runtime debug DLLs
             cp "$(which ucrtbased.dll)" \
                "$(which VCRUNTIME140_1D.dll)" \
@@ -320,7 +325,7 @@ jobs:
           fi
 
           # runtime release DLLs
-          if [[ "${BUILD_TYPE}" =~ "Rel" ]]; then
+          if [[ "${{ env.BUILD_TYPE }}" =~ "Rel" ]]; then
             cp "$(which ucrtbase.dll)" \
                "$(which VCRUNTIME140_1.dll)" \
                "$(which MSVCP140.dll)" \
