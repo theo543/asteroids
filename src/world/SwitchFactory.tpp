@@ -18,13 +18,18 @@ SwitchCommand SwitchFactory::replace(Args&&... args) {
     return SwitchCommand(std::make_unique<T>(std::forward<Args>(args)...), SwitchAction::REPLACE);
 }
 template <typename T>
+void SwitchFactory::validate_type(const std::unique_ptr<WorldInterface> &world) {
+    if(dynamic_cast<T*>(world.get()) == nullptr)
+        throw std::invalid_argument("Type is not convertible to claimed type");
+}
+template <typename T>
 SwitchCommand SwitchFactory::push(std::unique_ptr<WorldInterface> world) {
-    assert(dynamic_cast<T*>(world.get()) != nullptr);
+    validate_type<T>(world);
     return SwitchCommand(std::move(world), SwitchAction::PUSH);
 }
 template <typename T>
 SwitchCommand SwitchFactory::replace(std::unique_ptr<WorldInterface> world) {
-    assert(dynamic_cast<T*>(world.get()) != nullptr);
+    validate_type<T>(world);
     return SwitchCommand(std::move(world), SwitchAction::REPLACE);
 }
 

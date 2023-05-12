@@ -16,6 +16,9 @@ public:
     static SwitchCommand push(std::unique_ptr<WorldInterface> world);
     template <typename T = WorldInterface>
     static SwitchCommand replace(std::unique_ptr<WorldInterface> world);
+private:
+    template <typename T>
+    static void validate_type(const std::unique_ptr<WorldInterface> &world);
 };
 
 #include "world/SwitchFactory.tpp"
