@@ -15,7 +15,7 @@
     - minim o funcție virtuală va fi **specifică temei** (e.g. nu simple citiri/afișări)
   - [x] apelarea constructorului din clasa de bază din constructori din derivate
   - [x] smart pointers
-  - [ ] `dynamic_cast`
+  - [x] `dynamic_cast`
 - [ ] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
 - [ ] excepții
   - [ ] ierarhie proprie cu baza `std::exception` sau derivată din `std::exception`; minim 2 clase pentru erori specifice
@@ -29,7 +29,7 @@
 ## Tema 3
 
 #### Cerințe
-- [ ] 2 șabloane de proiectare (design patterns)
+- [ ] 2 șabloane de proiectare (design patterns) - Factory în SwitchFactory, Non-Virtual Interface în WorldBase, **TODO: Singleton pentru management de resurse!**
 - [x] o funcție șablon (template) cu sens; minim 2 instanțieri
 - [ ] o clasă șablon cu sens; minim 2 instanțieri
 <!-- - [ ] o specializare pe funcție/clasă șablon -->
@@ -60,3 +60,5 @@ Dependencies (and their dependencies) are under their respective licenses.
   - Explained how to static link SFML using BUILD_SHARED_LIBS=OFF
 - https://stackoverflow.com/a/27206982/15885837
   - Explained how to embed resources in executable using CMake
+- [Game Programming Patters](https://gameprogrammingpatterns.com/contents.html)
+  - Most of these are too advanced for this project, but the Game Loop and Update Method chapters were helpful
