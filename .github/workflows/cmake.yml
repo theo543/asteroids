@@ -147,6 +147,7 @@ jobs:
             name: "ASan: Ubuntu 22.04 Clang 12"
             cmake_flags: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_SHARED_LIBS=FALSE
             runs_asan: true
+            cmake_generator: Ninja
             # This env runs address sanitizers
 
           - os: ubuntu-22.04
@@ -155,6 +156,7 @@ jobs:
             name: "Valgrind: Ubuntu 22.04 GCC 11"
             cmake_flags: -DBUILD_SHARED_LIBS=FALSE
             runs_valgrind: true
+            cmake_generator: Ninja
             # This env runs valgrind
 
           - os: macos-12
@@ -162,6 +164,7 @@ jobs:
             cxx: clang++
             name: "ASan: macOS 12 Apple Clang 14"
             cmake_flags: -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE
+            cmake_generator: Ninja
             # runs_asan: true
 
           # - os: macos-12
@@ -175,7 +178,6 @@ jobs:
             cxx: cl
             name: "ASan: Windows 2022 MSVC 19.34"
             cmake_flags: -DBUILD_SHARED_LIBS=TRUE
-            # cmake_generator: Ninja
             # runs_asan: true
 
           - os: windows-2022
@@ -268,6 +270,9 @@ jobs:
           path: |
             ${{ env.BUILD_DIR }}/_deps
           key: cache-${{ matrix.cmake_generator }}-${{ matrix.os }}-${{ matrix.cxx }}-${{ env.BUILD_TYPE }}-${{ env.SFML_VERSION }}
+
+      - name: Setup Ninja
+        uses: ashutoshvarma/setup-ninja@v1.1
 
       # NOTE: GH Actions does not allow updating the cache yet
       # Using the workaround found here: https://github.com/actions/cache/issues/171
