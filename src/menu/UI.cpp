@@ -120,10 +120,13 @@ void UI::update(sf::RenderWindow &window) {
 }
 
 void UI::pollingThreadHandleEvent(sf::Event &event) {
-    auto ie = interestingEvents.lock();
-    if(ie->contains(event.type)) {
-        eventQueue.push(event);
+    {
+        auto ie = interestingEvents.lock();
+        if (!ie->contains(event.type))
+            return;
     }
+    /// TODO debounce key-presses on Linux (maybe because of VirtualBox? still needs to be fixed though)
+    eventQueue.push(event);
 }
 
 void UI::setHideKey(std::optional<sf::Keyboard::Key> key) {
