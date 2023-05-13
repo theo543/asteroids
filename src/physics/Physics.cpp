@@ -1,8 +1,7 @@
 #include "Physics.h"
 #include <cmath>
-#include <iostream>
 
-Physics::Physics(sf::Time tickLen) : tickLen(tickLen), collisions(false) {};
+Physics::Physics(sf::Time tickLen) : tickLen(tickLen), collisions(false), boundsVisible(false), worldBorder(0, 0) {}
 
 sf::Time Physics::getTickLen() const {
     return tickLen;
@@ -27,6 +26,7 @@ void Physics::tick() {
                 sf::Vector2f point2 = other->transform.getTransform().transformPoint({0, 0});
                 float distance = std::sqrt(std::pow(point1.x - point2.x, 2.f) + std::pow(point1.y - point2.y, 2.f));
                 if (distance < object->boundingRadius + other->boundingRadius) {
+                    /// TODO actual narrow phase collision detection
                     colliding[x] = other.get();
                     colliding[y] = object.get();
                 }
@@ -54,12 +54,13 @@ void Physics::tick() {
 void Physics::draw(sf::RenderWindow &window) {
     for (auto &gameObject : gameObjects) {
         gameObject->draw(window, *this);
-        sf::CircleShape border(gameObject->boundingRadius);
-        border.setFillColor(sf::Color(0, 0, 255, 100));
-        auto rd = gameObject->boundingRadius;
-        auto pos = gameObject->transform.getPosition();
-        auto bPos = gameObject->transform.getTransform().transformPoint({0, 0});
-        window.draw(border, gameObject->transform.getTransform());
+        if(boundsVisible) {
+            auto radius = gameObject->boundingRadius;
+            sf::CircleShape border(radius);
+            border.setFillColor(sf::Color(0, 0, 255, 75));
+            border.setOrigin(radius, radius);
+            window.draw(border, gameObject->transform.getTransform());
+        }
     }
 }
 
@@ -73,6 +74,10 @@ bool Physics::forEachGameObject(const std::function<void(GameObject &, Physics &
 
 void Physics::setCollisionsEnabled(bool enable) {
     collisions = enable;
+}
+
+void Physics::setBoundsVisible(bool visible) {
+    boundsVisible = visible;
 }
 
 sf::Vector2f Physics::getWorldBorder() const {

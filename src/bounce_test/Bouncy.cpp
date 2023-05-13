@@ -6,7 +6,7 @@ Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : Ga
     velocity = velocity_;
     transform.setPosition(position);
     shape.setRadius(radius);
-    transform.setOrigin(radius/2, radius/2);
+    shape.setOrigin(radius, radius);
     shape.setFillColor(sf::Color::Red);
 }
 

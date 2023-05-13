@@ -13,7 +13,8 @@ BounceTest::BounceTest() : WorldBase(false), physics(tickLen), rng(std::random_d
     ui.addItem(stats);
     ui.setHideBehavior(UI::HideBehavior::Exit);
     physics.setCollisionsEnabled(true);
-    physics.addGameObject(std::make_unique<Player>(sf::Vector2f {100.f, 100.f}, sf::Vector2f {50.f, 50.f}, 0.f));
+    physics.setBoundsVisible(true);
+    physics.addGameObject(std::make_unique<Player>(sf::Vector2f {50.f, 50.f}, sf::Vector2f {100.f, 100.f}, 0.f));
 }
 
 void BounceTest::initWorld(sf::RenderWindow &window) {
@@ -48,23 +49,25 @@ SwitchCommand BounceTest::tickWorld() {
         });
         bump = sf::Time::Zero;
     }
-    physics.forEachGameObject([](GameObject &object, Physics& p) {
+    physics.forEachGameObject([](GameObject &object, const Physics& p) {
+        /// TODO this should be doable via Physics class
+        /// TODO objects will have to use AABB instead of circles or the bounds will collide with everything
         auto radius = object.getBoundingRadius();
         auto position = object.getPosition();
         auto velocity = object.getVelocity();
         const float boost = 1.10f;
         auto worldSize = p.getWorldBorder();
-        if(position.x < 0) {
-            position.x = 0;
+        if(position.x - radius < 0) {
+            position.x = 0 + radius;
             velocity.x = -velocity.x * boost;
-        } else if(position.x + radius * 2 > worldSize.x) {
-            position.x = worldSize.x - radius * 2;
+        } else if(position.x + radius > worldSize.x) {
+            position.x = worldSize.x - radius;
             velocity.x = -velocity.x * boost;
-        } else if(position.y < 0) {
-            position.y = 0;
+        } else if(position.y - radius < 0) {
+            position.y = 0 + radius;
             velocity.y = -velocity.y * boost;
-        } else if(position.y + radius * 2 > worldSize.y) {
-            position.y = worldSize.y - radius * 2;
+        } else if(position.y + radius > worldSize.y) {
+            position.y = worldSize.y - radius;
             velocity.y = -velocity.y * boost;
         }
         object.setPosition(position);

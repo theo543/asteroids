@@ -5,6 +5,8 @@
 
 class Player : public GameObject {
     sf::RectangleShape shape;
+    sf::CircleShape direction;
+    static const float acceleration;
 public:
     Player(sf::Vector2f size, sf::Vector2f position, float rotation);
     Player(const Player &other);

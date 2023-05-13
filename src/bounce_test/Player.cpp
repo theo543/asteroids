@@ -4,13 +4,11 @@
 #include <cmath>
 
 void Player::draw(sf::RenderWindow &window, const Physics&) {
-    sf::CircleShape circle{boundingRadius};
-    circle.setFillColor(sf::Color::Blue);
-    circle.setOutlineColor(sf::Color::White);
-    circle.setOutlineThickness(0.0f);
-    auto cT = transform;
-    window.draw(circle, transform.getTransform());
+    window.draw(shape, transform.getTransform());
+    window.draw(direction, transform.getTransform());
 }
+
+const float Player::acceleration = 1000;
 
 void Player::tick(Physics &physics) {
     float mul = 0;
@@ -18,7 +16,7 @@ void Player::tick(Physics &physics) {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) mul += -1;
     auto rot = sf::Transformable{};
     rot.setRotation(transform.getRotation());
-    velocity += mul * rot.getTransform().transformPoint(sf::Vector2f{1000, 1000}) * physics.getTickLen().asSeconds();
+    velocity += mul * rot.getTransform().transformPoint(sf::Vector2f{acceleration, acceleration}) * physics.getTickLen().asSeconds();
     mul = 0;
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) mul += -1;
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mul += 1;
@@ -37,8 +35,11 @@ void Player::collide(GameObject &other, Physics&) {
 Player::Player(sf::Vector2f size, sf::Vector2f position, float rotation) : shape(size) {
     transform.setRotation(rotation);
     transform.setPosition(position);
-    transform.setOrigin(size.x / 2, size.y / 2);
+    shape.setOrigin(size / 2.f);
     boundingRadius = std::sqrt(size.x * size.x + size.y * size.y) / 2.f;
+    direction.setRadius(10);
+    direction.setFillColor(sf::Color::Blue);
+    direction.setOrigin(2.1f * sf::Vector2f{10, 10} - shape.getSize() / 2.f);
 }
 
 Player::Player(const Player &other) = default;

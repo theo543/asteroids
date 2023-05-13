@@ -9,6 +9,7 @@ class Physics;
 
 class GameObject {
 protected:
+    /// The position is of the <i>center</i> of the object.
     sf::Transformable transform;
     float boundingRadius;
     bool toBeRemoved;
