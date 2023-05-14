@@ -27,7 +27,6 @@ env:
   BUILD_TYPE: ${{ inputs.build_type || 'Debug' }}
   # NOTE: update executable name if it is changed in CMakeLists.txt
   EXECUTABLE_NAME: "oop"
-  INPUT_FILENAME: "tastatura.txt"
   BUILD_DIR: "build"
   EXT_DIR: "ext"
   BIN_DIR: "bin"
@@ -308,7 +307,6 @@ jobs:
           mkdir ${{ env.ZIP_NAME }}
           mv artifacts/${{ env.BIN_DIR }}/* ${{ env.ZIP_NAME }}
           ls -la ${{ env.ZIP_NAME }}
-          cp "${INPUT_FILENAME}" ${{ env.ZIP_NAME }}
 
       - name: Copy missing dlls
         if: runner.os == 'Windows' && matrix.cxx == 'cl'
@@ -396,7 +394,6 @@ jobs:
       #- name: Application Verifier (Windows MSVC)
       #  if: matrix.cxx == 'cl'
       #  continue-on-error: true
-      #  run: cat "${INPUT_FILENAME}" | appverif //verify ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}".exe
 
       - name: Valgrind
         # uses: aganders3/headless-gui@v1
