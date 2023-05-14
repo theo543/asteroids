@@ -60,5 +60,5 @@ Dependencies (and their dependencies) are under their respective licenses.
   - Explained how to static link SFML using BUILD_SHARED_LIBS=OFF
 - https://stackoverflow.com/a/27206982/15885837
   - Explained how to embed resources in executable using CMake
-- [Game Programming Patters](https://gameprogrammingpatterns.com/contents.html)
+- [Game Programming Patterns](https://gameprogrammingpatterns.com/contents.html)
   - Most of these are too advanced for this project, but the Game Loop and Update Method chapters were helpful
