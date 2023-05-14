@@ -268,8 +268,10 @@ endif()
 
 ###############################################################################
 
+option(HIDE_TERMINAL_ON_RELEASE "Hide terminal when building a release on Windows" ON)
+
 # if we're on Windows and building a release
-if(WIN32 AND (CMAKE_BUILD_TYPE MATCHES ".*Rel.*"))
+if(WIN32 AND (CMAKE_BUILD_TYPE MATCHES ".*Rel.*") AND HIDE_TERMINAL_ON_RELEASE)
     message(STATUS "Setting PE subsystem property to GUI")
     # This sets the PE header subsystem property to GUI, hiding the terminal.
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
