@@ -1,13 +1,15 @@
 #include <iostream>
 #include <thread>
+#include <cassert>
 #include "main/MainLoop.h"
 #include "utility/Defer.h"
 
-[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr) {
+[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), debouncer(std::make_shared<Debouncer>()), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr) {
     // NOTE: sync with env variable APP_WINDOW from .GitHub/workflows/cmake.yml:30
     window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 8));
     window.setVerticalSyncEnabled(true);
     window.setActive(false);
+    window.setKeyRepeatEnabled(false);
     //window.setFramerateLimit(60);
 
     auto desktop = sf::VideoMode::getDesktopMode();
@@ -88,7 +90,7 @@ void MainLoop::mainLoop() {
     while(world != nullptr) {
         resetThreadVariables();
         window.setActive(false);
-        world->onLoad(window);
+        world->onLoad(window, debouncer);
         window.setActive(false); // just in case onLoadWorld() changed it
         std::thread renderThread(&MainLoop::renderingThread, this); // start rendering thread - this is needed because polling events blocks when a title bar button is pressed or the window is dragged
         eventPollingThread(); // no need to start a new thread, just call the function (on some platforms you can't even poll events from secondary threads anyway)

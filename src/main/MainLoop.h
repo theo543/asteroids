@@ -7,10 +7,12 @@
 #include <atomic>
 #include <stack>
 #include "world/WorldInterface.h"
+#include "main/Debouncer.h"
 
 class MainLoop : sf::NonCopyable {
     const inline static sf::Time tickLagWarningThreshold = sf::seconds(1);
     sf::RenderWindow window;
+    std::shared_ptr<Debouncer> debouncer;
     std::stack<std::unique_ptr<WorldInterface>> prev_stack;
     std::unique_ptr<WorldInterface> world;
     /// Real time. The time that the world has to keep up with.
