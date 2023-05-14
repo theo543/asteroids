@@ -1,10 +1,9 @@
 #include <iostream>
 #include <thread>
-#include <cassert>
 #include "main/MainLoop.h"
 #include "utility/Defer.h"
 
-[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), debouncer(std::make_shared<Debouncer>()), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr) {
+[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), debouncer(std::make_shared<Debouncer>()), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr), saveScene(false) {
     // NOTE: sync with env variable APP_WINDOW from .GitHub/workflows/cmake.yml:30
     window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 8));
     window.setVerticalSyncEnabled(true);
@@ -48,17 +47,17 @@ void MainLoop::renderingThread() {
             worldTime += world->getTimePerTick();
             switch(tr.getAction()) {
                 case SwitchAction::POP:
-                    world->onUnload(window, true);
                     nextScene = std::move(prev_stack.top());
+                    prev_stack.pop();
+                    saveScene = false;
                     return;
                 case SwitchAction::PUSH:
-                    world->onUnload(window, false);
-                    prev_stack.push(std::move(world));
                     nextScene = tr.takeNextWorld();
+                    saveScene = true;
                     return;
                 case SwitchAction::REPLACE:
-                    world->onUnload(window, true);
                     nextScene = tr.takeNextWorld();
+                    saveScene = false;
                     return;
                 case SwitchAction::CONTINUE:
                     break;
@@ -95,6 +94,9 @@ void MainLoop::mainLoop() {
         std::thread renderThread(&MainLoop::renderingThread, this); // start rendering thread - this is needed because polling events blocks when a title bar button is pressed or the window is dragged
         eventPollingThread(); // no need to start a new thread, just call the function (on some platforms you can't even poll events from secondary threads anyway)
         renderThread.join();
+        world->onUnload(window, !saveScene);
+        if(saveScene)
+            prev_stack.push(std::move(world));
         world = std::move(nextScene); // if nextScene is nullptr (i.e. render thread didn't exit because of a world change), the loop will end
     }
     window.close();

@@ -30,6 +30,7 @@ class MainLoop : sf::NonCopyable {
      * renderingThread is responsible for setting this.
      */
     std::unique_ptr<WorldInterface> nextScene;
+    bool saveScene;
     void resetTime();
     /**
      * Entry point for the rendering thread. Main loop starts this before calling eventPollingThread.
