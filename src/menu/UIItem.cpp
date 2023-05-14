@@ -5,7 +5,7 @@ const std::set<sf::Event::EventType> &UIItem::getInterestingEvents() const {
     return interestingEvents;
 }
 
-SwitchCommand UIItem::handleEvent([[maybe_unused]] sf::Event &event) {
+SwitchCommand UIItem::handleEvent(sf::Event&) {
     return SwitchFactory::empty();
 }
 

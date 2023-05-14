@@ -36,7 +36,7 @@ void TimerTest::initWorld(sf::RenderWindow &window) {
     window.setTitle("SFML works!");
 }
 
-void TimerTest::drawWorld([[maybe_unused]] sf::RenderWindow &window) {}
+void TimerTest::drawWorld(sf::RenderWindow&) {}
 
 SwitchCommand TimerTest::tickWorld() {
     stats->tickOccurred();

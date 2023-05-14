@@ -36,7 +36,7 @@ void Menu::initWorld(sf::RenderWindow &window) {
     window.setTitle("Demo");
 }
 
-void Menu::drawWorld([[maybe_unused]] sf::RenderWindow &window) {}
+void Menu::drawWorld(sf::RenderWindow&) {}
 
 SwitchCommand Menu::tickWorld() {
     return SwitchFactory::empty();

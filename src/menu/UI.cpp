@@ -145,7 +145,7 @@ void UI::setOpen(bool open_) {
     UI::open = open_;
 }
 
-bool UI::isOpen() const {
+[[maybe_unused]] bool UI::isOpen() const {
     return open;
 }
 
