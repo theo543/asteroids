@@ -15,7 +15,7 @@ private:
 public:
     explicit Stats(const sf::Font &font, std::shared_ptr<sf::Sound> testSound = nullptr);
     void draw(sf::RenderWindow &window, sf::Vector2f position) override;
-    void tickOccurred();
+    void notifyTick() override;
 };
 
 

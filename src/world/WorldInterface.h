@@ -51,9 +51,15 @@ public:
      * Called by the main loop before starting the rendering thread.
      * Allows things like changing the title of the window that can't be done from the constructor
      * because a world is constructed before being passed to the main loop.
-     * If this world loads another using the PUSH action, init will be called again after the new world exits.
+     * If this world loads another using the PUSH action, onLoad will be called again after the new world exits.
      */
-    virtual void init(sf::RenderWindow &window) = 0;
+    virtual void onLoad(sf::RenderWindow &window) = 0;
+    /**
+     * Called by the main loop when stopping executing a WorldInterface (either because of a switch or exit).
+     * Should allow pausing the main menu's soundtrack when entering the game and stuff like that.
+      * @param permanent whether the world is about to be deleted after unload
+     */
+    virtual void onUnload(sf::RenderWindow &window, bool permanent) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
     /**
      * <b>Will be called from event polling thread.</b>

@@ -191,7 +191,7 @@ add_executable(${PROJECT_NAME}
         src/basic_test/TimerTest.h src/basic_test/TimerTest.cpp
         src/bounce_test/BounceTest.h src/bounce_test/BounceTest.cpp
         src/bounce_test/Bouncy.cpp src/bounce_test/Bouncy.h
-        src/basic_test/Stats.h src/basic_test/Stats.cpp
+        src/menu/Stats.h src/menu/Stats.cpp
         src/physics/GameObject.cpp src/physics/GameObject.h
         src/physics/Physics.cpp src/physics/Physics.h
         src/bounce_test/Player.cpp src/bounce_test/Player.h)

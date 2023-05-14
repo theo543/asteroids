@@ -6,7 +6,7 @@
 class Menu : public WorldBase {
     sf::Font f;
 protected:
-    void initWorld(sf::RenderWindow &window) override;
+    void onLoadWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;
     SwitchCommand tickWorld() override;
 public:

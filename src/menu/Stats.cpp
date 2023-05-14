@@ -3,13 +3,13 @@
 #include <chrono>
 #include "Stats.h"
 
-Stats::Stats(const sf::Font &font, std::shared_ptr<sf::Sound> testSound) : UILabel(font), testSound(std::move(testSound)) {
+Stats::Stats(const sf::Font &font, std::shared_ptr<sf::Sound> testSound) : UILabel(font, true), testSound(std::move(testSound)) {
     setCharacterSize(24);
     setOutlineColor(sf::Color::White);
     setFixedPosition(sf::Vector2f{0, 0}); // Fixed by default
 }
 
-void Stats::tickOccurred() {
+void Stats::notifyTick() {
     ticks++;
     if (sinceStatsReset.getElapsedTime().asSeconds() >= 1) {
         fps = frames;

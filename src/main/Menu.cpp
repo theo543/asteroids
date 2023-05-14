@@ -32,7 +32,7 @@ Menu::Menu() {
     ui.forAllSetPixelAlign(true);
 }
 
-void Menu::initWorld(sf::RenderWindow &window) {
+void Menu::onLoadWorld(sf::RenderWindow &window) {
     window.setTitle("Demo");
 }
 

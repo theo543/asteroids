@@ -46,13 +46,16 @@ void MainLoop::renderingThread() {
             worldTime += world->getTimePerTick();
             switch(tr.getAction()) {
                 case SwitchAction::POP:
+                    world->onUnload(window, true);
                     nextScene = std::move(prev_stack.top());
                     return;
                 case SwitchAction::PUSH:
+                    world->onUnload(window, false);
                     prev_stack.push(std::move(world));
                     nextScene = tr.takeNextWorld();
                     return;
                 case SwitchAction::REPLACE:
+                    world->onUnload(window, true);
                     nextScene = tr.takeNextWorld();
                     return;
                 case SwitchAction::CONTINUE:
@@ -85,8 +88,8 @@ void MainLoop::mainLoop() {
     while(world != nullptr) {
         resetThreadVariables();
         window.setActive(false);
-        world->init(window);
-        window.setActive(false); // just in case initWorld() changed it
+        world->onLoad(window);
+        window.setActive(false); // just in case onLoadWorld() changed it
         std::thread renderThread(&MainLoop::renderingThread, this); // start rendering thread - this is needed because polling events blocks when a title bar button is pressed or the window is dragged
         eventPollingThread(); // no need to start a new thread, just call the function (on some platforms you can't even poll events from secondary threads anyway)
         renderThread.join();

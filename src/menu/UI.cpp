@@ -79,6 +79,19 @@ void UI::updateSelected(const std::shared_ptr<UIItem> &newSelected) {
     }
 }
 
+void UI::notifyTick() {
+    for(std::size_t x = 0;x<tickWatchers.size();x++) {
+        auto item = tickWatchers[x].lock();
+        if(item) {
+            item->notifyTick();
+        } else {
+            swap(tickWatchers[x], tickWatchers.back());
+            tickWatchers.pop_back();
+            x--;
+        }
+    }
+}
+
 void UI::update(sf::RenderWindow &window) {
     sf::Event e{};
     while(eventQueue.try_pop(e)) {
@@ -151,6 +164,8 @@ void UI::setOpen(bool open_) {
 
 void UI::addItem(const std::shared_ptr<UIItem>& item) {
     items.push_back(item);
+    if(item->wantsTickNotifications())
+        tickWatchers.emplace_back(item);
     if(!item->getInterestingEvents().empty())
         updateInterestingEvents();
 }

@@ -5,7 +5,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
 #include "world/WorldBase.h"
-#include "basic_test/Stats.h"
+#include "menu/Stats.h"
 #include <atomic>
 #include <mutex>
 
@@ -17,11 +17,10 @@ class TimerTest : public WorldBase {
     sf::Time displayTime;
     const static sf::Time exitDelay;
     bool areYouSure = false;
-    std::shared_ptr<Stats> stats;
     std::shared_ptr<UILabel> timeText;
     void updateTime();
 protected:
-    void initWorld(sf::RenderWindow &window) override;
+    void onLoadWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;
     SwitchCommand tickWorld() override;
 public:

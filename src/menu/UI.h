@@ -41,9 +41,10 @@ private:
    std::function<SwitchCommand()> exitHandler;
    HideBehavior hide = HideBehavior::Ignore;
    SwitchCommand safeInvokeExitHandler();
+   std::vector<std::weak_ptr<UIItem>> tickWatchers;
 public:
-    /// Returns true if an exit event was handled.
     void update(sf::RenderWindow &window);
+    void notifyTick();
     void pollingThreadHandleEvent(sf::Event &event);
     void setHideKey(std::optional<sf::Keyboard::Key> key);
     void setForwardKey(std::optional<sf::Keyboard::Key> key);

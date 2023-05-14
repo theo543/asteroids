@@ -8,8 +8,15 @@ WorldBase::WorldBase(bool enableDebugLagKey) : WorldInterface(enableDebugLagKey)
     ui.setHideKey(sf::Keyboard::Key::Escape);
 }
 
-void WorldBase::init(sf::RenderWindow &window) {
-    initWorld(window);
+void WorldBase::onLoadWorld(sf::RenderWindow&) {}
+void WorldBase::onUnloadWorld(sf::RenderWindow&, bool) {}
+
+void WorldBase::onLoad(sf::RenderWindow &window) {
+    onLoadWorld(window);
+}
+
+void WorldBase::onUnload(sf::RenderWindow &window, bool permanent) {
+    onUnloadWorld(window, permanent);
 }
 
 void WorldBase::draw(sf::RenderWindow &window) {
@@ -24,5 +31,6 @@ void WorldBase::handleEvent(sf::Event &event) {
 SwitchCommand WorldBase::tick() {
     if(ui.hasTransition())
         return ui.getNextTransition();
+    ui.notifyTick();
     return tickWorld();
 }

@@ -2,11 +2,11 @@
 
 #include <utility>
 
-UILabel::UILabel() = default;
+UILabel::UILabel(bool wantTicks) : UIItem(wantTicks) {}
 
-UILabel::UILabel(sf::Text text) : text(std::move(text)) {}
+UILabel::UILabel(sf::Text text, bool wantTicks) : UIItem(wantTicks), text(std::move(text)) {}
 
-UILabel::UILabel(const sf::Font &font) {
+UILabel::UILabel(const sf::Font &font, bool wantTicks) : UIItem(wantTicks) {
     text.setFont(font);
 }
 

@@ -8,9 +8,9 @@ class UILabel : public UIItem {
 protected:
     sf::Text text;
 public:
-    UILabel();
-    explicit UILabel(const sf::Font &font);
-    explicit UILabel(sf::Text text);
+    explicit UILabel(bool wantTicks = false);
+    explicit UILabel(const sf::Font &font, bool wantTicks = false);
+    explicit UILabel(sf::Text text, bool wantTicks = false);
     UILabel(const std::string &text, const sf::Font &font, unsigned int characterSize,
             sf::Color textColor = sf::Color::Black,
             sf::Color fillColor = sf::Color::Transparent);

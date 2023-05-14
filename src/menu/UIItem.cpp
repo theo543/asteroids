@@ -1,6 +1,17 @@
 #include "menu/UIItem.h"
 #include "world/SwitchFactory.h"
 
+UIItem::UIItem(bool notifyTicks) : notifyTicks(notifyTicks) {}
+
+void UIItem::notifyTick() {
+    if(!notifyTicks)
+        throw std::runtime_error("UIItem::notifyTick() incorrectly called");
+}
+
+bool UIItem::wantsTickNotifications() const {
+    return notifyTicks;
+}
+
 const std::set<sf::Event::EventType> &UIItem::getInterestingEvents() const {
     return interestingEvents;
 }

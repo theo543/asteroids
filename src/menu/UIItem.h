@@ -7,6 +7,8 @@
 #include "world/WorldInterface.h"
 
 class UIItem {
+private:
+    bool notifyTicks;
 protected:
     std::set<sf::Event::EventType> interestingEvents;
     float marginTop = 2.5f, marginBottom = 2.5f;
@@ -23,12 +25,15 @@ public:
     virtual SwitchCommand handleEvent(sf::Event &event);
     [[nodiscard]] virtual bool isAlwaysVisible() const;
     [[nodiscard]] virtual bool isSelectable() const;
+    virtual void notifyTick();
+    [[nodiscard]] bool wantsTickNotifications() const;
     virtual void selected();
     virtual void deselected();
     virtual sf::Vector2f getLayoutSize() = 0; /// Only called for inline items.
     virtual void draw(sf::RenderWindow &window, sf::Vector2f position) = 0;
     void setPixelAlign(bool align);
     [[nodiscard]] bool getPixelAlign() const;
+    explicit UIItem(bool notifyTicks = false);
     virtual ~UIItem() = default;
 };
 

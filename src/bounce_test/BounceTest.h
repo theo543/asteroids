@@ -1,7 +1,7 @@
 #ifndef OOP_BOUNCETEST_H
 #define OOP_BOUNCETEST_H
 
-#include "basic_test/Stats.h"
+#include "menu/Stats.h"
 #include "world/WorldBase.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -22,9 +22,8 @@ private:
     float gen_nr(unsigned int max, bool absolute = true);
     sf::Vector2f gen_v(unsigned int max);
     sf::Font f;
-    std::shared_ptr<Stats> stats;
 protected:
-    void initWorld(sf::RenderWindow &window) override;
+    void onLoadWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;
     SwitchCommand tickWorld() override;
 public:

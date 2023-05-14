@@ -1,5 +1,5 @@
 #include "bounce_test/BounceTest.h"
-#include "basic_test/Stats.h"
+#include "menu/Stats.h"
 #include "../embedded_fwd.h"
 #include "Bouncy.h"
 #include "Player.h"
@@ -9,15 +9,14 @@ const sf::Time BounceTest::tickLen = sf::seconds(static_cast<float>(1.0L / 120.0
 BounceTest::BounceTest() : WorldBase(false), physics(tickLen), rng(std::random_device()()) {
     setTiming(tickLen, 24);
     f.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
-    stats = std::make_shared<Stats>(f);
-    ui.addItem(stats);
+    ui.addItem(std::make_shared<Stats>(f));
     ui.setHideBehavior(UI::HideBehavior::Exit);
     physics.setCollisionsEnabled(true);
     physics.setBoundsVisible(true);
     physics.addGameObject(std::make_unique<Player>(sf::Vector2f {50.f, 50.f}, sf::Vector2f {100.f, 100.f}, 0.f));
 }
 
-void BounceTest::initWorld(sf::RenderWindow &window) {
+void BounceTest::onLoadWorld(sf::RenderWindow &window) {
     window.setTitle("Bouncy");
     physics.setWorldBorder({static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)});
 }
@@ -35,7 +34,6 @@ sf::Vector2f BounceTest::gen_v(unsigned int max) {
 }
 
 SwitchCommand BounceTest::tickWorld() {
-    stats->tickOccurred();
     physics.tick();
     if(newObject > sf::seconds(0.05f)) {
         auto bouncy = std::make_unique<Bouncy>(physics.getWorldBorder() / 2.f, gen_v(200) + gen_v(200), 1 + gen_nr(5));

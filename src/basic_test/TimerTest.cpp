@@ -10,7 +10,6 @@ TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>(
     setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 16);
     font.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
     buffer.loadFromMemory(TestSoundOGG.data(), TestSoundOGG.size());
-    stats = std::make_shared<Stats>(font, testSound);
     timeText->setFont(font);
     timeText->setCharacterSize(48);
     timeText->setStyle(sf::Text::Bold);
@@ -27,19 +26,18 @@ TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>(
         }
     });
     ui.setHideBehavior(UI::HideBehavior::Exit);
-    ui.addItem(stats);
+    ui.addItem(std::make_shared<Stats>(font, testSound));
     timeText->setPixelAlign(true);
     ui.addItem(timeText);
 }
 
-void TimerTest::initWorld(sf::RenderWindow &window) {
+void TimerTest::onLoadWorld(sf::RenderWindow &window) {
     window.setTitle("SFML works!");
 }
 
 void TimerTest::drawWorld(sf::RenderWindow&) {}
 
 SwitchCommand TimerTest::tickWorld() {
-    stats->tickOccurred();
     displayTime += getTimePerTick();
     updateTime();
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
