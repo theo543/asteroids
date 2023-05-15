@@ -218,6 +218,10 @@ jobs:
         if: runner.os == 'Linux'
         uses: ./.github/actions/install-linux-deps
 
+      - name: Setup Ninja (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ninja
+
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
         run: |
