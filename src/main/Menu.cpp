@@ -4,6 +4,7 @@
 #include "../embedded_fwd.h"
 #include "basic_test/TimerTest.h"
 #include "bounce_test/BounceTest.h"
+#include "world/type_not_of_claimed_base.h"
 
 Menu::Menu() {
     setBackgroundColor(sf::Color::White);
@@ -12,21 +13,46 @@ Menu::Menu() {
     label1->setMargin(0.f, 96.f);
     ui.addItem(label1);
     auto Gray = sf::Color(128, 128, 128);
-    auto selected_style = UIOption::Fill_Outline{Gray, sf::Color::Transparent};
-    auto unselected_style = UIOption::Fill_Outline {Gray, sf::Color::Black};
-    auto clockOpt = std::make_shared<UIOption>("Clock", f, selected_style, unselected_style, 24, []() {
+    auto unselected_style = UIOption::Fill_Outline{Gray, sf::Color::Transparent};
+    auto selected_style = UIOption::Fill_Outline {Gray, sf::Color::Black};
+    auto clockOpt = std::make_shared<UIOption>("Clock", f, unselected_style, selected_style, 24, []() {
         return SwitchFactory::push<TimerTest>();
     });
-    auto bounceOpt = std::make_shared<UIOption>("Bouncy", f, selected_style, unselected_style, 24, []() {
+    auto bounceOpt = std::make_shared<UIOption>("Bouncy", f, unselected_style, selected_style, 24, []() {
         return SwitchFactory::push<BounceTest>();
     });
-    selected_style = UIOption::Fill_Outline{sf::Color::Red, sf::Color::Transparent};
-    unselected_style = UIOption::Fill_Outline {sf::Color::Red, sf::Color::Black};
-    auto exitOpt = std::make_shared<UIOption>("Exit", f, selected_style, unselected_style, 24, []() {
+    auto exceptionTest = std::make_shared<UIOption>("Exception Test", f, unselected_style, selected_style, 24, [](UIOption &exceptionTest) {
+        auto success_unselected_style = UIOption::Fill_Outline{sf::Color::Green, sf::Color::Transparent};
+        auto success_selected_style = UIOption::Fill_Outline {sf::Color::Green, sf::Color::Black};
+        auto darkRed = sf::Color(168, 0, 0);
+        auto failure_unselected_style = UIOption::Fill_Outline{darkRed, sf::Color::Transparent};
+        auto failure_selected_style = UIOption::Fill_Outline {darkRed, sf::Color::Black};
+        bool success = false;
+        try {
+            SwitchFactory::push<TimerTest>(std::unique_ptr<WorldInterface>(new BounceTest()));
+        } catch (const type_not_of_claimed_base &err) {
+            success = true;
+            sf::err() << "Correct exception caught! \nwhat(): " << std::string(err.what()) << std::endl;
+        } catch(...) {
+            sf::err() << "Wrong exception caught!" << std::endl;
+        }
+        if(success) {
+            exceptionTest.setSelectedColor(success_selected_style);
+            exceptionTest.setUnselectedColor(success_unselected_style);
+        } else {
+            exceptionTest.setSelectedColor(failure_selected_style);
+            exceptionTest.setUnselectedColor(failure_unselected_style);
+        }
+        return SwitchFactory::empty();
+    });
+    unselected_style = UIOption::Fill_Outline{sf::Color::Red, sf::Color::Transparent};
+    selected_style = UIOption::Fill_Outline {sf::Color::Red, sf::Color::Black};
+    auto exitOpt = std::make_shared<UIOption>("Exit", f, unselected_style, selected_style, 24, []() {
         return SwitchFactory::pop();
     });
     ui.addItem(clockOpt);
     ui.addItem(bounceOpt);
+    ui.addItem(exceptionTest);
     ui.addItem(exitOpt);
     ui.setHideBehavior(UI::HideBehavior::Exit);
     ui.forAllSetPixelAlign(true);
