@@ -4,7 +4,6 @@
 #include "utility/Defer.h"
 
 [[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), debouncer(std::make_shared<Debouncer>()), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr), saveScene(false) {
-    // NOTE: sync with env variable APP_WINDOW from .GitHub/workflows/cmake.yml:30
     window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 8));
     window.setVerticalSyncEnabled(true);
     window.setActive(false);
