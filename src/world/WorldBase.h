@@ -15,10 +15,9 @@ protected:
     virtual void onUnloadWorld(sf::RenderWindow &window, bool permanent);
     virtual void drawWorld(sf::RenderWindow &window) = 0;
     virtual SwitchCommand tickWorld() = 0;
-    std::shared_ptr<Debouncer> debouncer;
 public:
     explicit WorldBase(bool enableDebugLagKey = false);
-    void onLoad(sf::RenderWindow &window, std::shared_ptr<Debouncer> debouncer_) final;
+    void onLoad(sf::RenderWindow &window) final;
     void onUnload(sf::RenderWindow &window, bool permanent) final;
     void draw(sf::RenderWindow &window) final;
     void handleEvent(sf::Event &event) final;
