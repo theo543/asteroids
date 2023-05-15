@@ -2,6 +2,7 @@
 #include <cmath>
 #include "UI.h"
 #include "world/SwitchFactory.h"
+#include "menu/ui_item_not_found.h"
 
 SwitchCommand UI::safeInvokeExitHandler() {
     if(exitHandler) return exitHandler();
@@ -179,8 +180,7 @@ void UI::addItem(const std::shared_ptr<UIItem>& item) {
         if(selectedItem == item) {
             selectedItem = nullptr;
         }
-    }
-    throw std::runtime_error("Item not found");
+    } else throw ui_item_not_found(item);
 }
 
 void UI::updateInterestingEvents() {

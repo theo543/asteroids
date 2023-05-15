@@ -1,11 +1,12 @@
 #include "menu/UIItem.h"
 #include "world/SwitchFactory.h"
+#include "unwanted_notify_tick_call.h"
 
 UIItem::UIItem(bool notifyTicks) : notifyTicks(notifyTicks) {}
 
 void UIItem::notifyTick() {
     if(!notifyTicks)
-        throw std::runtime_error("UIItem::notifyTick() incorrectly called");
+        throw unwanted_notify_tick_call(*this);
 }
 
 bool UIItem::wantsTickNotifications() const {

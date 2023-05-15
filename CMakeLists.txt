@@ -196,6 +196,10 @@ add_executable(${PROJECT_NAME}
         src/physics/GameObject.cpp src/physics/GameObject.h
         src/physics/Physics.cpp src/physics/Physics.h
         src/bounce_test/Player.cpp src/bounce_test/Player.h
+        src/main/game_exception.cpp src/main/game_exception.h
+        src/menu/ui_item_not_found.cpp src/menu/ui_item_not_found.h
+        src/menu/unwanted_notify_tick_call.cpp src/menu/unwanted_notify_tick_call.h
+        src/world/type_not_of_claimed_base.cpp src/world/type_not_of_claimed_base.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
