@@ -5,7 +5,6 @@
 #include <SFML/System.hpp>
 #include <optional>
 #include <memory>
-#include "main/Debouncer.h"
 
 class WorldInterface;
 
@@ -54,7 +53,7 @@ public:
      * because a world is constructed before being passed to the main loop.
      * If this world loads another using the PUSH action, onLoad will be called again after the new world exits.
      */
-    virtual void onLoad(sf::RenderWindow &window, std::shared_ptr<Debouncer> debouncer_) = 0;
+    virtual void onLoad(sf::RenderWindow &window) = 0;
     /**
      * Called by the main loop when stopping executing a WorldInterface (either because of a switch or exit).
      * Should allow pausing the main menu's soundtrack when entering the game and stuff like that.
