@@ -2,7 +2,7 @@
 #include "physics/Physics.h"
 
 Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : GameObject() {
-    boundingRadius = radius;
+    boundingRadius = radius + 2.0f;
     velocity = velocity_;
     transform.setPosition(position);
     shape.setRadius(radius);
