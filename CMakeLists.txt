@@ -200,6 +200,10 @@ add_executable(${PROJECT_NAME}
         src/menu/ui_item_not_found.cpp src/menu/ui_item_not_found.h
         src/menu/unwanted_notify_tick_call.cpp src/menu/unwanted_notify_tick_call.h
         src/world/type_not_of_claimed_base.cpp src/world/type_not_of_claimed_base.h
+        src/resources/ResourceBase.h src/resources/ResourceBase.cpp
+        src/resources/ResourceLoader.h
+        src/resources/OnDemandLoader.tpp src/resources/OnDemandLoader.h
+        src/resources/GlobalLoaders.cpp src/resources/GlobalLoaders.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
