@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "resources/OnDemandLoader.h"
 
-template <typename ResourceType>
+template <SFMLLikeResource ResourceType>
 const ResourceType &OnDemandLoader<ResourceType>::load(const std::string &name) {
     if(loaded.contains(name))
         return loaded[name];
