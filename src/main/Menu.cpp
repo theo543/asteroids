@@ -1,14 +1,14 @@
 #include "main/Menu.h"
 #include "menu/UILabel.h"
 #include "menu/UIOption.h"
-#include "../embedded_fwd.h"
+#include "resources/GlobalLoaders.h"
 #include "basic_test/TimerTest.h"
 #include "bounce_test/BounceTest.h"
 #include "world/type_not_of_claimed_base.h"
 
 Menu::Menu() {
     setBackgroundColor(sf::Color::White);
-    f.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
+    const auto &f = GlobalLoaders::Fonts().load("PublicPixelTTF");
     auto label1 = std::make_shared<UILabel>("Tests:", f, 36, sf::Color::White, sf::Color::Black);
     label1->setMargin(0.f, 96.f);
     ui.addItem(label1);

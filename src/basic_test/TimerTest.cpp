@@ -1,5 +1,5 @@
 #include "TimerTest.h"
-#include "../embedded_fwd.h"
+#include "resources/GlobalLoaders.h"
 #include <iostream>
 #include <fmt/core.h>
 #include <fmt/chrono.h>
@@ -8,12 +8,11 @@
 TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>()), timeText(std::make_shared<UILabel>()) {
     std::cout<<"TimerTest constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 16);
-    font.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
-    buffer.loadFromMemory(TestSoundOGG.data(), TestSoundOGG.size());
-    timeText->setFont(font);
+    const auto &pixel = GlobalLoaders::Fonts().load("PublicPixelTTF");
+    timeText->setFont(pixel);
     timeText->setCharacterSize(48);
     timeText->setStyle(sf::Text::Bold);
-    testSound->setBuffer(buffer);
+    testSound->setBuffer(GlobalLoaders::SoundBuffers().load("PianoLoopsOGG"));
     testSound->setLoop(true);
     testSound->play();
     ui.setExitHandler([this](){
@@ -26,7 +25,7 @@ TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>(
         }
     });
     ui.setHideBehavior(UI::HideBehavior::Exit);
-    ui.addItem(std::make_shared<Stats>(font, testSound));
+    ui.addItem(std::make_shared<Stats>(pixel, testSound));
     timeText->setPixelAlign(true);
     ui.addItem(timeText);
 }

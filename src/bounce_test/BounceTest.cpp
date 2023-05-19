@@ -1,6 +1,6 @@
 #include "bounce_test/BounceTest.h"
 #include "menu/Stats.h"
-#include "../embedded_fwd.h"
+#include "resources/GlobalLoaders.h"
 #include "Bouncy.h"
 #include "Player.h"
 
@@ -8,8 +8,7 @@ const sf::Time BounceTest::tickLen = sf::seconds(static_cast<float>(1.0L / 120.0
 
 BounceTest::BounceTest() : WorldBase(false), physics(tickLen), rng(std::random_device()()) {
     setTiming(tickLen, 24);
-    f.loadFromMemory(PublicPixelTTF.data(), PublicPixelTTF.size());
-    ui.addItem(std::make_shared<Stats>(f));
+    ui.addItem(std::make_shared<Stats>(GlobalLoaders::Fonts().load("PublicPixelTTF")));
     ui.setHideBehavior(UI::HideBehavior::Exit);
     physics.setCollisionsEnabled(true);
     physics.setBoundsVisible(true);

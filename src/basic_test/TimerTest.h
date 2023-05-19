@@ -10,8 +10,6 @@
 #include <mutex>
 
 class TimerTest : public WorldBase {
-    sf::Font font;
-    sf::SoundBuffer buffer;
     std::shared_ptr<sf::Sound> testSound;
     sf::Clock exitTimer;
     sf::Time displayTime;

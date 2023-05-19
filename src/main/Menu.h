@@ -4,7 +4,6 @@
 #include "world/WorldBase.h"
 
 class Menu : public WorldBase {
-    sf::Font f;
 protected:
     void onLoadWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;

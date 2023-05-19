@@ -21,7 +21,6 @@ private:
     std::mt19937 rng;
     float gen_nr(unsigned int max, bool absolute = true);
     sf::Vector2f gen_v(unsigned int max);
-    sf::Font f;
 protected:
     void onLoadWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;
