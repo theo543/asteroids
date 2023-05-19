@@ -123,7 +123,7 @@ jobs:
       CXX: ${{ matrix.cxx }}
 
       # NOTE: also update in CMakeLists FetchContent
-      SFML_VERSION: "2022-08-30-2.6.x"
+      SFML_VERSION: "2023-05-03-2.6.x"
 
     strategy:
       fail-fast: false
