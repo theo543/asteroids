@@ -1,10 +1,10 @@
 #ifndef ASTEROIDS_RESOURCELOADER_H
 #define ASTEROIDS_RESOURCELOADER_H
 
-#include "resources/ResourceBase.h"
+#include "resources/EmbeddedAccessor.h"
 
 template <typename ResourceType>
-class ResourceLoader : protected EmbeddedResourceAccessor {
+class ResourceLoader : protected EmbeddedAccessor {
 public:
     virtual const ResourceType &load(const std::string &name) = 0;
     virtual ~ResourceLoader() = default;

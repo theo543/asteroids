@@ -155,13 +155,32 @@ add_executable(${PROJECT_NAME}
         src/menu/ui_item_not_found.cpp src/menu/ui_item_not_found.h
         src/menu/unwanted_notify_tick_call.cpp src/menu/unwanted_notify_tick_call.h
         src/world/type_not_of_claimed_base.cpp src/world/type_not_of_claimed_base.h
-        src/resources/ResourceBase.h src/resources/ResourceBase.cpp
+        src/resources/EmbeddedAccessor.h
         src/resources/ResourceLoader.h
         src/resources/OnDemandLoader.tpp src/resources/OnDemandLoader.h
         src/resources/GlobalLoaders.cpp src/resources/GlobalLoaders.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
+
+###############################################################################
+
+add_executable(asteroids_resource_script src/resources/build/script.cpp)
+
+file(GLOB_RECURSE RESOURCE_FILES CONFIGURE_DEPENDS "resources/*")
+
+set(RESOURCE_EMBEDDED "${CMAKE_CURRENT_BINARY_DIR}/embedded_resources.cpp")
+file(TOUCH "${RESOURCE_EMBEDDED}")
+
+add_custom_command(
+        OUTPUT ${RESOURCE_EMBEDDED}
+        COMMAND asteroids_resource_script
+        "${RESOURCE_EMBEDDED}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources"
+        DEPENDS "${RESOURCE_FILES}" asteroids_resource_script
+)
+
+target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_EMBEDDED})
 
 ###############################################################################
 
