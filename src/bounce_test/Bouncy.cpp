@@ -1,3 +1,4 @@
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "bounce_test/Bouncy.h"
 #include "physics/Physics.h"
 

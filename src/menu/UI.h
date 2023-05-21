@@ -11,6 +11,8 @@
 #include "world/WorldInterface.h"
 #include "world/SwitchFactory.h"
 
+namespace sf { class RenderWindow; }
+
 /**
  * Very simple UI class.
  * Menu items will be laid out in a column, other elements handle their own layout.

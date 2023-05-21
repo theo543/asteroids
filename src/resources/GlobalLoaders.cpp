@@ -1,6 +1,6 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Font.hpp>
-#include "GlobalLoaders.h"
+#include "resources/GlobalLoaders.h"
 #include "resources/OnDemandLoader.h"
 
 std::unique_ptr<ResourceLoader<sf::SoundBuffer>> GlobalLoaders::sounds = nullptr;

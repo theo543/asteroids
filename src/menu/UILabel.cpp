@@ -1,6 +1,6 @@
-#include "UILabel.h"
-
 #include <utility>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include "UILabel.h"
 
 UILabel::UILabel(bool wantTicks) : UIItem(wantTicks) {}
 

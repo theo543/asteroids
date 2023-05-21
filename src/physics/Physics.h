@@ -4,9 +4,10 @@
 #include <vector>
 #include <memory>
 #include <functional>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Time.hpp>
 #include "physics/GameObject.h"
+
+namespace sf { class RenderTarget; }
 
 class Physics {
     std::vector<std::unique_ptr<GameObject>> gameObjects;

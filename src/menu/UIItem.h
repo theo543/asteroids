@@ -5,8 +5,9 @@
 #include <SFML/Window/Event.hpp>
 #include <optional>
 #include <set>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include "world/SwitchCommand.h"
+
+namespace sf { class RenderTarget; class Event; }
 
 class UIItem {
 private:

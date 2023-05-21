@@ -1,10 +1,13 @@
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <chrono>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/System/Sleep.hpp>
 #include <SFML/System/Err.hpp>
-#include "TimerTest.h"
+#include "basic_test/TimerTest.h"
+#include "menu/UILabel.h"
+#include "menu/Stats.h"
 #include "resources/GlobalLoaders.h"
 
 TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>()), timeText(std::make_shared<UILabel>()) {

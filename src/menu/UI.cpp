@@ -1,5 +1,6 @@
 #include <numeric>
 #include <cmath>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "UI.h"
 #include "world/SwitchFactory.h"
 #include "menu/ui_item_not_found.h"

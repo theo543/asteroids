@@ -4,8 +4,8 @@
 #include <memory>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Transformable.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
+namespace sf { class RenderTarget; }
 class Physics;
 
 class GameObject {

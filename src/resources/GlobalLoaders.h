@@ -4,10 +4,7 @@
 #include "resources/ResourceLoader.h"
 #include <memory>
 
-namespace sf {
-    class SoundBuffer;
-    class Font;
-}
+namespace sf { class SoundBuffer; class Font; }
 
 class GlobalLoaders {
 private:

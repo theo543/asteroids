@@ -4,9 +4,7 @@
 #include <SFML/System/Clock.hpp>
 #include "menu/UILabel.h"
 
-namespace sf {
-    class Sound;
-}
+namespace sf { class Sound; }
 
 class Stats : public UILabel {
 private:

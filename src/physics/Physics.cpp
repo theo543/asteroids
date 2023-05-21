@@ -1,4 +1,5 @@
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
 #include "physics/Physics.h"
 #include "physics/GameObject.h"
