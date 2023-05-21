@@ -3,8 +3,11 @@
 
 #include "resources/ResourceLoader.h"
 #include <memory>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+
+namespace sf {
+    class SoundBuffer;
+    class Font;
+}
 
 class GlobalLoaders {
 private:

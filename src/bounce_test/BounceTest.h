@@ -1,14 +1,10 @@
 #ifndef OOP_BOUNCETEST_H
 #define OOP_BOUNCETEST_H
 
+#include <vector>
+#include <random>
 #include "menu/Stats.h"
 #include "world/WorldBase.h"
-#include <vector>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <atomic>
-#include <random>
 #include "physics/Physics.h"
 
 class BounceTest : public WorldBase {

@@ -15,7 +15,7 @@ public:
              unsigned int characterSize, std::function<SwitchCommand(UIOption&)> callback, float outlineThickness = 2.f);
     UIOption(const std::string &text, const sf::Font &font, Fill_Outline unselected, Fill_Outline selected,
              unsigned int characterSize, const std::function<SwitchCommand()>& callback, float outlineThickness = 2.f);
-    void draw(sf::RenderWindow &window, sf::Vector2f position) override;
+    void draw(sf::RenderTarget &window, sf::Vector2f position) override;
     void selected() override;
     void deselected() override;
     bool isSelectable() const override;

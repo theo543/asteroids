@@ -1,9 +1,10 @@
 #ifndef OOP_GAMEOBJECT_H
 #define OOP_GAMEOBJECT_H
 
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
 #include <memory>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 class Physics;
 
@@ -18,7 +19,7 @@ protected:
     GameObject();
     GameObject(const GameObject &other);
 public:
-    virtual void draw(sf::RenderWindow &window, const Physics &physics) = 0;
+    virtual void draw(sf::RenderTarget &window, const Physics &physics) = 0;
     virtual void tick(Physics &physics) = 0;
     virtual std::unique_ptr<GameObject> clone() = 0;
     virtual void collide(GameObject &other, Physics &physics) = 0;

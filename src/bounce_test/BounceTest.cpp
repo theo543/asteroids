@@ -1,8 +1,8 @@
-#include "bounce_test/BounceTest.h"
 #include "menu/Stats.h"
 #include "resources/GlobalLoaders.h"
-#include "Bouncy.h"
-#include "Player.h"
+#include "bounce_test/BounceTest.h"
+#include "bounce_test/Bouncy.h"
+#include "bounce_test/Player.h"
 
 const sf::Time BounceTest::tickLen = sf::seconds(static_cast<float>(1.0L / 120.0L));
 

@@ -1,29 +1,13 @@
 #ifndef OOP_WORLDINTERFACE_H
 #define OOP_WORLDINTERFACE_H
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 #include <optional>
 #include <memory>
-
-class WorldInterface;
-
-enum class SwitchAction {
-    CONTINUE, POP, PUSH, REPLACE
-};
-
-class SwitchCommand { // has to be in the same file as WorldInterface because unique_ptr needs to see the destructor
-private:
-    SwitchAction action;
-    std::unique_ptr<WorldInterface> nextWorld;
-    explicit SwitchCommand(std::unique_ptr<WorldInterface> nextWorld, SwitchAction action);
-public:
-    [[nodiscard]] SwitchAction getAction() const;
-    [[nodiscard]] bool isContinue() const;
-    std::unique_ptr<WorldInterface> takeNextWorld();
-    friend class SwitchFactory;
-};
-
+#include <SFML/System/NonCopyable.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include "world/SwitchCommand.h"
 
 /**
  * A WorldInterface is an interface between MainLoop and the game logic.

@@ -1,3 +1,5 @@
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include "GlobalLoaders.h"
 #include "resources/OnDemandLoader.h"
 

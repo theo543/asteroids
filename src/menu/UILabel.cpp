@@ -23,7 +23,7 @@ sf::Vector2f UILabel::getLayoutSize() {
     return text.getGlobalBounds().getSize();
 }
 
-void UILabel::draw(sf::RenderWindow &window, sf::Vector2f position) {
+void UILabel::draw(sf::RenderTarget &window, sf::Vector2f position) {
     text.setPosition(position);
     window.draw(text);
 }

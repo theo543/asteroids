@@ -1,12 +1,13 @@
 #ifndef OOP_MAINLOOP_H
 #define OOP_MAINLOOP_H
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Time.hpp>
 #include <memory>
 #include <atomic>
 #include <stack>
-#include "world/WorldInterface.h"
+
+class WorldInterface;
 
 class MainLoop : sf::NonCopyable {
     const inline static sf::Time tickLagWarningThreshold = sf::seconds(1);

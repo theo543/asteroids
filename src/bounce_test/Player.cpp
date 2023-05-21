@@ -1,9 +1,10 @@
+#include <SFML/Window/Keyboard.hpp>
+#include <cmath>
 #include "bounce_test/Player.h"
 #include "bounce_test/Bouncy.h"
 #include "physics/Physics.h"
-#include <cmath>
 
-void Player::draw(sf::RenderWindow &window, const Physics&) {
+void Player::draw(sf::RenderTarget &window, const Physics&) {
     window.draw(shape, transform.getTransform());
     window.draw(direction, transform.getTransform());
 }

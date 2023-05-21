@@ -11,7 +11,7 @@ UIOption::UIOption(const std::string &text, const sf::Font &font, Fill_Outline u
     interestingEvents.insert(sf::Event::KeyPressed);
 }
 
-void UIOption::draw(sf::RenderWindow &window, sf::Vector2f position) {
+void UIOption::draw(sf::RenderTarget &window, sf::Vector2f position) {
     auto colors = (selectedState ? selectedColor : unselectedColor);
     text.setFillColor(colors.first);
     text.setOutlineColor(colors.second);

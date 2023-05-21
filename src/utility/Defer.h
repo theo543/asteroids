@@ -2,7 +2,6 @@
 #define OOP_DEFER_H
 #include <functional>
 
-#include <SFML/System.hpp>
 
 /// Simple RAII class to run cleanup code when it goes out of scope.
 class DeferWrapper : sf::NonCopyable {

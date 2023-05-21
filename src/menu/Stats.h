@@ -1,8 +1,12 @@
 #ifndef OOP_STATS_H
 #define OOP_STATS_H
 
+#include <SFML/System/Clock.hpp>
 #include "menu/UILabel.h"
-#include <SFML/Audio.hpp>
+
+namespace sf {
+    class Sound;
+}
 
 class Stats : public UILabel {
 private:
@@ -14,7 +18,7 @@ private:
     std::shared_ptr<sf::Sound> testSound;
 public:
     explicit Stats(const sf::Font &font, std::shared_ptr<sf::Sound> testSound = nullptr);
-    void draw(sf::RenderWindow &window, sf::Vector2f position) override;
+    void draw(sf::RenderTarget &window, sf::Vector2f position) override;
     void notifyTick() override;
 };
 
