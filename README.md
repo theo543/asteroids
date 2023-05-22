@@ -29,11 +29,11 @@
 ## Tema 3
 
 #### Cerințe
-- [ ] 2 șabloane de proiectare (design patterns) - Factory în SwitchFactory, Non-Virtual Interface în WorldBase, **TODO: Singleton pentru management de resurse!**
-- [x] o funcție șablon (template) cu sens; minim 2 instanțieri
-- [ ] o clasă șablon cu sens; minim 2 instanțieri
+- [x] 2 șabloane de proiectare (design patterns) - Factory în SwitchFactory, Non-Virtual Interface în WorldBase, Singleton în GlobalLoaders
+- [x] o funcție șablon (template) cu sens; minim 2 instanțieri - SwitchFactory::push
+- [x] o clasă șablon cu sens; minim 2 instanțieri - OnDemandLoader
 <!-- - [ ] o specializare pe funcție/clasă șablon -->
-- [ ] tag de `git`: de exemplu `v0.3` sau `v1.0`
+- [x] tag de `git`: de exemplu `v0.3` sau `v1.0`
 
 ## Resurse
 
