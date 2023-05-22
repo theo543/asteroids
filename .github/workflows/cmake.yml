@@ -184,7 +184,7 @@ jobs:
             c: gcc
             cxx: g++
             name: "Windows 2022 MinGW GCC 11"
-            cmake_flags: -DBUILD_SHARED_LIBS=TRUE
+            cmake_flags: -DBUILD_SHARED_LIBS=TRUE -DNO_PRECOMPILED_HEADERS=TRUE # For some reason, this build doesn't like the script's precompiled header (???)
             cmake_generator: Ninja
             # Ninja is faster
             # other generator: "\"MinGW Makefiles\""

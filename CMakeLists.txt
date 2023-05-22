@@ -168,7 +168,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 ###############################################################################
 
 add_executable(asteroids_resource_script src/resources/build/script.cpp src/resources/build/script_header.h)
-target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
+if(NOT NO_PRECOMPILED_HEADERS)
+    target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
+else()
+    message(STATUS "Precompiled headers disabled")
+endif()
 
 include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz) # URL recommended on GitHub
