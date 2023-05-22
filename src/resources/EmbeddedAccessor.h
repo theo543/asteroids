@@ -10,7 +10,8 @@ public:
     typedef const unsigned char RawByte;
     typedef std::span<RawByte> RawBytes;
     struct EmbeddedResource {
-        ///TODO metadata
+        std::string id;
+        std::string path;
         RawBytes bytes;
     };
     typedef std::unordered_map<std::string, EmbeddedResource> EmbeddedMap;

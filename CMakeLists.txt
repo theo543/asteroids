@@ -160,13 +160,15 @@ add_executable(${PROJECT_NAME}
         src/resources/ResourceLoader.h
         src/resources/OnDemandLoader.tpp src/resources/OnDemandLoader.h
         src/resources/GlobalLoaders.cpp src/resources/GlobalLoaders.h
+        src/resources/ResourceBuilder.cpp src/resources/ResourceBuilder.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
 ###############################################################################
 
-add_executable(asteroids_resource_script src/resources/build/script.cpp)
+add_executable(asteroids_resource_script src/resources/build/script.cpp src/resources/build/script_header.h)
+target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
 
 include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz) # URL recommended on GitHub
@@ -183,6 +185,8 @@ target_include_directories(asteroids_resource_script SYSTEM PRIVATE ${inja_SOURC
 file(GLOB_RECURSE RESOURCE_FILES CONFIGURE_DEPENDS "resources/*")
 
 set(RESOURCE_EMBEDDED "${CMAKE_CURRENT_BINARY_DIR}/embedded_resources.cpp")
+set(RESOURCE_SCHEMA "${CMAKE_CURRENT_SOURCE_DIR}/src/resources/build/schema.json")
+set(RESOURCE_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/src/resources/build/template.inja.inc")
 file(TOUCH "${RESOURCE_EMBEDDED}")
 
 add_custom_command(
@@ -190,7 +194,9 @@ add_custom_command(
         COMMAND asteroids_resource_script
         "${RESOURCE_EMBEDDED}"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources"
-        DEPENDS "${RESOURCE_FILES}" asteroids_resource_script
+        "${RESOURCE_SCHEMA}"
+        "${RESOURCE_TEMPLATE}"
+        DEPENDS "${RESOURCE_FILES}" "${RESOURCE_SCHEMA}" "${RESOURCE_TEMPLATE}" asteroids_resource_script
 )
 
 target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_EMBEDDED})

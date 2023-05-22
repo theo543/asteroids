@@ -1,9 +1,4 @@
-#include <fstream>
-#include <filesystem>
-#include <iostream>
-#include <vector>
-#include <nlohmann/json.hpp>
-#include <inja/inja.hpp>
+#include "script_header.h"
 
 using json = nlohmann::json;
 
@@ -12,40 +7,36 @@ void error(const std::string &err) {
     exit(EXIT_FAILURE);
 }
 
-const char hex_values[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+void require_file(const std::filesystem::path &path, const std::string &err_string) {
+    if((!exists(path) || is_directory(path))) error(err_string);
+}
 
-constexpr auto TEMPLATE = R"(
-#include <span>
-#include <unordered_map>
-#include "resources/EmbeddedAccessor.h"
-using RawByte = EmbeddedAccessor::RawByte;
-using RawBytes = EmbeddedAccessor::RawBytes;
-using EmbeddedMap = EmbeddedAccessor::EmbeddedMap;
-namespace {
-## for resource in resources
-    constexpr RawByte {{ resource.id }}_ARRAY[] = {{ hex_init_list(resource.path) }};
-    constexpr RawBytes {{ resource.id }} { {{ resource.id }}_ARRAY, {{ resource.id }}_ARRAY + sizeof({{ resource.id }}_ARRAY) };
-## endfor
-    const EmbeddedMap res_map = []() {
-        EmbeddedMap ret_map;
-## for resource in resources
-        ret_map["{{ resource.id }}"] = { {{ resource.id }} };
-## endfor
-        return ret_map;
-    }();
+void require_dir(const std::filesystem::path &path, const std::string &err_string) {
+    if((!exists(path) || !is_directory(path))) error(err_string);
 }
-const EmbeddedMap &EmbeddedAccessor::getEmbeddedResources() {
-    return res_map;
-}
-)";
+
+
+constexpr char hex_values[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 int main(int argc, char **argv) {
-    if(argc != 3) error("This script takes 3 args");
-    std::filesystem::path output_file = argv[1], resources_dir = argv[2];
-    if((!exists(output_file) || is_directory(output_file))) error("Output file missing\n");
-    if(!exists(resources_dir) || !is_directory(resources_dir)) error("Source dir missing\n");
+    if(argc != 4 + 1) error("This script takes exactly 4 args: <output_file> <resources_dir> <schema_file> <template_file>");
+    std::filesystem::path output_file = argv[1], resources_dir = argv[2], schema_file = argv[3], template_file = argv[4];
+    require_file(output_file, "Output file missing\n");
+    require_dir(resources_dir, "Resources dir missing\n");
+    require_file(schema_file, "Schema file missing\n");
+    require_file(template_file, "Template file missing\n");
+    json schema_data;
+    {
+        std::ifstream file(schema_file);
+        file >> schema_data;
+        if(!schema_data["schema"].is_array()) error("Schema should contains properties array");
+        for(json prop : schema_data["schema"]) {
+            if(!prop.is_array() || prop.size() != 2 || !prop[0].is_string() || !prop[1].is_string()) error("Properties should be pairs of string");
+        }
+    }
     json template_data;
     template_data["resources"] = json::array();
+    template_data["schema"] = schema_data["schema"];
     for(const auto &dir_entry : std::filesystem::directory_iterator{resources_dir}) {
         if(dir_entry.is_regular_file() && dir_entry.path().extension() == ".json") {
             std::ifstream file(dir_entry.path());
@@ -75,8 +66,17 @@ int main(int argc, char **argv) {
         ret += "}";
         return ret;
     });
-    inja::Template temp = template_env.parse(TEMPLATE);
-    template_env.write(temp, template_data, output_file.string());
+    template_env.add_void_callback("error", 1, [](inja::Arguments &args) -> void {
+        if(args[0]->is_string())
+            error(args[0]->get<std::string>());
+        else error("Unknown error");
+    });
+    inja::Template temp = template_env.parse_file(template_file.string());
+    try {
+        template_env.write(temp, template_data, output_file.string());
+    } catch (inja::InjaError &err) {
+        error(std::string{"Failed to render template. InjaError: "} + err.what());
+    }
 
     return EXIT_SUCCESS;
 }
