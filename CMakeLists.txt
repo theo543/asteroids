@@ -168,10 +168,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 ###############################################################################
 
 add_executable(asteroids_resource_script src/resources/build/script.cpp src/resources/build/script_header.h)
-if(NOT NO_PRECOMPILED_HEADERS)
-    target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
-else()
+if(NO_PRECOMPILED_HEADERS)
     message(STATUS "Precompiled headers disabled")
+else()
+    target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
 endif()
 
 include(FetchContent)
