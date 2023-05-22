@@ -167,6 +167,18 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 
 add_executable(asteroids_resource_script src/resources/build/script.cpp)
 
+include(FetchContent)
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz) # URL recommended on GitHub
+FetchContent_MakeAvailable(json)
+target_link_libraries(asteroids_resource_script PRIVATE nlohmann_json::nlohmann_json)
+FetchContent_Declare(
+        inja
+        GIT_REPOSITORY https://github.com/pantor/inja.git
+        GIT_TAG        b2276440be8334aeba9cd5d628c2731d0f6a5809 # 3.4
+)
+FetchContent_Populate(inja)
+target_include_directories(asteroids_resource_script SYSTEM PRIVATE ${inja_SOURCE_DIR}/include)
+
 file(GLOB_RECURSE RESOURCE_FILES CONFIGURE_DEPENDS "resources/*")
 
 set(RESOURCE_EMBEDDED "${CMAKE_CURRENT_BINARY_DIR}/embedded_resources.cpp")

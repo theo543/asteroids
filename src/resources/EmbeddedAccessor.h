@@ -7,7 +7,8 @@
 
 class EmbeddedAccessor {
 public:
-    typedef std::span<const unsigned char> RawBytes;
+    typedef const unsigned char RawByte;
+    typedef std::span<RawByte> RawBytes;
     struct EmbeddedResource {
         ///TODO metadata
         RawBytes bytes;
