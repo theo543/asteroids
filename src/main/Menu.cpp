@@ -1,3 +1,5 @@
+#include <SFML/System/Err.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "main/Menu.h"
 #include "menu/UILabel.h"
 #include "menu/UIOption.h"

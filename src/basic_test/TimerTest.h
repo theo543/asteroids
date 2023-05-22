@@ -1,13 +1,11 @@
 #ifndef OOP_TIMERTEST_H
 #define OOP_TIMERTEST_H
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
+#include <SFML/System/Clock.hpp>
 #include "world/WorldBase.h"
-#include "menu/Stats.h"
-#include <atomic>
-#include <mutex>
+
+namespace sf {class Sound;}
+class UILabel;
 
 class TimerTest : public WorldBase {
     std::shared_ptr<sf::Sound> testSound;

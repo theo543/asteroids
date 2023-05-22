@@ -1,12 +1,17 @@
-#include "TimerTest.h"
-#include "resources/GlobalLoaders.h"
-#include <iostream>
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <chrono>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/System/Sleep.hpp>
+#include <SFML/System/Err.hpp>
+#include "basic_test/TimerTest.h"
+#include "menu/UILabel.h"
+#include "menu/Stats.h"
+#include "resources/GlobalLoaders.h"
 
 TimerTest::TimerTest() : WorldBase(true), testSound(std::make_shared<sf::Sound>()), timeText(std::make_shared<UILabel>()) {
-    std::cout<<"TimerTest constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
+    sf::err()<<"TimerTest constructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     setTiming(sf::seconds(static_cast<float>(1.0L / 120.0L)), 16);
     const auto &pixel = GlobalLoaders::Fonts().load("PublicPixelTTF");
     timeText->setFont(pixel);
@@ -66,6 +71,6 @@ void TimerTest::updateTime() {
 }
 
 TimerTest::~TimerTest() {
-    std::cout<<"TimerTest destructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
+    sf::err()<<"TimerTest destructor called at UTC "<<fmt::format("{:%H:%M:%S}", std::chrono::system_clock::now().time_since_epoch())<<std::endl;
     testSound->stop();
 }

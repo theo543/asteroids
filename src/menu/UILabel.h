@@ -1,8 +1,9 @@
 #ifndef OOP_UILABEL_H
 #define OOP_UILABEL_H
 
-#include "menu/UIItem.h"
+#include <SFML/Graphics/Text.hpp>
 #include <optional>
+#include "menu/UIItem.h"
 
 class UILabel : public UIItem {
 protected:
@@ -15,7 +16,7 @@ public:
             sf::Color textColor = sf::Color::Black,
             sf::Color fillColor = sf::Color::Transparent);
     sf::Vector2f getLayoutSize() override;
-    void draw(sf::RenderWindow &window, sf::Vector2f position) override;
+    void draw(sf::RenderTarget &window, sf::Vector2f position) override;
     [[maybe_unused]] void setText(const sf::Text &text);
     void setString(const std::string &string);
     void setText(const std::string &text);

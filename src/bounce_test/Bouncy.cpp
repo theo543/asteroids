@@ -1,3 +1,4 @@
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "bounce_test/Bouncy.h"
 #include "physics/Physics.h"
 
@@ -12,7 +13,7 @@ Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : Ga
 
 Bouncy::Bouncy(const Bouncy &other) : GameObject(other), shape(other.shape) {}
 
-void Bouncy::draw(sf::RenderWindow &window, const Physics &physics) {
+void Bouncy::draw(sf::RenderTarget &window, const Physics &physics) {
     if(colliding) {
         const sf::Color colColor = sf::Color::Red;
         shape.setOutlineColor(colColor);

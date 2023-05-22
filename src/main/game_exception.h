@@ -2,6 +2,7 @@
 #define ASTEROIDS_GAME_EXCEPTION_H
 
 #include <stdexcept>
+#include <string>
 
 class game_exception : public std::logic_error {
     using std::logic_error::logic_error;

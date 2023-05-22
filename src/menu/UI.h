@@ -1,9 +1,6 @@
 #ifndef OOP_UI_H
 #define OOP_UI_H
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
 #include <atomic_queue/atomic_queue.h>
 #include <cs_plain_guarded.h>
 #include <functional>
@@ -13,6 +10,8 @@
 #include "menu/UIItem.h"
 #include "world/WorldInterface.h"
 #include "world/SwitchFactory.h"
+
+namespace sf { class RenderWindow; }
 
 /**
  * Very simple UI class.

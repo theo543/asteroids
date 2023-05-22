@@ -1,5 +1,8 @@
-#include "Physics.h"
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
+#include "physics/Physics.h"
+#include "physics/GameObject.h"
 
 Physics::Physics(sf::Time tickLen) : tickLen(tickLen), collisions(false), boundsVisible(false), worldBorder(0, 0) {}
 
@@ -51,7 +54,7 @@ void Physics::tick() {
     }
 }
 
-void Physics::draw(sf::RenderWindow &window) {
+void Physics::draw(sf::RenderTarget &window) {
     for (auto &gameObject : gameObjects) {
         gameObject->draw(window, *this);
         if(boundsVisible) {
@@ -88,6 +91,6 @@ void Physics::setWorldBorder(sf::Vector2f border) {
     worldBorder = border;
 }
 
-std::size_t Physics::getNrObjects() const {
+[[maybe_unused]] std::size_t Physics::getNrObjects() const {
     return gameObjects.size();
 }

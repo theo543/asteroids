@@ -1,6 +1,6 @@
 #include "menu/UIItem.h"
 #include "world/SwitchFactory.h"
-#include "unwanted_notify_tick_call.h"
+#include "menu/unwanted_notify_tick_call.h"
 
 UIItem::UIItem(bool notifyTicks) : notifyTicks(notifyTicks) {}
 

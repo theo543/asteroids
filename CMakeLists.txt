@@ -141,6 +141,7 @@ add_executable(${PROJECT_NAME}
         src/menu/UILabel.h src/menu/UILabel.cpp
         src/menu/UIOption.h src/menu/UIOption.cpp
         src/utility/Defer.h
+        src/world/SwitchCommand.cpp src/world/SwitchCommand.h
         src/world/SwitchFactory.h src/world/SwitchFactory.tpp
         src/world/WorldInterface.h src/world/WorldInterface.cpp
         src/world/WorldBase.h src/world/WorldBase.cpp

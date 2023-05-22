@@ -1,10 +1,13 @@
 #ifndef OOP_UIITEM_H
 #define OOP_UIITEM_H
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
 #include <optional>
 #include <set>
-#include "world/WorldInterface.h"
+#include "world/SwitchCommand.h"
+
+namespace sf { class RenderTarget; class Event; }
 
 class UIItem {
 private:
@@ -30,7 +33,7 @@ public:
     virtual void selected();
     virtual void deselected();
     virtual sf::Vector2f getLayoutSize() = 0; /// Only called for inline items.
-    virtual void draw(sf::RenderWindow &window, sf::Vector2f position) = 0;
+    virtual void draw(sf::RenderTarget &window, sf::Vector2f position) = 0;
     void setPixelAlign(bool align);
     [[nodiscard]] bool getPixelAlign() const;
     explicit UIItem(bool notifyTicks = false);

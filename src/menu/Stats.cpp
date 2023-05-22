@@ -1,7 +1,8 @@
+#include <SFML/Audio/Sound.hpp>
 #include <fmt/format.h>
 #include <fmt/chrono.h>
 #include <chrono>
-#include "Stats.h"
+#include "menu/Stats.h"
 
 Stats::Stats(const sf::Font &font, std::shared_ptr<sf::Sound> testSound) : UILabel(font, true), testSound(std::move(testSound)) {
     setCharacterSize(24);
@@ -20,7 +21,7 @@ void Stats::notifyTick() {
     }
 }
 
-void Stats::draw(sf::RenderWindow &window, sf::Vector2f position) {
+void Stats::draw(sf::RenderTarget &window, sf::Vector2f position) {
     frames++;
     setText(
             "FPS: " + std::to_string(fps) +

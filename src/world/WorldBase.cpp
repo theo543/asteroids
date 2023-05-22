@@ -1,7 +1,5 @@
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "WorldBase.h"
-#ifdef GITHUB_ACTIONS
-#include <cassert>
-#endif
 
 WorldBase::WorldBase(bool enableDebugLagKey) : WorldInterface(enableDebugLagKey) {
     ui.setExitHandler(nullptr);
@@ -17,9 +15,6 @@ void WorldBase::onUnloadWorld(sf::RenderWindow&, bool) {}
 void WorldBase::onLoad(sf::RenderWindow &window) {
     onLoadWorld(window);
     auto titleOverride = std::getenv("APP_WINDOW");
-#ifdef GITHUB_ACTIONS
-    assert(titleOverride && std::string(titleOverride).size() != 0); // this should always be defined on CI so the saniziter scripts can find the window
-#endif
     if(titleOverride)
         window.setTitle(sf::String(titleOverride));
 }
