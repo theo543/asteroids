@@ -2,8 +2,6 @@
 #define OOP_PLAYER_H
 
 #include "physics/GameObject.h"
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 
 class Player : public GameObject {
     sf::RectangleShape shape;

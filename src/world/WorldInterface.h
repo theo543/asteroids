@@ -3,12 +3,8 @@
 
 #include <optional>
 #include <memory>
-#include <SFML/System/NonCopyable.hpp>
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/Color.hpp>
 #include "world/SwitchCommand.h"
-
-namespace sf { class RenderWindow; class Event; }
+#include "SFML.h"
 
 /**
  * A WorldInterface is an interface between MainLoop and the game logic.

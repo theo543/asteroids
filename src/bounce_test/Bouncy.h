@@ -1,7 +1,6 @@
 #ifndef OOP_BOUNCY_H
 #define OOP_BOUNCY_H
 
-#include <SFML/Graphics/CircleShape.hpp>
 #include "physics/GameObject.h"
 
 class Bouncy : public GameObject {

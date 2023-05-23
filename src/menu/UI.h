@@ -10,8 +10,7 @@
 #include "menu/UIItem.h"
 #include "world/WorldInterface.h"
 #include "world/SwitchFactory.h"
-
-namespace sf { class RenderWindow; }
+#include "SFML.h"
 
 /**
  * Very simple UI class.

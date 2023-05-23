@@ -1,10 +1,8 @@
 #ifndef OOP_TIMERTEST_H
 #define OOP_TIMERTEST_H
 
-#include <SFML/System/Clock.hpp>
 #include "world/WorldBase.h"
 
-namespace sf {class Sound;}
 class UILabel;
 
 class TimerTest : public WorldBase {

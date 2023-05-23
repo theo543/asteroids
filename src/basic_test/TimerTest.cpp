@@ -1,10 +1,6 @@
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <chrono>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Audio/Sound.hpp>
-#include <SFML/System/Sleep.hpp>
-#include <SFML/System/Err.hpp>
 #include "basic_test/TimerTest.h"
 #include "menu/UILabel.h"
 #include "menu/Stats.h"

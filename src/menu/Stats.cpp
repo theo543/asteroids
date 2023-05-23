@@ -1,5 +1,3 @@
-#include <SFML/Audio/Sound.hpp>
-#include <fmt/format.h>
 #include <fmt/chrono.h>
 #include <chrono>
 #include "menu/Stats.h"

@@ -1,4 +1,3 @@
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "menu/Stats.h"
 #include "resources/GlobalLoaders.h"
 #include "bounce_test/BounceTest.h"

@@ -161,6 +161,7 @@ add_executable(${PROJECT_NAME}
         src/resources/OnDemandLoader.tpp src/resources/OnDemandLoader.h
         src/resources/GlobalLoaders.cpp src/resources/GlobalLoaders.h
         src/resources/ResourceBuilder.cpp src/resources/ResourceBuilder.h
+        src/SFML.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
@@ -168,11 +169,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 ###############################################################################
 
 add_executable(asteroids_resource_script src/resources/build/script.cpp src/resources/build/script_header.h)
-if(NO_PRECOMPILED_HEADERS)
-    message(STATUS "Precompiled headers disabled")
-else()
-    target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
-endif()
 
 include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz) # URL recommended on GitHub
@@ -204,6 +200,16 @@ add_custom_command(
 )
 
 target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_EMBEDDED})
+
+###############################################################################
+
+if(NO_PRECOMPILED_HEADERS)
+    message(STATUS "Precompiled headers disabled")
+else()
+    target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
+    target_precompile_headers(asteroids PRIVATE src/SFML.h)
+endif()
+
 
 ###############################################################################
 

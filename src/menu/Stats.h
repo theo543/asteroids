@@ -1,10 +1,7 @@
 #ifndef OOP_STATS_H
 #define OOP_STATS_H
 
-#include <SFML/System/Clock.hpp>
 #include "menu/UILabel.h"
-
-namespace sf { class Sound; }
 
 class Stats : public UILabel {
 private:

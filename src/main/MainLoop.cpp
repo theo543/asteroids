@@ -1,8 +1,4 @@
 #include <thread>
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Event.hpp>
-#include <SFML/System/Err.hpp>
-#include <SFML/System/Sleep.hpp>
 #include "world/WorldInterface.h"
 #include "main/MainLoop.h"
 #include "utility/Defer.h"

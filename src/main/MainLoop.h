@@ -1,11 +1,10 @@
 #ifndef OOP_MAINLOOP_H
 #define OOP_MAINLOOP_H
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Time.hpp>
 #include <memory>
 #include <atomic>
 #include <stack>
+#include "SFML.h"
 
 class WorldInterface;
 

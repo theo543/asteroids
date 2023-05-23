@@ -1,5 +1,3 @@
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
 #include "bounce_test/Player.h"
 #include "bounce_test/Bouncy.h"

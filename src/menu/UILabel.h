@@ -1,7 +1,6 @@
 #ifndef OOP_UILABEL_H
 #define OOP_UILABEL_H
 
-#include <SFML/Graphics/Text.hpp>
 #include <optional>
 #include "menu/UIItem.h"
 

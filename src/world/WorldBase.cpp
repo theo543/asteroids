@@ -1,4 +1,3 @@
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "WorldBase.h"
 
 WorldBase::WorldBase(bool enableDebugLagKey) : WorldInterface(enableDebugLagKey) {

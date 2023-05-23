@@ -2,10 +2,8 @@
 #define OOP_GAMEOBJECT_H
 
 #include <memory>
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Transformable.hpp>
+#include "SFML.h"
 
-namespace sf { class RenderTarget; }
 class Physics;
 
 class GameObject {

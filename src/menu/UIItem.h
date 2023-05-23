@@ -1,13 +1,10 @@
 #ifndef OOP_UIITEM_H
 #define OOP_UIITEM_H
 
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Event.hpp>
 #include <optional>
 #include <set>
 #include "world/SwitchCommand.h"
-
-namespace sf { class RenderTarget; class Event; }
+#include "SFML.h"
 
 class UIItem {
 private:
