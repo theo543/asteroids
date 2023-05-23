@@ -9,8 +9,8 @@ template <SFMLLikeResource ResourceType>
 const ResourceType &OnDemandLoader<ResourceType>::load(const std::string &name) {
     if(loaded.contains(name))
         return loaded[name];
-    const EmbeddedAccessor::EmbeddedResource *lookup;
-    if((lookup = EmbeddedAccessor::lookupEmbeddedResource(name))) {
+    const EmbeddedAccessor::EmbeddedResource *lookup = EmbeddedAccessor::lookupEmbeddedResource(name);
+    if(lookup) {
         const auto &res = *lookup;
         assert(res.bytes.size() == res.bytes.size_bytes());
         loaded[name].loadFromMemory(res.bytes.data(), res.bytes.size());
