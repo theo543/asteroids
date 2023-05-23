@@ -21,7 +21,7 @@ constexpr char hex_values[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 int main(int argc, char **argv) {
     if(argc != 4 + 1) error("This script takes exactly 4 args: <output_file> <resources_dir> <schema_file> <template_file>");
     std::filesystem::path output_file = argv[1], resources_dir = argv[2], schema_file = argv[3], template_file = argv[4];
-    require_file(output_file, "Output file missing\n");
+    if(is_directory(output_file)) error("Output file is a directory");
     require_dir(resources_dir, "Resources dir missing\n");
     require_file(schema_file, "Schema file missing\n");
     require_file(template_file, "Template file missing\n");
