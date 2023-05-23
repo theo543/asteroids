@@ -4,7 +4,8 @@
 #include "resources/ResourceBuilder.h"
 using RawByte = EmbeddedAccessor::RawByte;
 using RawBytes = EmbeddedAccessor::RawBytes;
-using EmbeddedMap = EmbeddedAccessor::EmbeddedMap;
+using EmbeddedResource = EmbeddedAccessor::EmbeddedResource;
+typedef std::unordered_map<std::string, EmbeddedResource> EmbeddedMap;
 namespace {
 ## for resource in resources
     constexpr RawByte {{ resource.id }}_ARRAY[] = {{ hex_init_list(resource.path) }};
@@ -25,6 +26,9 @@ namespace {
         return tmp_map;
     }();
 }
-const EmbeddedMap &EmbeddedAccessor::getEmbeddedResources() {
-    return embedded_map;
+const EmbeddedResource *EmbeddedAccessor::lookupEmbeddedResource(const std::string& id) {
+    auto iter = embedded_map.find(id);
+    if(iter == embedded_map.end())
+        return nullptr;
+    else return &iter->second;
 }

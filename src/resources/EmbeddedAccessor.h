@@ -14,9 +14,8 @@ public:
         std::string path;
         RawBytes bytes;
     };
-    typedef std::unordered_map<std::string, EmbeddedResource> EmbeddedMap;
 protected:
-    [[nodiscard]] static const EmbeddedMap &getEmbeddedResources();
+    [[nodiscard]] const EmbeddedResource *lookupEmbeddedResource(const std::string& id);
 };
 
 #endif //ASTEROIDS_EMBEDDEDACCESSOR_H
