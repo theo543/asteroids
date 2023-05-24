@@ -1,12 +1,30 @@
 #include <span>
 #include <unordered_map>
 #include "resources/EmbeddedAccessor.h"
-#include "resources/ResourceBuilder.h"
 using RawByte = EmbeddedAccessor::RawByte;
 using RawBytes = EmbeddedAccessor::RawBytes;
 using EmbeddedResource = EmbeddedAccessor::EmbeddedResource;
 typedef std::unordered_map<std::string, EmbeddedResource> EmbeddedMap;
 namespace {
+    class ResourceBuilder {
+    public:
+        void id(std::string id) {
+            built.id = std::move(id);
+        }
+        void path(std::string path) {
+            built.path = std::move(path);
+        }
+        void bytes(RawBytes bytes) {
+            built.bytes = bytes;
+        }
+        EmbeddedResource takeBuiltResource() {
+            EmbeddedResource ret = {};
+            std::swap(ret, built);
+            return ret;
+        }
+    private:
+        EmbeddedResource built;
+    };
 ## for resource in resources
     constexpr RawByte {{ resource.id }}_ARRAY[] = {{ hex_init_list(resource.path) }};
     constexpr RawBytes {{ resource.id }}_SPAN { {{ resource.id }}_ARRAY, {{ resource.id }}_ARRAY + sizeof({{ resource.id }}_ARRAY) };

@@ -160,7 +160,6 @@ add_executable(${PROJECT_NAME}
         src/resources/ResourceLoader.h
         src/resources/OnDemandLoader.tpp src/resources/OnDemandLoader.h
         src/resources/GlobalLoaders.cpp src/resources/GlobalLoaders.h
-        src/resources/ResourceBuilder.cpp src/resources/ResourceBuilder.h
         src/SFML.h
 )
 # header base path to prevent '..' in #include statements
