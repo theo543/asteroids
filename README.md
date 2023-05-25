@@ -43,9 +43,10 @@ Dependencies (and their dependencies) are under their respective licenses.
 
 - [SFML](https://github.com/SFML/SFML/tree/aa82ea132b9296a31922772027ad5d14c1fa381b) (Zlib)
 - [{fmt}](https://github.com/fmtlib/fmt/tree/a33701196adfad74917046096bf5a2aa0ab0bb50) (MIT with binary exception)
-- [atomic_queue](https://github.com/max0x7ba/atomic_queue.git)
-- [cs_libguarded](https://github.com/copperspice/cs_libguarded.git)
+- [atomic_queue](https://github.com/max0x7ba/atomic_queue.git) (MIT)
+- [cs_libguarded](https://github.com/copperspice/cs_libguarded.git) (BSD 2-clause)
 - [inja](https://github.com/pantor/inja) + inja dependency [json](https://github.com/nlohmann/json) (dev. dependencies, MIT license, not included in game executable)
+- [mapbox::eternal](https://github.com/mapbox/eternal) (ISC) - compile-time/constexpr map
 
 ### Grafică
 

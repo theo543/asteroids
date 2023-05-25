@@ -121,6 +121,16 @@ FetchContent_Populate(cs_libguarded) # This lib's CMakeLists.txt is used for tes
 
 ###############################################################################
 
+FetchContent_Declare(
+        eternal
+        GIT_REPOSITORY https://github.com/mapbox/eternal.git
+        GIT_TAG        dd2f5b9ff38fcd36b59efd9d289127fa73efc6cb # latest commit as of 25.05.2023
+)
+
+FetchContent_Populate(eternal)
+
+###############################################################################
+
 # external dependencies with find_package
 
 find_package(Threads REQUIRED)
@@ -246,6 +256,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/inc
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${fmt_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${atomic_queue_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${cs_libguarded_SOURCE_DIR}/src)
+target_include_directories(asteroids SYSTEM PRIVATE ${eternal_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
