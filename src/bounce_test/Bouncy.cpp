@@ -2,10 +2,15 @@
 #include "physics/Physics.h"
 
 Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : GameObject() {
-    shape.setRadius(radius);
-    shape.setOrigin(radius, radius);
+    radius += 2.0f; // got to include the outline
     shape.setFillColor(sf::Color::Red);
+    shape.setOrigin(radius, radius);
+    shape.setRadius(radius);
     pData.initialize(shape);
+    radius -= 2.0f;
+    shape.setOrigin(radius, radius);
+    shape.setRadius(radius);
+    shape.setRadius(radius);
     pData.setVelocity(velocity_);
     pData.setPosition(position);
 }

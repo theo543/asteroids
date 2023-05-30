@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "SFML.h"
+#include "physics/AABB.h"
 
 /**
  * The GameObject will instantiate this and then use it to store position and velocity data.
@@ -14,6 +15,7 @@ class PhysicsData : public sf::Transformable {
     sf::Vector2f velocity;
     float angularVelocity;
     float boundingRadius;
+    AABB base_aabb;
 public:
     PhysicsData();
     /// It'd be incovenient if we did this in the constructor.
@@ -27,6 +29,7 @@ public:
     [[nodiscard]] float getBoundingRadius() const;
     void accelerate(sf::Vector2f acceleration);
     void accelerateAngular(float acceleration);
+    bool aabb_collides(const PhysicsData &other);
 
     friend class Physics;
 };

@@ -24,10 +24,7 @@ void Physics::tick() {
                 auto &object = gameObjects[x];
                 auto &other = gameObjects[y];
                 if (object.get() == other.get()) continue;
-                sf::Vector2f point1 = object->pData.getTransform().transformPoint({0, 0});
-                sf::Vector2f point2 = other->pData.getTransform().transformPoint({0, 0});
-                float distance = std::sqrt(std::pow(point1.x - point2.x, 2.f) + std::pow(point1.y - point2.y, 2.f));
-                if (distance < object->pData.boundingRadius + other->pData.boundingRadius) {
+                if (object->pData.aabb_collides(other->pData)) {
                     /// TODO actual narrow phase collision detection
                     colliding[x] = other.get();
                     colliding[y] = object.get();
@@ -57,11 +54,11 @@ void Physics::draw(sf::RenderTarget &window) {
     for (auto &gameObject : gameObjects) {
         gameObject->draw(window, *this);
         if(boundsVisible) {
-            auto radius = gameObject->pData.boundingRadius;
-            sf::CircleShape border(radius);
-            border.setFillColor(sf::Color(0, 0, 255, 75));
-            border.setOrigin(radius, radius);
-            window.draw(border, gameObject->pData.getTransform());
+            auto shape = gameObject->pData.base_aabb.transform(gameObject->pData.getTransform()).toRect();
+            shape.setFillColor(sf::Color(0, 0, 255, 75));
+            shape.setOutlineColor(sf::Color::Red);
+            shape.setOutlineThickness(1.0f);
+            window.draw(shape);
         }
     }
 }
