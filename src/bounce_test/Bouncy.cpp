@@ -2,12 +2,12 @@
 #include "physics/Physics.h"
 
 Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : GameObject() {
-    boundingRadius = radius + 2.0f;
-    velocity = velocity_;
-    transform.setPosition(position);
     shape.setRadius(radius);
     shape.setOrigin(radius, radius);
     shape.setFillColor(sf::Color::Red);
+    pData.initialize(shape);
+    pData.setVelocity(velocity_);
+    pData.setPosition(position);
 }
 
 Bouncy::Bouncy(const Bouncy &other) : GameObject(other), shape(other.shape) {}
@@ -19,21 +19,20 @@ void Bouncy::draw(sf::RenderTarget &window, const Physics &physics) {
         shape.setFillColor(colColor);
     } else {
         int posX, posY;
-        auto position = transform.getPosition();
+        auto position = pData.getPosition();
         auto worldSize = physics.getWorldBorder();
         posX = static_cast<int>(position.x / worldSize.x * 255.0f);
         posY = static_cast<int>(position.y / worldSize.y * 255.0f);
         shape.setFillColor(sf::Color(posX, posY, 0));
-        posX = static_cast<int>(velocity.x);
-        posY = static_cast<int>(velocity.y);
+        posX = static_cast<int>(pData.getVelocity().x);
+        posY = static_cast<int>(pData.getVelocity().y);
         shape.setOutlineColor(sf::Color(posX, posY, 0));
     }
     shape.setOutlineThickness(2.0f);
-    window.draw(shape, transform.getTransform());
+    window.draw(shape, pData.getTransform());
 }
 
 void Bouncy::tick(Physics&) {
-    angularVelocity = 180;
     colliding = false;
 }
 

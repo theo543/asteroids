@@ -171,7 +171,7 @@ add_executable(${PROJECT_NAME}
         src/resources/OnDemandLoader.tpp src/resources/OnDemandLoader.h
         src/resources/GlobalLoaders.cpp src/resources/GlobalLoaders.h
         src/SFML.h
-)
+        src/physics/PhysicsData.cpp src/physics/PhysicsData.h)
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 

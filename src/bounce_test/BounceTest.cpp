@@ -49,7 +49,7 @@ SwitchCommand BounceTest::tickWorld() {
     physics.forEachGameObject([](GameObject &object, const Physics& p) {
         /// TODO this should be doable via Physics class
         /// TODO objects will have to use AABB instead of circles or the bounds will collide with everything
-        auto radius = object.getBoundingRadius();
+        auto radius = object.getPhysicsData().getBoundingRadius();
         auto position = object.getPosition();
         auto velocity = object.getVelocity();
         const float boost = 1.10f;

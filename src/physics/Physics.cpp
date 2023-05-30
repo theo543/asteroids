@@ -9,6 +9,7 @@ sf::Time Physics::getTickLen() const {
 }
 
 void Physics::addGameObject(std::unique_ptr<GameObject> gameObject) {
+    if(!gameObject->hasPhysicsData()) throw std::invalid_argument("Object has no physics data"); // TODO put a custom exception here
     gameObjects.push_back(std::move(gameObject));
 }
 
@@ -23,10 +24,10 @@ void Physics::tick() {
                 auto &object = gameObjects[x];
                 auto &other = gameObjects[y];
                 if (object.get() == other.get()) continue;
-                sf::Vector2f point1 = object->transform.getTransform().transformPoint({0, 0});
-                sf::Vector2f point2 = other->transform.getTransform().transformPoint({0, 0});
+                sf::Vector2f point1 = object->pData.getTransform().transformPoint({0, 0});
+                sf::Vector2f point2 = other->pData.getTransform().transformPoint({0, 0});
                 float distance = std::sqrt(std::pow(point1.x - point2.x, 2.f) + std::pow(point1.y - point2.y, 2.f));
-                if (distance < object->boundingRadius + other->boundingRadius) {
+                if (distance < object->pData.boundingRadius + other->pData.boundingRadius) {
                     /// TODO actual narrow phase collision detection
                     colliding[x] = other.get();
                     colliding[y] = object.get();
@@ -47,8 +48,8 @@ void Physics::tick() {
             size--;
             continue;
         }
-        gameObjects[x]->transform.move(gameObjects[x]->velocity * tickLen.asSeconds());
-        gameObjects[x]->transform.rotate(gameObjects[x]->angularVelocity * tickLen.asSeconds());
+        gameObjects[x]->pData.move(gameObjects[x]->pData.velocity * tickLen.asSeconds());
+        gameObjects[x]->pData.rotate(gameObjects[x]->pData.angularVelocity * tickLen.asSeconds());
     }
 }
 
@@ -56,11 +57,11 @@ void Physics::draw(sf::RenderTarget &window) {
     for (auto &gameObject : gameObjects) {
         gameObject->draw(window, *this);
         if(boundsVisible) {
-            auto radius = gameObject->boundingRadius;
+            auto radius = gameObject->pData.boundingRadius;
             sf::CircleShape border(radius);
             border.setFillColor(sf::Color(0, 0, 255, 75));
             border.setOrigin(radius, radius);
-            window.draw(border, gameObject->transform.getTransform());
+            window.draw(border, gameObject->pData.getTransform());
         }
     }
 }
