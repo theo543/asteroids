@@ -4,7 +4,7 @@
 #include "utility/minmax.h"
 #include "PhysicsData.h"
 
-PhysicsData::PhysicsData() : mesh(), velocity(0.f, 0.f), angularVelocity(0), boundingRadius(0), base_aabb() {}
+PhysicsData::PhysicsData() : mesh(), velocity(0.f, 0.f), angularVelocity(0), boundingRadius(0), base_aabb(), cached_aabb(), cached_transform() {}
 
 void PhysicsData::initialize(std::vector<sf::Vector2f> &&mesh_) {
     if(!mesh.empty()) throw std::runtime_error("Already initialized.");
@@ -17,6 +17,7 @@ void PhysicsData::initialize(std::vector<sf::Vector2f> &&mesh_) {
     }
     assert(boundingRadius >= 0);
     base_aabb = AABB{mesh};
+    updateAABB();
 }
 
 void PhysicsData::initialize(const sf::Shape &shape) {
@@ -61,6 +62,16 @@ void PhysicsData::accelerateAngular(float acceleration) {
     angularVelocity += acceleration;
 }
 
-bool PhysicsData::aabb_collides(const PhysicsData &other) {
-    return base_aabb.transform(getTransform()).collides(other.base_aabb.transform(other.getTransform()));
+bool PhysicsData::aabb_collides(const PhysicsData &other) const {
+    return getAABB().collides(other.getAABB());
+}
+
+void PhysicsData::updateAABB() const {
+    cached_aabb = base_aabb.transform(getTransform());
+    cached_transform = getTransform();
+}
+
+const AABB &PhysicsData::getAABB() const {
+    if(cached_transform != getTransform()) updateAABB();
+    return cached_aabb;
 }

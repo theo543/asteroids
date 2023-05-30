@@ -54,7 +54,7 @@ void Physics::draw(sf::RenderTarget &window) {
     for (auto &gameObject : gameObjects) {
         gameObject->draw(window, *this);
         if(boundsVisible) {
-            auto shape = gameObject->pData.base_aabb.transform(gameObject->pData.getTransform()).toRect();
+            auto shape = gameObject->pData.getAABB().toRect();
             shape.setFillColor(sf::Color(0, 0, 255, 75));
             shape.setOutlineColor(sf::Color::Red);
             shape.setOutlineThickness(1.0f);

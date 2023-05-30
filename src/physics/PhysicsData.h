@@ -16,6 +16,9 @@ class PhysicsData : public sf::Transformable {
     float angularVelocity;
     float boundingRadius;
     AABB base_aabb;
+    mutable AABB cached_aabb;
+    mutable sf::Transform cached_transform;
+    void updateAABB() const;
 public:
     PhysicsData();
     /// It'd be incovenient if we did this in the constructor.
@@ -29,7 +32,8 @@ public:
     [[nodiscard]] float getBoundingRadius() const;
     void accelerate(sf::Vector2f acceleration);
     void accelerateAngular(float acceleration);
-    bool aabb_collides(const PhysicsData &other);
+    [[nodiscard]] const AABB &getAABB() const;
+    bool aabb_collides(const PhysicsData &other) const;
 
     friend class Physics;
 };
