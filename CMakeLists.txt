@@ -131,6 +131,16 @@ FetchContent_Populate(eternal)
 
 ###############################################################################
 
+FetchContent_Declare(
+        bezier
+        GIT_REPOSITORY https://github.com/oysteinmyrmo/bezier.git
+        GIT_TAG        ca52f1f671b80563f480dbd08b33fd381401133b # committed at 12 July 2022
+)
+
+FetchContent_Populate(bezier)
+
+###############################################################################
+
 # external dependencies with find_package
 
 find_package(Threads REQUIRED)
@@ -174,6 +184,7 @@ add_executable(${PROJECT_NAME}
         src/physics/PhysicsData.cpp src/physics/PhysicsData.h
         src/physics/AABB.cpp src/physics/AABB.h
         src/utility/minmax.h
+        src/menu/RainbowBackground.cpp src/menu/RainbowBackground.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
@@ -259,7 +270,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/inc
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${fmt_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${atomic_queue_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${cs_libguarded_SOURCE_DIR}/src)
-target_include_directories(asteroids SYSTEM PRIVATE ${eternal_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${eternal_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${bezier_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 

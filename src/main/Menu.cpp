@@ -1,6 +1,7 @@
 #include "main/Menu.h"
 #include "menu/UILabel.h"
 #include "menu/UIOption.h"
+#include "menu/RainbowBackground.h"
 #include "resources/GlobalLoaders.h"
 #include "basic_test/TimerTest.h"
 #include "bounce_test/BounceTest.h"
@@ -8,6 +9,7 @@
 
 Menu::Menu() {
     setBackgroundColor(sf::Color::White);
+    ui.addItem(std::make_shared<RainbowBackground>());
     const auto &f = GlobalLoaders::Fonts().load("PublicPixelTTF");
     auto label1 = std::make_shared<UILabel>("Tests:", f, 36, sf::Color::White, sf::Color::Black);
     label1->setMargin(0.f, 96.f);
