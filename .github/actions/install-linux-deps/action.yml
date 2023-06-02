@@ -18,5 +18,6 @@ runs:
           libgbm-dev \
           libfreetype6-dev \
           xorg \
-          ninja-build
+          ninja-build \
+          gtk+-3.0
       shell: bash

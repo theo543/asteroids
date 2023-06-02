@@ -23,6 +23,10 @@ Menu::Menu() {
     auto bounceOpt = std::make_shared<UIOption>("Bouncy", f, unselected_style, selected_style, 24, []() {
         return SwitchFactory::push<BounceTest>();
     });
+    auto unhandledTest = std::make_shared<UIOption>("Unhandled Exception Test", f, unselected_style, selected_style, 24, []() {
+        SwitchFactory::push<TimerTest>(std::unique_ptr<WorldInterface>(new BounceTest()));
+        return SwitchFactory::empty();
+    });
     auto exceptionTest = std::make_shared<UIOption>("Exception Test", f, unselected_style, selected_style, 24, [](UIOption &exceptionTest) {
         auto success_unselected_style = UIOption::Fill_Outline{sf::Color::Green, sf::Color::Transparent};
         auto success_selected_style = UIOption::Fill_Outline {sf::Color::Green, sf::Color::Black};
@@ -54,6 +58,7 @@ Menu::Menu() {
     });
     ui.addItem(clockOpt);
     ui.addItem(bounceOpt);
+    ui.addItem(unhandledTest);
     ui.addItem(exceptionTest);
     ui.addItem(exitOpt);
     ui.setHideBehavior(UI::HideBehavior::Exit);

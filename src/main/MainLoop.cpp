@@ -2,6 +2,8 @@
 #include "world/WorldInterface.h"
 #include "main/MainLoop.h"
 #include "utility/Defer.h"
+#include "world/SwitchFactory.h"
+#include "utility/message.h"
 
 [[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr), saveScene(false) {
     window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 8));
@@ -30,7 +32,18 @@ bool MainLoop::ticksNeeded() const {
     return getTimeDifference() >= world->getTimePerTick();
 }
 
+void report_error_and_abort(const std::exception &e, const char *context) {
+    std::string error_message = "An error occurred while running the game: ";
+    error_message += e.what();
+    error_message += "\n\nContext: ";
+    error_message += context;
+    error_message += "\n\nThe game will now exit.";
+    error_box(error_message);
+    std::abort();
+}
+
 void MainLoop::renderingThread() {
+    try {
     window.setActive(true); // just in case SFML doesn't do this automatically
     DeferWrapper contextGuard([this] {window.setActive(false);}); // when this thread ends, release OpenGL context
     DeferWrapper returnFlagGuard([this] {returnToMainLoop = true;}); // when this thread ends, signal event loop to return
@@ -66,16 +79,23 @@ void MainLoop::renderingThread() {
             sf::err()<<"WARNING: The game is lagging behind real time by "<<getTimeDifference().asSeconds()<<" seconds."<<std::endl;
     }
     sf::err()<<"WARNING: The window has unexpectedly closed. Errors may occur."<<std::endl;
+    } catch (const std::exception& e) {
+        report_error_and_abort(e, "rendering thread");
+    }
 }
 
 void MainLoop::eventPollingThread() {
-    sf::Event event{};
-    while(window.isOpen() && !returnToMainLoop) {
-        while(window.pollEvent(event))
-            world->handleEvent(event);
-        // for some reason, the window closes twice as fast if I sleep here instead of waitEvent
-        // SFML does the same thing in waitEvent, so I don't know why it's different here
-        sf::sleep(sf::milliseconds(10));
+    try {
+        sf::Event event{};
+        while (window.isOpen() && !returnToMainLoop) {
+            while (window.pollEvent(event))
+                world->handleEvent(event);
+            // for some reason, the window closes twice as fast if I sleep here instead of waitEvent
+            // SFML does the same thing in waitEvent, so I don't know why it's different here
+            sf::sleep(sf::milliseconds(10));
+        }
+    } catch (const std::exception& e) {
+        report_error_and_abort(e, "event polling thread");
     }
 }
 

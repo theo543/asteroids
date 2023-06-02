@@ -151,6 +151,24 @@ endif()
 
 ###############################################################################
 
+FetchContent_Declare(
+        portable_file_dialogs
+        GIT_REPOSITORY https://github.com/samhocevar/portable-file-dialogs.git
+        GIT_TAG        8ccf2a93f70d021842e72fd950eac2a0bb244eec # 0.1.0
+)
+
+FetchContent_MakeAvailable(portable_file_dialogs)
+
+add_library(portable_file_dialogs_wrapper STATIC src/utility/message.cpp)
+target_include_directories(portable_file_dialogs_wrapper SYSTEM PRIVATE ${portable_file_dialogs_SOURCE_DIR})
+set_custom_stdlib_and_sanitizers(portable_file_dialogs_wrapper false)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(portable_file_dialogs_wrapper PRIVATE -femulated-tls)
+endif()
+
+
+###############################################################################
+
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
         src/main/main.cpp
@@ -185,6 +203,7 @@ add_executable(${PROJECT_NAME}
         src/physics/AABB.cpp src/physics/AABB.h
         src/utility/minmax.h
         src/menu/RainbowBackground.cpp src/menu/RainbowBackground.h
+        src/utility/message.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
@@ -272,6 +291,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${atomic_queue_SOURCE_
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${cs_libguarded_SOURCE_DIR}/src)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${eternal_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${bezier_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE portable_file_dialogs_wrapper)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
