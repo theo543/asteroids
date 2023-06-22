@@ -8,10 +8,13 @@ namespace sf { class SoundBuffer; class Font; }
 
 class GlobalLoaders {
 private:
-    static std::unique_ptr<ResourceLoader<sf::SoundBuffer>> sounds;
-    static std::unique_ptr<ResourceLoader<sf::Font>> fonts;
+    std::unique_ptr<ResourceLoader<sf::SoundBuffer>> sounds;
+    std::unique_ptr<ResourceLoader<sf::Font>> fonts;
+    static GlobalLoaders *instance;
+    GlobalLoaders();
+    ~GlobalLoaders();
 public:
-    GlobalLoaders() = delete;
+    friend int main();
     static ResourceLoader<sf::SoundBuffer> &SoundBuffers();
     static ResourceLoader<sf::Font> &Fonts();
 };

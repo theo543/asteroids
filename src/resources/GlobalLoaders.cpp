@@ -1,16 +1,27 @@
 #include "SFML.h"
 #include "resources/GlobalLoaders.h"
 #include "resources/OnDemandLoader.h"
+#include "resources/singleton_instance_error.h"
 
-std::unique_ptr<ResourceLoader<sf::SoundBuffer>> GlobalLoaders::sounds = nullptr;
-std::unique_ptr<ResourceLoader<sf::Font>> GlobalLoaders::fonts = nullptr;
+GlobalLoaders *GlobalLoaders::instance = nullptr;
+
+GlobalLoaders::GlobalLoaders() {
+    if(instance) throw singleton_instance_error("GlobalLoaders");
+    instance = this;
+}
+
+GlobalLoaders::~GlobalLoaders() {
+    instance = nullptr;
+}
 
 ResourceLoader<sf::SoundBuffer> &GlobalLoaders::SoundBuffers() {
-    if(!sounds) sounds = std::make_unique<OnDemandLoader<sf::SoundBuffer>>();
-    return *sounds;
+    if(!instance) throw singleton_instance_error("GlobalLoaders");
+    if(!instance->sounds) instance->sounds = std::make_unique<OnDemandLoader<sf::SoundBuffer>>();
+    return *instance->sounds;
 }
 
 ResourceLoader<sf::Font> &GlobalLoaders::Fonts() {
-    if(!fonts) fonts = std::make_unique<OnDemandLoader<sf::Font>>();
-    return *fonts;
+    if(!instance) throw singleton_instance_error("GlobalLoaders");
+    if(!instance->fonts) instance->fonts = std::make_unique<OnDemandLoader<sf::Font>>();
+    return *instance->fonts;
 }
