@@ -41,7 +41,7 @@ function(set_custom_stdlib_and_sanitizers target add_apple_asan)
         endif()
     elseif(UNIX)
         if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-            if("${CMAKE_CXX_COMPILER_VERSION}" MATCHES "12.")
+            if("${CMAKE_CXX_COMPILER_VERSION}" MATCHES "12." OR "${CMAKE_CXX_COMPILER_VERSION}" MATCHES "14.")
                 # check leaks on Linux since macOS does not support the leaks sanitizer yet
                 # leaks sanitizer is enabled by default on Linux, so we do not need to enable it explicitly
                 target_compile_options(${target} PRIVATE "$<${debug_mode}:-fsanitize=address,undefined>")
