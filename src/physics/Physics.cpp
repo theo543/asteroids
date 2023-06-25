@@ -9,7 +9,6 @@ sf::Time Physics::getTickLen() const {
 }
 
 void Physics::addGameObject(std::unique_ptr<GameObject> gameObject) {
-    if(!gameObject->hasPhysicsData()) throw std::invalid_argument("Object has no physics data"); // TODO put a custom exception here
     gameObjects.push_back(std::move(gameObject));
 }
 
@@ -20,12 +19,19 @@ void Physics::tick() {
     if(collisions) {
         std::vector<GameObject*> colliding(gameObjects.size(), nullptr);
         for (std::size_t x = 0; x < gameObjects.size(); x++) {
+            if(!gameObjects[x]->pData.collisionInitialized()) continue;
             for (std::size_t y = x + 1; y < gameObjects.size(); y++) {
+                if(!gameObjects[y]->pData.collisionInitialized()) continue;
                 auto &object = gameObjects[x];
                 auto &other = gameObjects[y];
-                if (object.get() == other.get()) continue;
-                if (object->pData.aabb_collides(other->pData)) {
-                    /// TODO actual narrow phase collision detection
+                if(!object->pData.aabb_collides(other->pData)) continue;
+                // if point from object is inside other
+                auto col = object->pData.collides(other->pData);
+                // or point from other is inside object
+                if(!col.has_value()) col = other->pData.collides(object->pData);
+                // then collision
+                // this misses edge cases, but you can't get those without first having point in polygon, so it's fine as long as ticks are short
+                if(col.has_value()) {
                     colliding[x] = other.get();
                     colliding[y] = object.get();
                 }

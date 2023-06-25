@@ -6,7 +6,7 @@ Bouncy::Bouncy(sf::Vector2f position, sf::Vector2f velocity_, float radius) : Ga
     shape.setFillColor(sf::Color::Red);
     shape.setOrigin(radius, radius);
     shape.setRadius(radius);
-    pData.initialize(shape);
+    pData.initialize_collision(shape);
     radius -= 2.0f;
     shape.setOrigin(radius, radius);
     shape.setRadius(radius);

@@ -11,7 +11,6 @@ BounceTest::BounceTest() : WorldBase(false), physics(tickLen), rng(std::random_d
     ui.addItem(std::make_shared<Stats>(GlobalLoaders::Fonts().load("PublicPixelTTF")));
     ui.setHideBehavior(UI::HideBehavior::Exit);
     physics.setCollisionsEnabled(true);
-    physics.setBoundsVisible(true);
     physics.addGameObject(std::make_unique<Player>(sf::Vector2f {50.f, 50.f}, sf::Vector2f {100.f, 100.f}, 0.f));
 }
 

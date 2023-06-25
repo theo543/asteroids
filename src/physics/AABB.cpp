@@ -32,3 +32,7 @@ sf::RectangleShape AABB::toRect() const {
     rect.setSize(br - tl);
     return rect;
 }
+
+float AABB::getMaxX() const {
+    return br.x;
+}

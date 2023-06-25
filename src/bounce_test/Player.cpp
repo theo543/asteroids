@@ -34,7 +34,7 @@ void Player::collide(GameObject &other, Physics&) {
 
 Player::Player(sf::Vector2f size, sf::Vector2f position, float rotation) : shape(size) {
     shape.setOrigin(size / 2.f);
-    pData.initialize(shape);
+    pData.initialize_collision(shape);
     pData.setRotation(rotation);
     pData.setPosition(position);
     direction.setRadius(10);

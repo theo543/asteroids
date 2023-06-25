@@ -45,7 +45,7 @@ void GameObject::setPosition(sf::Vector2f position) {
 }
 
 bool GameObject::hasPhysicsData() const {
-    return pData.isInitialized();
+    return pData.collisionInitialized();
 }
 
 const PhysicsData &GameObject::getPhysicsData() const {

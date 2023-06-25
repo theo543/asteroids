@@ -11,6 +11,7 @@ public:
     [[nodiscard]] bool collides(const AABB &other) const;
     [[nodiscard]] AABB transform(sf::Transform t) const;
     [[nodiscard]] sf::RectangleShape toRect() const;
+    [[nodiscard]] float getMaxX() const;
 };
 
 #endif //ASTEROIDS_AABB_H
