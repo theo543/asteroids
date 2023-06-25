@@ -7,6 +7,7 @@
 #include "bounce_test/BounceTest.h"
 #include "world/type_not_of_claimed_base.h"
 #include "physics/CollisionTest.h"
+#include "asteroids/AsteroidsWorld.h"
 
 Menu::Menu() {
     setBackgroundColor(sf::Color::White);
@@ -18,6 +19,9 @@ Menu::Menu() {
     auto Gray = sf::Color(128, 128, 128);
     auto unselected_style = UIOption::Fill_Outline{Gray, sf::Color::Transparent};
     auto selected_style = UIOption::Fill_Outline {Gray, sf::Color::Black};
+    auto asteroidsOpt = std::make_shared<UIOption>("Asteroids", f, unselected_style, selected_style, 24, []() {
+        return SwitchFactory::push<AsteroidsWorld>();
+    });
     auto clockOpt = std::make_shared<UIOption>("Clock", f, unselected_style, selected_style, 24, []() {
         return SwitchFactory::push<TimerTest>();
     });
@@ -60,6 +64,7 @@ Menu::Menu() {
     auto exitOpt = std::make_shared<UIOption>("Exit", f, unselected_style, selected_style, 24, []() {
         return SwitchFactory::pop();
     });
+    ui.addItem(asteroidsOpt);
     ui.addItem(clockOpt);
     ui.addItem(bounceOpt);
     ui.addItem(collisionOpt);

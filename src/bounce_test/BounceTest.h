@@ -13,7 +13,6 @@ private:
     Physics physics;
     sf::Time newObject;
     sf::Time bump;
-    std::atomic_bool exit = false;
     std::mt19937 rng;
     float gen_nr(unsigned int max, bool absolute = true);
     sf::Vector2f gen_v(unsigned int max);

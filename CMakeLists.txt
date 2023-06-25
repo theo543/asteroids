@@ -208,6 +208,9 @@ add_executable(${PROJECT_NAME}
         src/menu/RainbowBackground.cpp src/menu/RainbowBackground.h
         src/utility/message.h
         src/physics/CollisionTest.cpp src/physics/CollisionTest.h
+        src/asteroids/AsteroidShape.cpp src/asteroids/AsteroidShape.h
+        src/asteroids/Asteroid.cpp src/asteroids/Asteroid.h
+        src/asteroids/AsteroidsWorld.cpp src/asteroids/AsteroidsWorld.h
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")

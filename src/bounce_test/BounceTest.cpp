@@ -3,6 +3,7 @@
 #include "bounce_test/BounceTest.h"
 #include "bounce_test/Bouncy.h"
 #include "bounce_test/Player.h"
+#include "asteroids/Asteroid.h"
 
 const sf::Time BounceTest::tickLen = sf::seconds(static_cast<float>(1.0L / 120.0L));
 
@@ -71,6 +72,5 @@ SwitchCommand BounceTest::tickWorld() {
     });
     newObject += getTimePerTick();
     bump += getTimePerTick();
-    if(exit) return SwitchFactory::pop();
     return SwitchFactory::empty();
 }
