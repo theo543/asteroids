@@ -1,6 +1,7 @@
 #include <cmath>
 #include <cassert>
 #include <numeric>
+#include <algorithm>
 #include "utility/minmax.h"
 #include "PhysicsData.h"
 

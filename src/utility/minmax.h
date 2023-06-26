@@ -3,12 +3,12 @@
 
 template <typename T>
 void ref_min(T &dest, const T &source) {
-    dest = std::min(dest, source);
+    if (dest > source) dest = source;
 }
 
 template <typename T>
 void ref_max(T &dest, const T &source) {
-    dest = std::max(dest, source);
+    if (dest < source) dest = source;
 }
 
 #endif //ASTEROIDS_MINMAX_H

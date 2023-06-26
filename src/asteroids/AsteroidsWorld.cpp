@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "asteroids/AsteroidsWorld.h"
 #include "asteroids/Asteroid.h"
 #include "world/SwitchFactory.h"
