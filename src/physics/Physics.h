@@ -13,6 +13,7 @@ class Physics {
     bool collisions;
     bool boundsVisible;
     sf::Vector2f worldBorder;
+    PhysicsData inBoundsData;
 public:
     explicit Physics(sf::Time tickLen);
     [[nodiscard]] sf::Time getTickLen() const;
@@ -24,6 +25,8 @@ public:
     void setBoundsVisible(bool visible);
     void addGameObject(std::unique_ptr<GameObject> gameObject);
     bool forEachGameObject(const std::function<void(GameObject &, Physics &)> &func);
+    bool isInBounds(const GameObject &object);
+    bool isInBounds(const AABB &aabb);
     void tick();
     void draw(sf::RenderTarget &window);
 };

@@ -65,7 +65,7 @@ void PhysicsData::accelerateAngular(float acceleration) {
 bool PhysicsData::aabb_collides(const PhysicsData &other) const {
     return getAABB().collides(other.getAABB());
 }
-#include <iostream>
+
 void PhysicsData::update_cache() const {
     cached_aabb = base_aabb.transform(getTransform());
     cached_transform = getTransform();

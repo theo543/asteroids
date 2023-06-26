@@ -36,20 +36,59 @@ void AsteroidsWorld::drawWorld(sf::RenderWindow &window) {
 SwitchCommand AsteroidsWorld::tickWorld() {
     if(ui.isOpen()) return SwitchFactory::empty();
     if(newObject >= sf::seconds(0.50f)) {
-        using FD = std::uniform_real_distribution<float>;
-        FD radius_dist(40.f, 60.f);
-        FD border_dist(0, static_cast<float>(physics.getWorldBorder().x));
-        FD angular_dist(10.f, 50.f);
-        FD speed_dist(50.f, 100.f);
-        auto asteroid = std::make_unique<Asteroid>(sf::Vector2f{border_dist(rng), 0},
-                                                   sf::Vector2f{0, speed_dist(rng)},
-                                                    radius_dist(rng));
-        asteroid->setAngularVelocity(angular_dist(rng)); ///TODO origin doesn't work??? rotates around a corner
-        physics.addGameObject(std::move(asteroid));
+        newAsteroid();
         newObject = sf::Time::Zero;
     } else {
         newObject += tickLen;
     }
     physics.tick();
     return SwitchFactory::empty();
+}
+
+void AsteroidsWorld::newAsteroid() {
+    std::uniform_int_distribution<int> entryBorder(0, 3);
+    using NFD = std::normal_distribution<float>;
+    NFD XEntryPoint(physics.getWorldBorder().x / 2.f, physics.getWorldBorder().x / 3.f);
+    NFD YEntryPoint(physics.getWorldBorder().y / 2.f, physics.getWorldBorder().y / 3.f);
+    NFD angularVelocity(0.f, 25.f);
+    NFD velocity(50.f, 25.f);
+    NFD radius(20.f, 5.f);
+    auto minVelocity = 20.f;
+    auto minRadius = 10.f;
+
+    auto pointOnBorder = [&](int choice) -> sf::Vector2f {
+        switch(choice) {
+            case 0: // top
+                return {XEntryPoint(rng), 0.f};
+            case 1: // right
+                return {physics.getWorldBorder().x, YEntryPoint(rng)};
+            case 2: // bottom
+                return {XEntryPoint(rng), physics.getWorldBorder().y};
+            default:
+            case 3: // left
+                return {0.f, YEntryPoint(rng)};
+        }
+    };
+
+    float radiusVal = std::max(radius(rng), minRadius);
+    auto entryPoint = pointOnBorder(entryBorder(rng));
+    int goToChoice;
+    while((goToChoice = entryBorder(rng)) == entryBorder(rng)); // make sure we don't go to the same side
+    auto pointToGoTo = pointOnBorder(goToChoice);
+    auto vectorToCenter = physics.getWorldBorder() / 2.f - pointToGoTo;
+    auto vectorToGoTo = pointToGoTo - entryPoint;
+    auto entryVelocity = vectorToGoTo + vectorToCenter * 0.5f; // pull towards center, so they can't just travel along the border
+    entryVelocity = entryVelocity / std::sqrt(entryVelocity.x * entryVelocity.x + entryVelocity.y * entryVelocity.y); // normalize
+    entryVelocity = entryVelocity * std::max(velocity(rng), minVelocity); // scale to velocity
+    float entryAngularVelocity = angularVelocity(rng);
+
+    auto asteroid = std::make_unique<Asteroid>(entryPoint, entryVelocity, radiusVal);
+    asteroid->setAngularVelocity(entryAngularVelocity);
+    auto maxHideSteps = 10;
+    auto hideStep = asteroid->getVelocity() * -1.f;
+    while(physics.isInBounds(*asteroid) && maxHideSteps-- > 0) {
+        asteroid->move(asteroid->getVelocity() * -1.f);
+        hideStep *= 1.5f;
+    }
+    physics.addGameObject(std::move(asteroid));
 }

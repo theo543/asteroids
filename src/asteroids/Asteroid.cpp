@@ -1,6 +1,9 @@
-#include "Asteroid.h"
+#include "asteroids/Asteroid.h"
+#include "physics/Physics.h"
 
-Asteroid::Asteroid(sf::Vector2f position, sf::Vector2f velocity, float radius) : GameObject(), shape(radius) {
+const sf::Time Asteroid::defaultTimeOutsideBorder = sf::seconds(10);
+
+Asteroid::Asteroid(sf::Vector2f position, sf::Vector2f velocity, float radius) : GameObject(), shape(radius), timeOutsideBorder(defaultTimeOutsideBorder) {
     shape.setFillColor(sf::Color::Transparent);
     shape.setOutlineColor(sf::Color::White);
     shape.setOutlineThickness(1.0f);
@@ -16,7 +19,17 @@ void Asteroid::draw(sf::RenderTarget &window, const Physics&) {
     window.draw(shape, pData.getTransform());
 }
 
-void Asteroid::tick(Physics&) {
+void Asteroid::tick(Physics &p) {
+    if(p.isInBounds(*this)) {
+        timeOutsideBorder = defaultTimeOutsideBorder;
+        shape.setFillColor(sf::Color::Transparent);
+    } else {
+        shape.setFillColor(sf::Color::Red); // if this is ever visible, isInBounds is broken
+        timeOutsideBorder -= p.getTickLen();
+        if(timeOutsideBorder <= sf::Time::Zero) {
+            markForRemoval();
+        }
+    }
 }
 
 std::unique_ptr<GameObject> Asteroid::clone() {
@@ -25,8 +38,4 @@ std::unique_ptr<GameObject> Asteroid::clone() {
 
 void Asteroid::collide(GameObject &, Physics &) {
 
-}
-
-float Asteroid::getRadius() {
-    return shape.getRadius();
 }

@@ -10,6 +10,7 @@ class AsteroidsWorld : public WorldBase {
     Physics physics;
     sf::Time newObject;
     std::mt19937 rng;
+    void newAsteroid();
 protected:
     void onLoadWorld(sf::RenderWindow &window) override;
     void drawWorld(sf::RenderWindow &window) override;

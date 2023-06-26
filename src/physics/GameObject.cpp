@@ -40,6 +40,10 @@ float GameObject::getBoundingRadius() const {
     return pData.getBoundingRadius();
 }
 
+void GameObject::move(sf::Vector2f displacement) {
+    pData.move(displacement);
+}
+
 void GameObject::setPosition(sf::Vector2f position) {
     pData.setPosition(position);
 }

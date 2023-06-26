@@ -91,8 +91,19 @@ sf::Vector2f Physics::getWorldBorder() const {
 
 void Physics::setWorldBorder(sf::Vector2f border) {
     worldBorder = border;
+    inBoundsData = {};
+    sf::RectangleShape shape{border};
+    inBoundsData.initialize_collision(shape);
 }
 
 [[maybe_unused]] std::size_t Physics::getNrObjects() const {
     return gameObjects.size();
+}
+
+bool Physics::isInBounds(const GameObject &object) {
+    return inBoundsData.collides(object.pData) || object.pData.collides(inBoundsData);
+}
+
+bool Physics::isInBounds(const AABB &aabb) {
+    return inBoundsData.getAABB().collides(aabb);
 }

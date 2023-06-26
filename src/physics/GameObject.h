@@ -28,6 +28,7 @@ public:
     [[nodiscard]] float getAngularVelocity() const;
     [[nodiscard]] sf::Vector2f getPosition() const;
     void setPosition(sf::Vector2f position);
+    void move(sf::Vector2f displacement);
     void accelerate(sf::Vector2f acceleration);
     void accelerateAngular(float acceleration);
     [[nodiscard]] bool hasPhysicsData() const;
