@@ -13,6 +13,7 @@ class Asteroid : public GameObject {
     AsteroidShape shape;
     sf::Time timeOutsideBorder;
     static const sf::Time defaultTimeOutsideBorder;
+    bool colliding;
 public:
     Asteroid(sf::Vector2f position, sf::Vector2f velocity, float radius);
     Asteroid(const Asteroid &other);
