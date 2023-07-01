@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.24)
 # for now, the project name is used as the executable name
 project(asteroids)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # generate compile_commands.json for cppcheck, clang-tidy
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -214,6 +215,30 @@ add_executable(${PROJECT_NAME}
 )
 # header base path to prevent '..' in #include statements
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
+
+find_program(CPPCHECK_EXECUTABLE NAMES cppcheck)
+if(CPPCHECK_EXECUTABLE)
+    message(STATUS "cppcheck found, target 'cppcheck' available")
+    get_filename_component(BUILD_DIR_SUPPRESS "${CMAKE_BINARY_DIR}" ABSOLUTE)
+    string(REGEX REPLACE "^[A-Za-z]:" "" BUILD_DIR_SUPPRESS "${BUILD_DIR_SUPPRESS}") # cppcheck doesn't like drive letters in suppress for some reason
+    add_custom_target(cppcheck
+        COMMAND ${CPPCHECK_EXECUTABLE} --enable=all
+                                       --inline-suppr
+                                       --project=${CMAKE_BINARY_DIR}/compile_commands.json
+                                       -i${CMAKE_BINARY_DIR} --suppress=*:*${BUILD_DIR_SUPPRESS}*
+                                       --suppress=missingIncludeSystem
+                                       --suppress=unmatchedSuppression
+                                       --suppress=useStlAlgorithm
+                                       --suppress=unusedFunction
+                                       --suppress=preprocessorErrorDirective
+                                       --error-exitcode=1
+        COMMENT "Running cppcheck"
+        VERBATIM
+        USES_TERMINAL # disables output buffering
+    )
+else()
+    message(STATUS "cppcheck not found, target 'cppcheck' not available")
+endif()
 
 ###############################################################################
 
