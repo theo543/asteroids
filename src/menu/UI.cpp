@@ -43,9 +43,9 @@ bool UI::internalHandleEvent(const sf::Event &event) {
         dir = back;
     if(dir) {
         std::vector<std::shared_ptr<UIItem>> selectableItems;
-        for(auto &item : items)
-            if(item->isSelectable())
-                selectableItems.push_back(item);
+        std::copy_if(items.begin(), items.end(), std::back_inserter(selectableItems), [](const auto &item) {
+            return item->isSelectable();
+        });
         if(selectableItems.empty()) {
             updateSelected(nullptr);
         } else {
@@ -139,7 +139,6 @@ void UI::pollingThreadHandleEvent(sf::Event &event) {
         if (!ie->contains(event.type))
             return;
     }
-    /// TODO debounce key-presses on Linux (maybe because of VirtualBox? still needs to be fixed though)
     eventQueue.push(event);
 }
 
@@ -186,8 +185,8 @@ void UI::addItem(const std::shared_ptr<UIItem>& item) {
 void UI::updateInterestingEvents() {
     auto ie = interestingEvents.lock();
     *ie = interestingEventsDefault;
-    for(auto &item : items) {
-        for(auto &e : item->getInterestingEvents()) {
+    for(const auto &item : items) {
+        for(const auto &e : item->getInterestingEvents()) {
             ie->insert(e);
         }
     }

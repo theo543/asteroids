@@ -17,7 +17,7 @@ AsteroidShape::AsteroidShape(float radius, float variance, std::size_t pointCoun
         ref_max(ray, min_radius);
         ref_min(ray, max_radius);
         float angle = (static_cast<float>(std::numbers::pi) * 2.f / static_cast<float>(pointCount)) * static_cast<float>(x);
-        points[x] = sf::Vector2f{std::cos(angle) * ray, std::sin(angle) * ray} + centerPos; // all SFML shapes have top-left corner = (0, 0) by default
+        points[x] = centerPos + sf::Vector2f{std::cos(angle) * ray, std::sin(angle) * ray}; // all SFML shapes have top-left corner = (0, 0) by default
     }
     update();
 }
