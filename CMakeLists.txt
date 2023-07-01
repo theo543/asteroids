@@ -29,8 +29,8 @@ function(set_custom_stdlib_and_sanitizers target add_apple_asan)
         return()
     endif()
 
-    if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND NOT WIN32) # on Windows <iostream> is not found when using libc++
-        message(STATUS "Using Clang's libc++ for target ${target} - this should not happen on Windows")
+    if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND NOT WIN32)
+        # libc++ doesn't seem to exist on Windows
         target_compile_options(${target} PRIVATE -stdlib=libc++)
         target_link_options(${target} PRIVATE -stdlib=libc++)
     endif()
