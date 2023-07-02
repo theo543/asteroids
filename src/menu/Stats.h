@@ -15,6 +15,7 @@ public:
     explicit Stats(const sf::Font &font, std::shared_ptr<sf::Sound> testSound = nullptr);
     void draw(sf::RenderTarget &window, sf::Vector2f position) override;
     void notifyTick() override;
+    bool isAlwaysVisible() const override;
 };
 
 

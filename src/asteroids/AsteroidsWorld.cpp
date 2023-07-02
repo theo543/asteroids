@@ -4,6 +4,7 @@
 #include "world/SwitchFactory.h"
 #include "menu/UIOption.h"
 #include "resources/GlobalLoaders.h"
+#include "menu/Stats.h"
 
 const sf::Time AsteroidsWorld::tickLen = sf::seconds(1.f / 120.f);
 
@@ -18,6 +19,7 @@ AsteroidsWorld::AsteroidsWorld() : WorldBase(false), physics(tickLen), rng(std::
     auto exitOpt = std::make_unique<UIOption>("Exit", GlobalLoaders::Fonts().load("PublicPixelTTF"), FO{Gray, sf::Color::Transparent}, FO{sf::Color::Red, sf::Color::Black}, 24, []() {
         return SwitchFactory::pop();
     });
+    ui.addItem(std::make_unique<Stats>(GlobalLoaders::Fonts().load("PublicPixelTTF")));
     ui.addItem(std::move(pauseLabel));
     ui.addItem(std::move(exitOpt));
     ui.setHideBehavior(UI::HideBehavior::Hide);

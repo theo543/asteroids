@@ -39,3 +39,7 @@ void Stats::draw(sf::RenderTarget &window, sf::Vector2f position) {
     }
     UILabel::draw(window, position);
 }
+
+bool Stats::isAlwaysVisible() const {
+    return true;
+}
