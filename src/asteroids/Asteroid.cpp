@@ -45,3 +45,7 @@ std::unique_ptr<GameObject> Asteroid::clone() {
 void Asteroid::collide(GameObject &, Physics &) {
     colliding = true;
 }
+
+float Asteroid::getArea() const {
+    return shape.getArea();
+}

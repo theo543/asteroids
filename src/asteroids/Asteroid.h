@@ -21,6 +21,7 @@ public:
     void tick(Physics &physics) override;
     std::unique_ptr<GameObject> clone() override;
     void collide(GameObject &other, Physics &physics) override;
+    [[nodiscard]] float getArea() const;
 };
 
 

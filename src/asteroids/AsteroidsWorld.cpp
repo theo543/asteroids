@@ -52,10 +52,11 @@ void AsteroidsWorld::newAsteroid() {
     NFD XEntryPoint(physics.getWorldBorder().x / 2.f, physics.getWorldBorder().x / 3.f);
     NFD YEntryPoint(physics.getWorldBorder().y / 2.f, physics.getWorldBorder().y / 3.f);
     NFD angularVelocity(0.f, 25.f);
-    NFD velocity(50.f, 25.f);
+    NFD kineticEnergy(4e9, 1e9);
     NFD radius(20.f, 5.f);
-    auto minVelocity = 20.f;
-    auto minRadius = 10.f;
+    float minRadius = 10.f;
+    float minVelocity = 10.f;
+    float density = 1500;
 
     auto pointOnBorder = [&](int choice) -> sf::Vector2f {
         switch(choice) {
@@ -71,25 +72,23 @@ void AsteroidsWorld::newAsteroid() {
         }
     };
 
-    float radiusVal = std::max(radius(rng), minRadius);
+    auto radiusVal = std::max(radius(rng), minRadius);
     auto entryPoint = pointOnBorder(entryBorder(rng));
     int goToChoice;
     while((goToChoice = entryBorder(rng)) == entryBorder(rng)); // make sure we don't go to the same side
     auto pointToGoTo = pointOnBorder(goToChoice);
     auto vectorToCenter = physics.getWorldBorder() / 2.f - pointToGoTo;
     auto vectorToGoTo = pointToGoTo - entryPoint;
-    auto entryVelocity = vectorToGoTo + vectorToCenter * 0.5f; // pull towards center, so they can't just travel along the border
-    entryVelocity = entryVelocity / std::sqrt(entryVelocity.x * entryVelocity.x + entryVelocity.y * entryVelocity.y); // normalize
-    entryVelocity = entryVelocity * std::max(velocity(rng), minVelocity); // scale to velocity
-    float entryAngularVelocity = angularVelocity(rng);
-
-    auto asteroid = std::make_unique<Asteroid>(entryPoint, entryVelocity, radiusVal);
+    auto vecNorm = [](sf::Vector2f x) { return x / std::sqrt(x.x * x.x + x.y * x.y); }; // normalize to get length 1 direction vector
+    auto entryVector = vecNorm(vectorToGoTo + vectorToCenter * 0.5f); // pull towards center, so they can't just travel along the border
+    auto entryAngularVelocity = angularVelocity(rng);
+    auto asteroid = std::make_unique<Asteroid>(entryPoint, sf::Vector2f{0.f, 0.f}, radiusVal);
+    auto entryVelocity = std::max(minVelocity, std::sqrt(2.f * kineticEnergy(rng) / (asteroid->getArea() * density)));
     asteroid->setAngularVelocity(entryAngularVelocity);
+    asteroid->setVelocity(entryVector * entryVelocity);
     auto maxHideSteps = 10;
-    auto hideStep = asteroid->getVelocity() * -1.f;
     while(physics.isInBounds(*asteroid) && maxHideSteps-- > 0) {
         asteroid->move(asteroid->getVelocity() * -1.f);
-        hideStep *= 1.5f;
     }
     physics.addGameObject(std::move(asteroid));
 }
