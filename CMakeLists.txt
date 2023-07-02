@@ -17,6 +17,7 @@ option(WARNINGS_AS_ERRORS "Treat warnings as errors" OFF)
 set(is_debug "$<CONFIG:Debug>")
 set(is_rel_with_deb "$<CONFIG:RelWithDebInfo>")
 set(debug_mode "$<OR:${is_debug},${is_rel_with_deb}>")
+set(release_mode "$<NOT:${debug_mode}>")
 
 ###############################################################################
 
@@ -335,14 +336,11 @@ endif()
 ###############################################################################
 
 option(HIDE_TERMINAL_ON_RELEASE "Hide terminal when building a release on Windows" ON)
-
-# if we're on Windows and building a release
-if(WIN32 AND (CMAKE_BUILD_TYPE MATCHES ".*Rel.*") AND HIDE_TERMINAL_ON_RELEASE)
-    message(STATUS "Setting PE subsystem property to GUI")
-    # This sets the PE header subsystem property to GUI, hiding the terminal.
-    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
-    # On MSVC we have to tell the compiler we're still using main instead of WinMain.
-    target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/ENTRY:mainCRTStartup>)
+if(WIN32 AND HIDE_TERMINAL_ON_RELEASE)
+    set(msvc "$<CXX_COMPILER_ID:MSVC>")
+    set(msvc_and_release "$<AND:${msvc},${release_mode}>")
+    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE ${release_mode})
+    target_link_options(${PROJECT_NAME} PRIVATE $<${msvc_and_release}:/ENTRY:mainCRTStartup>)
 endif()
 
 ###############################################################################
