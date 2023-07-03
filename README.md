@@ -1,45 +1,17 @@
 # Asteroids
 
-### Tema 0
+This project was written for the OOP course at the University of Bucharest in 2022-2023 (first year, second semester).
+The basic stuff (game loop, menus, ticking, rendering, collision detection, creating and destroying entities) is working (and I got the max grade for the project 😁).
 
-- [x] Nume proiect (poate fi schimbat ulterior)
-- [x] Scurtă descriere a temei alese, ce v-ați propus să implementați: jocul Asteroids
+I may come back to it later to make it an actual game (instead of just shapes flying around).
 
-## Tema 2
+## Resources
 
-#### Cerințe
-- [x] separarea codului din clase în `.h` (sau `.hpp`) și `.cpp`
-- [x] moșteniri
-  - [x] clasă cu atribut de tip pointer la o clasă de bază cu derivate
-  - [x] funcții virtuale (pure) apelate prin pointeri de bază din clasa de mai sus, constructori virtuali (clone)
-    - minim o funcție virtuală va fi **specifică temei** (e.g. nu simple citiri/afișări)
-  - [x] apelarea constructorului din clasa de bază din constructori din derivate
-  - [x] smart pointers
-  - [x] `dynamic_cast`
-- [x] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
-- [x] excepții
-  - [x] ierarhie proprie cu baza `std::exception` sau derivată din `std::exception`; minim 2 clase pentru erori specifice
-  - [x] utilizare cu sens: de exemplu, `throw` în constructor, `try`/`catch` în `main`
-- [x] funcții și atribute `static`
-- [x] STL
-- [x] cât mai multe `const`
-- [x] la sfârșit: commit separat cu adăugarea unei noi derivate fără a modifica restul codului - RainbowBackground (afcc3d9b601d55be9f081c884fce119cd06fb9f4)
-- [x] tag de `git`: de exemplu `v0.2`
+### CMake and GitHub Actions
 
-## Tema 3
+The code used for CMake and CI comes from our lab teacher's [template repository](https://github.com/mcmarius/oop-template), with some modifications, mostly to the CMake setup.
 
-#### Cerințe
-- [x] 2 șabloane de proiectare (design patterns) - Factory în SwitchFactory, Non-Virtual Interface în WorldBase, Singleton în GlobalLoaders
-- [x] o funcție șablon (template) cu sens; minim 2 instanțieri - SwitchFactory::push
-- [x] o clasă șablon cu sens; minim 2 instanțieri - OnDemandLoader
-<!-- - [ ] o specializare pe funcție/clasă șablon -->
-- [x] tag de `git`: de exemplu `v0.3` sau `v1.0`
-
-## Resurse
-
-Dependencies (and their dependencies) are under their respective licenses.
-
-### Librarii
+### Libraries
 
 - [SFML](https://github.com/SFML/SFML/tree/aa82ea132b9296a31922772027ad5d14c1fa381b) (Zlib)
 - [{fmt}](https://github.com/fmtlib/fmt/tree/a33701196adfad74917046096bf5a2aa0ab0bb50) (MIT with binary exception)
@@ -48,19 +20,36 @@ Dependencies (and their dependencies) are under their respective licenses.
 - [inja](https://github.com/pantor/inja) + inja dependency [json](https://github.com/nlohmann/json) (dev. dependencies, MIT license, not included in game executable)
 - [mapbox::eternal](https://github.com/mapbox/eternal) (ISC) - compile-time/constexpr map
 
-### Grafică
+### Assets
 
 - [Public Pixel Font by GGBotNet](https://www.fontspace.com/public-pixel-font-f72305) (Public Domain CC0)
-
-### Audio
-
 - [Piano loops 094](https://freesound.org/people/josefpres/sounds/683841/) (Public Domain CC0)
 
-### Informații
+### Misc. Online Resources
 
-- https://github.com/SFML/cmake-sfml-project
-  - Explained how to static link SFML using BUILD_SHARED_LIBS=OFF
-- https://stackoverflow.com/a/27206982/15885837
-  - Explained how to embed resources in executable using CMake
+- [Linking SFML into the executable](https://github.com/SFML/cmake-sfml-project#use-static-libraries)
+- Embedding data into the executable:
+  - [Generating the array literals using CMake](https://stackoverflow.com/a/27206982)
+  - I've since written a proper program to do this as [this answer](https://stackoverflow.com/a/11814544) suggests
 - [Game Programming Patterns](https://gameprogrammingpatterns.com/contents.html)
   - Most of these are too advanced for this project, but the Game Loop and Update Method chapters were helpful
+- [Physics of JellyCar: Soft Body Physics Explained (_Collision Detection_ section)](https://youtu.be/3OmkehAJoyo?t=90)
+  - Very useful info about collision detection, though this project doesn't have soft bodies
+  - I wasted a lot of time here from a very stupid bug:
+    I was starting the loop over edges from P2->P1, P3->P2, ..., but forgot I also needed P1->PN.
+    If any ray got into the polygon through the missing edge it'd flip the result. Since this was letting rays into polygons
+    without incrementing the intersection count, it completely broke the algorithm.
+    Since SFML circles have 20 edges, it would sometimes line up right and work, making it seem like the
+    square player had another bug. Wasted a lot of time with theories about floating point errors or the ray hitting a corner and incrementing the count twice.
+- [Point in polygon Wikipedia article](https://en.wikipedia.org/wiki/Point_in_polygon)
+  - Describes the ray casting algorithm
+- [Shoelace formula](https://en.wikipedia.org/wiki/Shoelace_formula)
+  - Used to calculate the area of a polygon
+
+### Open Source Licenses
+
+All dependencies are under their own licenses, mentioned above.
+They are all permissive licenses (MIT, BSD, Zlib, ISC, Public Domain CC0),
+so I can add them into the executable without any issues (besides OpenAL which is dynamically linked).
+
+TODO: add a credits screen with the licenses to the game
