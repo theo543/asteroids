@@ -59,6 +59,9 @@ Menu::Menu() {
         }
         return SwitchFactory::empty();
     });
+    auto toggleFullscreen = std::make_shared<UIOption>("Toggle Fullscreen", f, unselected_style, selected_style, 24, []() {
+        return SwitchFactory::fullscreen_toggle();
+    });
     unselected_style = UIOption::Fill_Outline{sf::Color::Red, sf::Color::Transparent};
     selected_style = UIOption::Fill_Outline {sf::Color::Red, sf::Color::Black};
     auto exitOpt = std::make_shared<UIOption>("Exit", f, unselected_style, selected_style, 24, []() {
@@ -70,6 +73,7 @@ Menu::Menu() {
     ui.addItem(collisionOpt);
     ui.addItem(unhandledTest);
     ui.addItem(exceptionTest);
+    ui.addItem(toggleFullscreen);
     ui.addItem(exitOpt);
     ui.setHideBehavior(UI::HideBehavior::Exit);
     ui.forAllSetPixelAlign(true);

@@ -10,7 +10,7 @@ SwitchCommand UI::safeInvokeExitHandler() {
 }
 
 void move_if_free(SwitchCommand &current, SwitchCommand &&next) {
-    if(current.isContinue() && !next.isContinue())
+    if(current.isEmpty() && !next.isEmpty())
         current = std::move(next);
 }
 
@@ -193,7 +193,7 @@ void UI::updateInterestingEvents() {
 }
 
 bool UI::hasTransition() const {
-    return !nextTransition.isContinue();
+    return !nextTransition.isEmpty();
 }
 
 SwitchCommand UI::getNextTransition() {

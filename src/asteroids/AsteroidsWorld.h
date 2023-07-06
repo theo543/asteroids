@@ -17,6 +17,7 @@ protected:
     SwitchCommand tickWorld() override;
 public:
     AsteroidsWorld();
+    explicit AsteroidsWorld(bool screensaverMode);
 };
 
 

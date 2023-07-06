@@ -8,6 +8,9 @@ class SwitchFactory {
 public:
     inline static SwitchCommand empty();
     inline static SwitchCommand pop();
+    inline static SwitchCommand fullscreen_on();
+    inline static SwitchCommand fullscreen_off();
+    inline static SwitchCommand fullscreen_toggle();
     template <typename T = WorldInterface, typename... Args>
     static SwitchCommand push(Args&&... args);
     template <typename T = WorldInterface, typename... Args>

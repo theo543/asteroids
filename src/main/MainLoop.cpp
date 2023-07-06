@@ -5,18 +5,22 @@
 #include "world/SwitchFactory.h"
 #include "utility/message.h"
 
-[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : window(), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), nextScene(nullptr), saveScene(false) {
-    window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 8));
+[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene, bool fullscreen) : window(), fullscreen(fullscreen), world(std::move(firstScene)), realTime(), worldTime(), returnToMainLoop(false), requestRecreateWindow(false), nextScene(nullptr), saveScene(false) {
+    createWindow();
+    prev_stack.push(nullptr);
+}
+
+[[maybe_unused]] MainLoop::MainLoop(std::unique_ptr<WorldInterface> firstScene) : MainLoop(std::move(firstScene), false) {}
+
+void MainLoop::createWindow() {
+    if(fullscreen) {
+        window.create(sf::VideoMode::getFullscreenModes()[0], "", sf::Style::Fullscreen, sf::ContextSettings(0, 0, 8));
+    } else {
+        window.create(sf::VideoMode({800, 700}), "", sf::Style::Titlebar | sf::Style::Close,
+                      sf::ContextSettings(0, 0, 8));
+    }
     window.setVerticalSyncEnabled(true);
     window.setActive(false);
-    window.setKeyRepeatEnabled(false);
-    //window.setFramerateLimit(60);
-
-    auto desktop = sf::VideoMode::getDesktopMode();
-    // This is safe because screen size isn't nearly as big as 32-bit int. If it is, you have other problems.
-    // We also account for the window title bar
-    window.setPosition(sf::Vector2i((desktop.width - window.getSize().x) / 2, (desktop.height - window.getSize().y) / 2 - 50)); //NOLINT
-    prev_stack.push(nullptr);
 }
 
 void MainLoop::resetTime() {
@@ -57,6 +61,19 @@ void MainLoop::renderingThread() {
         for(unsigned int ticksAllowed = world->getMaxTicksPerFrame(); ticksNeeded() && ticksAllowed > 0; ticksAllowed--) {
             SwitchCommand tr = world->tick();
             worldTime += world->getTimePerTick();
+            if(tr.getFullscreen() != FullScreenCommand::NONE) {
+                world->onUnload(window, false);
+                window.setActive(false);
+                if(tr.getFullscreen() == FullScreenCommand::ON)
+                    fullscreen = true;
+                else if(tr.getFullscreen() == FullScreenCommand::OFF)
+                    fullscreen = false;
+                else if (tr.getFullscreen() == FullScreenCommand::TOGGLE)
+                    fullscreen = !fullscreen;
+                requestRecreateWindow = true;
+                requestRecreateWindow.wait(tr.getFullscreen());
+                world->onLoad(window);
+            }
             switch(tr.getAction()) {
                 case SwitchAction::POP:
                     nextScene = std::move(prev_stack.top());
@@ -88,6 +105,11 @@ void MainLoop::eventPollingThread() {
     try {
         sf::Event event{};
         while (window.isOpen() && !returnToMainLoop) {
+            if(requestRecreateWindow) {
+                createWindow();
+                requestRecreateWindow = false;
+                requestRecreateWindow.notify_all();
+            }
             while (window.pollEvent(event))
                 world->handleEvent(event);
             // for some reason, the window closes twice as fast if I sleep here instead of waitEvent
@@ -102,6 +124,7 @@ void MainLoop::eventPollingThread() {
 void MainLoop::resetThreadVariables() {
     returnToMainLoop = false;
     nextScene = nullptr;
+    requestRecreateWindow = false;
 }
 
 void MainLoop::mainLoop() {

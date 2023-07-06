@@ -4,6 +4,15 @@
 #include "world/SwitchFactory.h" // just to help the IDE find definitions
 #include "type_not_of_claimed_base.h"
 
+SwitchCommand SwitchFactory::fullscreen_on() {
+    return SwitchCommand(nullptr, FullScreenCommand::ON, SwitchAction::CONTINUE);
+}
+SwitchCommand SwitchFactory::fullscreen_off() {
+    return SwitchCommand(nullptr, FullScreenCommand::OFF, SwitchAction::CONTINUE);
+}
+SwitchCommand SwitchFactory::fullscreen_toggle() {
+    return SwitchCommand(nullptr, FullScreenCommand::TOGGLE, SwitchAction::CONTINUE);
+}
 SwitchCommand SwitchFactory::empty() {
     return SwitchCommand(nullptr, SwitchAction::CONTINUE);
 }

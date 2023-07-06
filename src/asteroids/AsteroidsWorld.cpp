@@ -8,7 +8,7 @@
 
 const sf::Time AsteroidsWorld::tickLen = sf::seconds(1.f / 120.f);
 
-AsteroidsWorld::AsteroidsWorld() : WorldBase(false), physics(tickLen), rng(std::random_device()()) {
+AsteroidsWorld::AsteroidsWorld(bool screensaverMode) : WorldBase(false), physics(tickLen), rng(std::random_device()()) {
     setTiming(tickLen, 24);
     physics.setCollisionsEnabled(true);
     physics.setBoundsVisible(false);
@@ -22,10 +22,12 @@ AsteroidsWorld::AsteroidsWorld() : WorldBase(false), physics(tickLen), rng(std::
     ui.addItem(std::make_unique<Stats>(GlobalLoaders::Fonts().load("PublicPixelTTF")));
     ui.addItem(std::move(pauseLabel));
     ui.addItem(std::move(exitOpt));
-    ui.setHideBehavior(UI::HideBehavior::Hide);
+    ui.setHideBehavior(screensaverMode ? UI::HideBehavior::Exit : UI::HideBehavior::Hide);
     ui.setOpen(false);
     ui.forAllSetPixelAlign(true);
 }
+
+AsteroidsWorld::AsteroidsWorld() : AsteroidsWorld(false) {}
 
 void AsteroidsWorld::onLoadWorld(sf::RenderWindow &window) {
     window.setTitle("Asteroids");

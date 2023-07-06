@@ -11,6 +11,7 @@ class WorldInterface;
 class MainLoop : sf::NonCopyable {
     const inline static sf::Time tickLagWarningThreshold = sf::seconds(1);
     sf::RenderWindow window;
+    bool fullscreen;
     std::stack<std::unique_ptr<WorldInterface>> prev_stack;
     std::unique_ptr<WorldInterface> world;
     /// Real time. The time that the world has to keep up with.
@@ -22,6 +23,12 @@ class MainLoop : sf::NonCopyable {
      * It's set by renderingThread, which must return after setting it.
      */
     std::atomic_bool returnToMainLoop;
+    /**
+     * Since only the main thread is capable of polling events and recreating the window (OpenGL limitation?),
+     * the rendering thread (which actually receives the fullscreen request from the UI) must request recreation
+     * with this flag and wait on it.
+     */
+    std::atomic_bool requestRecreateWindow;
     /**
      * When returning to mainLoop, if this is not nullptr, the world will be replaced with this one.
      * If it's nullptr, the game will exit.
@@ -44,7 +51,9 @@ class MainLoop : sf::NonCopyable {
     void resetThreadVariables();
     sf::Time getTimeDifference() const;
     bool ticksNeeded() const;
+    void createWindow();
 public:
+    [[maybe_unused]] explicit MainLoop(std::unique_ptr<WorldInterface> firstScene, bool fullscreen);
     [[maybe_unused]] explicit MainLoop(std::unique_ptr<WorldInterface> firstScene);
     void mainLoop();
 };

@@ -11,10 +11,9 @@ private:
     std::unique_ptr<ResourceLoader<sf::SoundBuffer>> sounds;
     std::unique_ptr<ResourceLoader<sf::Font>> fonts;
     static GlobalLoaders *instance;
+public:
     GlobalLoaders();
     ~GlobalLoaders();
-public:
-    friend int main();
     static ResourceLoader<sf::SoundBuffer> &SoundBuffers();
     static ResourceLoader<sf::Font> &Fonts();
 };
