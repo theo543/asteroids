@@ -68,6 +68,7 @@ endfunction()
 include(FetchContent)
 
 set(BUILD_SHARED_LIBS FALSE)
+set(SFML_BUILD_NETWORK FALSE)
 
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:122
 FetchContent_Declare(
