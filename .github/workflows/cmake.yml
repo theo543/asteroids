@@ -93,13 +93,7 @@ jobs:
         # clang-tidy is not able to follow symbolic links: https://bugs.llvm.org/show_bug.cgi?id=47460
         # need to use | as sed separator because / is used in paths
         run: |
-          sed -i "s|$(which ${CXX})|$(realpath $(which ${CXX}))|g" "${BUILD_DIR}"/compile_commands.json
-
-          cat "${BUILD_DIR}"/compile_commands.json |
-            jq -r '.[] | .file' |                    # select source file paths from CMake project; -r to strip quotes
-            grep -v "/${BUILD_DIR}/_deps/" |         # ignore external dependencies
-            xargs clang-tidy -p "${BUILD_DIR}"
-
+          cmake --build "${BUILD_DIR}" --target clang-tidy
 
   build:
     name: ${{ matrix.name }}

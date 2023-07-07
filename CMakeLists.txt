@@ -242,6 +242,45 @@ else()
     message(STATUS "cppcheck not found, target 'cppcheck' not available")
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    find_program(CLANG_TIDY_EXECUTABLE NAMES clang-tidy clang-tidy-16 clang-tidy-15 clang-tidy-14 clang-tidy-13 clang-tidy-12 clang-tidy-11)
+    find_program(RUN_CLANG_TIDY_SCRIPT NAMES run-clang-tidy run-clang-tidy-16 run-clang-tidy-15 run-clang-tidy-14 run-clang-tidy-13 run-clang-tidy-12 run-clang-tidy-11)
+    if(NOT UNIX)
+        if(CLANG_TIDY_EXECUTABLE AND RUN_CLANG_TIDY_SCRIPT)
+            message(STATUS "clang-tidy found and run-clang-tidy found, but the 'clang-tidy' target requires a Unix-like system")
+        endif()
+    elseif(CLANG_TIDY_EXECUTABLE AND RUN_CLANG_TIDY_SCRIPT)
+        message(STATUS "clang-tidy found and run-clang-tidy found, target 'clang-tidy' available")
+        message(STATUS "clang-tidy executable: ${CLANG_TIDY_EXECUTABLE}")
+        message(STATUS "run-clang-tidy script: ${RUN_CLANG_TIDY_SCRIPT}")
+        get_filename_component(BUILD_DIR "${CMAKE_BINARY_DIR}" NAME)
+        execute_process(COMMAND nproc --all OUTPUT_VARIABLE CPU_COUNT OUTPUT_STRIP_TRAILING_WHITESPACE)
+        if(NOT CPU_COUNT MATCHES "^[0-9]+$")
+            message(STATUS "nproc --all returned '${CPU_COUNT}', using 1 instead")
+            set(CPU_COUNT 1)
+        else()
+            message(STATUS "nproc --all returned '${CPU_COUNT}'")
+        endif()
+        execute_process(COMMAND which "${CMAKE_CXX_COMPILER}" OUTPUT_VARIABLE WHICH_COMPILER OUTPUT_STRIP_TRAILING_WHITESPACE)
+        execute_process(COMMAND realpath "${WHICH_COMPILER}" OUTPUT_VARIABLE REALPATH_COMPILER OUTPUT_STRIP_TRAILING_WHITESPACE)
+        add_custom_target(clang-tidy
+            # clang-tidy is not able to follow symbolic links: https://bugs.llvm.org/show_bug.cgi?id=47460, rewrite compile_commands.json to fix this
+            COMMAND sed -i "s|${WHICH_COMPILER}|${REALPATH_COMPILER}|g" "${CMAKE_BINARY_DIR}/compile_commands.json"
+            # pass the names of source files to run-clang-tidy using xargs, exclude files not in the source directory
+            COMMAND cat ${CMAKE_BINARY_DIR}/compile_commands.json | jq "-r" ".[] | .file" | grep -v "/${BUILD_DIR}/_deps" | xargs "${RUN_CLANG_TIDY_SCRIPT}" -p "${CMAKE_BINARY_DIR}" -j ${CPU_COUNT} -clang-tidy-binary "${CLANG_TIDY_EXECUTABLE}" -quiet
+            COMMENT "Running clang-tidy"
+            VERBATIM
+            USES_TERMINAL # disables output buffering
+        )
+    elseif(CLANG_TIDY_EXECUTABLE)
+        message(STATUS "clang-tidy found, but run-clang-tidy not found, target 'clang-tidy' not available")
+    else()
+        message(STATUS "clang-tidy not found, target 'clang-tidy' not available")
+    endif()
+else()
+    message(STATUS "not compiling with clang, target 'clang-tidy' not available")
+endif()
+
 ###############################################################################
 
 add_executable(asteroids_resource_script src/resources/build/script.cpp src/resources/build/script_header.h)
