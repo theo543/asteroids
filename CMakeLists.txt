@@ -334,7 +334,13 @@ if(NO_PRECOMPILED_HEADERS)
     message(STATUS "Precompiled headers disabled")
 else()
     target_precompile_headers(asteroids_resource_script PRIVATE src/resources/build/script_header.h)
-    target_precompile_headers(asteroids PRIVATE src/SFML.h)
+    target_precompile_headers(${PROJECT_NAME} PRIVATE src/SFML.h)
+    if(TARGET clang-tidy)
+        # clang-tidy will need to see the precompiled headers
+        # doesn't seem to be a way of telling CMake to only depend on the precompiled headers, so we depend on the whole target
+        message(STATUS "clang-tidy will depend on main target because of precompiled headers")
+        add_dependencies(clang-tidy ${PROJECT_NAME})
+    endif()
 endif()
 
 
