@@ -19,6 +19,18 @@ set(is_rel_with_deb "$<CONFIG:RelWithDebInfo>")
 set(debug_mode "$<OR:${is_debug},${is_rel_with_deb}>")
 set(release_mode "$<NOT:${debug_mode}>")
 
+include(CheckIPOSupported)
+check_ipo_supported(RESULT lto_supported OUTPUT lto_error)
+if(lto_supported)
+    cmake_policy(SET CMP0069 NEW)
+    set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
+    message(STATUS "IPO / LTO supported")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION "${release_mode}")
+else()
+    message(STATUS "IPO / LTO not supported, error written to ${CMAKE_BINARY_DIR}/cmake_lto_error.log")
+    file(WRITE "${CMAKE_BINARY_DIR}/cmake_lto_error.log" "${lto_error}")
+endif()
+
 ###############################################################################
 
 # custom functions
